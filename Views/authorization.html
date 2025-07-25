@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>DocsService</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="auth-container">
+        <h1>Авторизация пользователя</h1>
+        <img src="images/User.png" class="img-user" /> 
+        <form id="loginForm">
+            <div class="input-group">
+                
+                <input type="text" id="username" name="username" placeholder="Логин" required />
+            </div>
+            
+            <div class="input-group">
+                
+                <input type="password" id="password" name="password" placeholder="Пароль" required />
+            </div>
+
+            <button type="submit" class="login-btn">Войти</button>
+        </form>
+        <div id="errorMessage" class="error-message"></div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
