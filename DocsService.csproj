@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <Folder Include="Views\authorization\images\" />
+    <Folder Include="Views\form\images\" />
   </ItemGroup>
 
 </Project>

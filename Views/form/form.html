@@ -1,1 +1,79 @@
-﻿
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>DocsService</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-line"></div>
+        <div class="header-line-2"></div>
+    </header>
+    <div class="form-container">
+
+        <h1>Формирование листов регистрации инструктажей</h1>
+        <img src="images/File.png" class="img-file" />
+
+        <form id="dataForm">
+            <div class="input-group">
+                <input type="date" id="date" name="date">
+            </div>
+
+            <div class="input-group">
+                <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
+                    Выбор сотрудников
+                </div>
+                <div class="dropdown-content">
+                    <label><input type="checkbox" value="1"> Вариант 1</label>
+                    <label><input type="checkbox" value="2"> Вариант 2</label>
+                    <label><input type="checkbox" value="3"> Вариант 3</label>
+                    <label><input type="checkbox" value="4"> Вариант 4</label>
+                    <label><input type="checkbox" value="5"> Вариант 5</label>
+                </div>
+                <div class="selected-items" id="selectedItems"></div>
+            </div>
+
+            <script>
+                
+            </script>
+
+            <div class="input-group">
+
+                <select multiple size="4">
+                    <option value="1">Пункт 1</option>
+                    <option value="2">Пункт 2</option>
+                    <option value="3">Пункт 3</option>
+                    <option value="4">Пункт 4</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <input>
+            </div>
+
+            <div class="input-group">
+
+                <select multiple size="4">
+                    <option value="1">Пункт 1</option>
+                    <option value="2">Пункт 2</option>
+                    <option value="3">Пункт 3</option>
+                    <option value="4">Пункт 4</option>
+                </select>
+            </div>
+
+            <button type="submit" class="login-btn">Войти</button>
+        </form>
+        <div id="errorMessage" class="error-message"></div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-line"></div>
+        <div class="footer-line-2"></div>
+        <img src="images/logo.png" class="footer-logo" />
+
+    </footer>
+    <script src="app.js"></script>
+</body>
+
+</html>
