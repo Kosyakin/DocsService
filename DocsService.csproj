@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\images\" />
+    <Folder Include="Views\authorization\images\" />
   </ItemGroup>
 
 </Project>

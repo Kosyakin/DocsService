@@ -6,17 +6,21 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header>
+        <div class="header-line"></div>
+        <div class="header-line-2"></div>
+    </header>
     <div class="auth-container">
         <h1>Авторизация пользователя</h1>
-        <img src="images/User.png" class="img-user" /> 
+        <img src="images/User.png" class="img-user" />
         <form id="loginForm">
             <div class="input-group">
-                
+
                 <input type="text" id="username" name="username" placeholder="Логин" required />
             </div>
-            
+
             <div class="input-group">
-                
+
                 <input type="password" id="password" name="password" placeholder="Пароль" required />
             </div>
 
@@ -24,6 +28,14 @@
         </form>
         <div id="errorMessage" class="error-message"></div>
     </div>
+    
+    <footer class="footer">
+        <div class="footer-line"></div>
+        <div class="footer-line-2"></div>
+        <img src="images/logo.png" class="footer-logo"/>
+
+    </footer>
     <script src="app.js"></script>
 </body>
+
 </html>
