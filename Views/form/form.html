@@ -15,54 +15,67 @@
         <h1>Формирование листов регистрации инструктажей</h1>
         <img src="images/File.png" class="img-file" />
 
-        <form id="dataForm">
+        <form id="dataForm" method="post" action="/Form/SubmitData">
             <div class="input-group">
-                <input type="date" id="date" name="date">
+                <input type="date" id="date" name="date" required>
             </div>
 
             <div class="input-group">
                 <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
                     Выбор сотрудников
                 </div>
+
                 <div class="dropdown-content">
-                    <label><input type="checkbox" value="1"> Вариант 1</label>
-                    <label><input type="checkbox" value="2"> Вариант 2</label>
-                    <label><input type="checkbox" value="3"> Вариант 3</label>
-                    <label><input type="checkbox" value="4"> Вариант 4</label>
-                    <label><input type="checkbox" value="5"> Вариант 5</label>
+                    <label><input name="employees" type="checkbox" value="1"> Вариант 1</label>
+                    <label><input name="employees" type="checkbox" value="2"> Вариант 2</label>
+                    <label><input name="employees" type="checkbox" value="3"> Вариант 3</label>
+                    <label><input name="employees" type="checkbox" value="4"> Вариант 4</label>
+                    <label><input name="employees" type="checkbox" value="5"> Вариант 5</label>
+                    <label><input name="employees" type="checkbox" value="5"> Вариант 5</label>
                 </div>
-                <div class="selected-items" id="selectedItems"></div>
-            </div>
 
-            <script>
-                
-            </script>
-
-            <div class="input-group">
-
-                <select multiple size="4">
-                    <option value="1">Пункт 1</option>
-                    <option value="2">Пункт 2</option>
-                    <option value="3">Пункт 3</option>
-                    <option value="4">Пункт 4</option>
-                </select>
             </div>
 
             <div class="input-group">
-                <input>
+                <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
+                    Вид инструктажа по охране труда
+                </div>
+                <input type="hidden" name="instructionType" id="instructionType">
+                <div class="dropdown-content">
+                    <div class="dropdown-item" name="typeInstr" onclick="selectItem(this, 'Первичный')">Первичный</div>
+                    <div class="dropdown-item" name="typeInstr" onclick="selectItem(this, 'Повторный')">Повторный</div>
+                    <div class="dropdown-item" name="typeInstr" onclick="selectItem(this, 'Внеплановый')">Внеплановый</div>
+                    <div class="dropdown-item" name="typeInstr" onclick="selectItem(this, 'Целевой')">Целевой</div>
+                </div>
+
             </div>
 
             <div class="input-group">
-
-                <select multiple size="4">
-                    <option value="1">Пункт 1</option>
-                    <option value="2">Пункт 2</option>
-                    <option value="3">Пункт 3</option>
-                    <option value="4">Пункт 4</option>
-                </select>
+                <input placeholder="Причина" name="reason">
             </div>
 
-            <button type="submit" class="login-btn">Войти</button>
+            <div class="input-group" id="localActDropdownGroup">
+                <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
+                    Наименование локального акта
+                </div>
+                <input type="hidden" name="localAct" id="localAct">
+                <div class="dropdown-content">
+                    <div class="dropdown-item" onclick="selectItem(this, 'Текст1')">Текст1</div>
+                    <div class="dropdown-item" onclick="selectItem(this, 'Текст2')">Текст2</div>
+                    <div class="dropdown-item" onclick="selectItem(this, 'Текст3')">Текст3</div>
+                    <div class="dropdown-item" onclick="selectItem(this, 'Текст4')">Текст4</div>
+                    <div class="dropdown-item" onclick="selectItem(this, 'Текст5')">Текст5</div>
+                </div>
+            </div>
+
+            <div class="input-group" id="localActInputFieldGroup" style="display: none;">
+                <input type="text"
+                       name="localAct"
+                       id="localActInputField"
+                       placeholder="Введите номер СТО, например: СТО 07-12">
+            </div>
+
+            <button type="submit" id="submitBtn" class="submit-btn" disabled>Сформировать файл</button>
         </form>
         <div id="errorMessage" class="error-message"></div>
     </div>
@@ -73,7 +86,7 @@
         <img src="images/logo.png" class="footer-logo" />
 
     </footer>
-    <script src="app.js"></script>
+    <script src="app1.js"></script>
 </body>
 
 </html>

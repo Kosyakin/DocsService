@@ -1,3 +1,5 @@
+using Microsoft.Extensions.FileProviders;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -18,6 +20,16 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()  // Разрешаем запросы с любых доменов
+              .AllowAnyMethod()  // Разрешаем все HTTP-методы (GET, POST и т.д.)
+              .AllowAnyHeader()  // Разрешаем все заголовки
+              .WithExposedHeaders("*");  // Разрешаем все доступные заголовки в ответе
+    });
+});
 
 
 var app = builder.Build();
@@ -34,8 +46,16 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseStaticFiles();
 
-// После app.UseRouting();
 app.UseCors("AllowAll");
+app.UseRouting();
+app.UseCors("AllowAll");
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "Views/form/")),
+    RequestPath = ""
+});
 
 app.Run();

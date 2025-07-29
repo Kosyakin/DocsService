@@ -7,6 +7,7 @@
     height: 100vh;
     margin: 0;
     background-size: cover;
+/*    padding: 80px 20px 100px;*/
 }
 
 .form-container {
@@ -16,6 +17,7 @@
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
     width: 500px;
     text-align: center;
+
 }
 
     .form-container h1 {
@@ -26,6 +28,7 @@
 
 .input-group {
     margin-bottom: 25px;
+    position: relative;
 }
 
     .input-group input {
@@ -39,6 +42,23 @@
         background-color: #E6E6E6;
     }
 
+/*.additional-btn {
+    position: absolute;
+    right: 60px; 
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 2;
+}
+
+    .additional-btn img {
+        width: 20px;
+        height: 20px;
+    }*/
+
 .custom-select {
     width: 100%;
     padding: 18px 25px;
@@ -47,26 +67,43 @@
     font-size: 18px;
     box-sizing: border-box;
     background-color: #E6E6E6;
-    appearance: none; /* Убираем стандартную стрелку */
     cursor: pointer;
     transition: all 0.3s;
+    text-align: left;
+    position: relative;
+    padding-right: 50px;
+    appearance: none; 
 }
 
-.input-group::after {
-    content: "▼";
-    font-size: 14px;
-    color: #555;
-    position: absolute;
-    right: 25px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
+    /* Кастомная стрелка */
+    .custom-select::after {
+        content: "▼";
+        position: absolute;
+        right: 30px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 14px;
+        color: #555;
+        pointer-events: none;
+    }
+
+/* Изменение стиля при активном состоянии */
+.input-group.active .custom-select {
+    background-color: #656565;
+    color: white;
+    border-bottom-left-radius: 1px;
+    border-bottom-right-radius: 1px;
 }
+
+    .input-group.active .custom-select::after {
+        transform: translateY(-50%) rotate(180deg);
+        color: #FFFFFF;
+    }
 
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
+/*    background-color: #f9f9f9;*/
     width: 500px;
     max-height: 300px;
     overflow-y: auto;
@@ -78,33 +115,69 @@
 
 .input-group.active .dropdown-content {
     display: block;
+    background-color: #656565;
 }
+
+/*.input-group.invalid input,
+.input-group.invalid .custom-select {
+    border: 2px solid #DB2B36 !important;
+    outline: none;
+    box-shadow: 0 0 5px rgba(219, 43, 54, 0.3);
+}*/
 
 /* Стили для пунктов списка */
-.dropdown-content label {
-    display: block;
-    padding: 15px 25px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    width: 500px;
+    max-height: 300px;
+    overflow-y: auto;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 1px 20px 13px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    margin-top: -10px;
 }
 
-    .dropdown-content label:hover {
-        background-color: #E6E6E6;
+    .dropdown-content label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 15px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        color: #FFFFFF;
+        /*    flex-direction: row-reverse;*/
     }
 
-/* Стили для чекбоксов */
+        .dropdown-content label:hover {
+            color: #656565; 
+        }
+
+.dropdown-content label:hover {
+    background-color: #E6E6E6;
+    
+}
+
+
+
 .dropdown-content input[type="checkbox"] {
-    margin-right: 10px;
+/*    margin-left: 20px;*/
+    margin-right: 0;
+    order: 1;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
 }
 
 /* Стиль для выбранных элементов */
 .selected-items {
     margin-top: 10px;
     font-size: 14px;
-    color: #555;
+    
 }
 
-.login-btn {
+.submit-btn {
     width: 50%;
     padding: 18px;
     background-color: #E6E6E6;
@@ -118,10 +191,15 @@
     color: #000000;
 }
 
-    .login-btn:hover {
+    .submit-btn:not(:disabled) {
         background-color: #DB2B36;
         color: #FFFFFF;
     }
+
+        .submit-btn:not(:disabled):hover {
+            background-color: #656565;
+            color: #FFFFFF;
+        }
 
 .error-message {
     color: #dc3545;
@@ -133,6 +211,7 @@
     width: 10%;
     height: auto;
     margin-bottom: 25px;
+    margin-top: 1px;
     object-fit: contain;
 }
 
@@ -177,3 +256,21 @@
     height: auto;
     z-index: 10;
 }
+
+.dropdown-item {
+    padding: 15px 25px;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: #FFFFFF;
+}
+
+    .dropdown-item:hover {
+        background-color: #E6E6E6;
+        color: #656565;
+    }
+
+    /* Стиль для выбранного элемента (опционально) */
+    .dropdown-item.selected {
+        background-color: #DB2B36;
+        color: white;
+    }
