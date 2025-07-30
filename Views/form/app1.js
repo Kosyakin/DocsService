@@ -59,6 +59,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const instructionTypeInput = document.getElementById('instructionType');
     const reasonInput = document.querySelector('input[name="reason"]');
     const localActInput = document.querySelector('input[name="localAct"]'); 
+    
+
+    // Элементы для локального акта
+    const localActDropdownGroup = document.getElementById('localActDropdownGroup');
+    console.log(localActDropdownGroup);
+    const localActInputFieldGroup = document.getElementById('localActInputFieldGroup');
+    console.log(localActInputFieldGroup);
+    const localActHiddenInput = document.getElementById('localAct');
+    console.log(localActHiddenInput);
+    const localActTextInput = document.getElementById('localActInputField');
+    console.log(localActTextInput);
 
     // Находим отображаемый элемент (div с текстом)
     const localActDisplay = localActInput
@@ -96,31 +107,32 @@ document.addEventListener('DOMContentLoaded', function () {
         const reason = reasonMap[selectedType];
         reasonInput.value = reason;
 
-        if (reason == '') {
+        if (selectedType == 'Внеплановый' || selectedType == 'Целевой') {
             reasonInput.placeholder = "Заполните номер приказа";
-            //const reasonGroup = reasonInput.closest('.input-group');
-            //console.log('Добавлен класс invalid:', reasonGroup);
-            //reasonGroup.classList.add('invalid');
+
+            // Показываем текстовое поле
+            localActDropdownGroup.style.display = 'none';
+            localActInputFieldGroup.style.display = 'block';
+
+            // Устанавливаем placeholder
+            localActTextInput.placeholder = 'Введите номер СТО, например: СТО 07-12';
+
+            // Переносим значение из скрытого поля в текстовое
+            localActTextInput.value = localActHiddenInput.value;
+
+            // Обновляем скрытое поле при изменении текстового
+            localActTextInput.addEventListener('input', function () {
+                localActHiddenInput.value = this.value;
+            });
             
-        }
-
-        // --- Обновляем "Локальный акт" ---
-        const localAct = localActMap[selectedType];
-
-        if (localAct) {
-            // Устанавливаем значение в hidden input
-            localActInput.value = localAct;
-
-            // Обновляем отображаемый текст
-            localActDisplay.textContent = localAct;
-
-            // Уведомляем, что значение изменилось (если есть другие обработчики)
-            localActInput.dispatchEvent(new Event('change'));
         } else {
-            // Если тип не из списка (например, Первичный), можно сбросить
-            localActInput.value = '';
-            localActDisplay.textContent = 'Наименование локального акта';
-            localActInput.dispatchEvent(new Event('change'));
+            // Показываем выпадающий список
+            localActDropdownGroup.style.display = 'block';
+            localActInputFieldGroup.style.display = 'none';
+
+            // Сбрасываем значение для стандартных типов
+            localActHiddenInput.value = '';
+            document.querySelector('#localActDropdownGroup .custom-select').textContent = 'Наименование локального акта';
         }
         
     });
@@ -181,19 +193,20 @@ document.getElementById('dataForm').addEventListener('submit', async function (e
     }
 });
 
-function checkFormValidity() {
-    const date = document.getElementById('date').value;
-    const instructionType = document.getElementById('instructionType').value;
-    const reason = document.querySelector('input[name="reason"]').value;
-    const localAct = document.getElementById('localAct').value;
-    const anyEmployeeSelected = document.querySelector('input[name="employees"]:checked') !== null;
+//function checkFormValidity() {
+//    const date = document.getElementById('date').value;
+//    const instructionType = document.getElementById('instructionType').value;
+//    const reason = document.querySelector('input[name="reason"]').value;
+//    const localAct = document.getElementById('localAct').value;
+//    const localActInput = document.getElementById("localActInputFieldGroup").value;
+//    const anyEmployeeSelected = document.querySelector('input[name="employees"]:checked') !== null;
 
-    const isFormValid = date && instructionType && reason && localAct && anyEmployeeSelected;
-    console.log(isFormValid);
+//    const isFormValid = date && instructionType && reason && (localAct || localActInput) && anyEmployeeSelected;
+//    console.log(isFormValid);
 
-    const submitBtn = document.getElementById("submitBtn");
-    submitBtn.disabled = !isFormValid;
-}
+//    const submitBtn = document.getElementById("submitBtn");
+//    submitBtn.disabled = !isFormValid;
+//}
 
 
 
@@ -222,9 +235,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const instructionType = document.getElementById('instructionType').value;
         const reason = document.querySelector('input[name="reason"]').value;
         const localAct = document.getElementById('localAct').value;
+        const localActInput = document.getElementById("localActInputFieldGroup").value;
         const anyEmployeeSelected = document.querySelector('input[name="employees"]:checked') !== null;
 
-        const isFormValid = date && instructionType && reason && localAct && anyEmployeeSelected;
+        const isFormValid = date && instructionType && reason && (localAct || localActInput) && anyEmployeeSelected;
         submitBtn.disabled = !isFormValid;
     }
 

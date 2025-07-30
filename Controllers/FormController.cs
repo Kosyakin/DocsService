@@ -29,8 +29,6 @@ namespace DocsService.Controllers
 
         //    private (byte[] FileBytes) ProcessFormData(FormData data)
         //{
-        //    // Здесь ваша логика формирования документа
-        //    // Например, с использованием OpenXML или других библиотек
 
         //    byte[] fileContent = GenerateDocument(data);
         //    return (fileContent);
