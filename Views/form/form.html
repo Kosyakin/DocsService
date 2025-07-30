@@ -26,12 +26,12 @@
                 </div>
 
                 <div class="dropdown-content">
-                    <label><input name="employees" type="checkbox" value="1"> Вариант 1</label>
-                    <label><input name="employees" type="checkbox" value="2"> Вариант 2</label>
-                    <label><input name="employees" type="checkbox" value="3"> Вариант 3</label>
-                    <label><input name="employees" type="checkbox" value="4"> Вариант 4</label>
-                    <label><input name="employees" type="checkbox" value="5"> Вариант 5</label>
-                    <label><input name="employees" type="checkbox" value="5"> Вариант 5</label>
+                    <label><input name="employees" type="checkbox" value="1" checked> Иванов И.И.</label>
+                    <label><input name="employees" type="checkbox" value="2" checked> Cидоров И.И.</label>
+                    <label><input name="employees" type="checkbox" value="3" checked> Петров И.И.</label>
+                    <label><input name="employees" type="checkbox" value="4" checked> Иванов В.И.</label>
+                    <label><input name="employees" type="checkbox" value="5" checked> Сидоров В.И.</label>
+                    <label><input name="employees" type="checkbox" value="6" checked> Петров В.И.</label>
                 </div>
 
             </div>
@@ -60,11 +60,11 @@
                 </div>
                 <input type="hidden" name="localAct" id="localAct">
                 <div class="dropdown-content">
-                    <div class="dropdown-item" onclick="selectItem(this, 'Текст1')">Текст1</div>
-                    <div class="dropdown-item" onclick="selectItem(this, 'Текст2')">Текст2</div>
-                    <div class="dropdown-item" onclick="selectItem(this, 'Текст3')">Текст3</div>
-                    <div class="dropdown-item" onclick="selectItem(this, 'Текст4')">Текст4</div>
-                    <div class="dropdown-item" onclick="selectItem(this, 'Текст5')">Текст5</div>
+                    <div class="dropdown-item" onclick="selectItem(this, 'Текст1')">СТО 01</div>
+                    <div class="dropdown-item" onclick="selectItem(this, 'Текст2')">СТО 02</div>
+                    <div class="dropdown-item" onclick="selectItem(this, 'Текст3')">СТО 03</div>
+                    <div class="dropdown-item" onclick="selectItem(this, 'Текст4')">СТО 04</div>
+                    <div class="dropdown-item" onclick="selectItem(this, 'Текст5')">СТО 05</div>
                 </div>
             </div>
 
@@ -72,7 +72,7 @@
                 <input type="text"
                        name="localAct"
                        id="localActInputField"
-                       placeholder="Введите номер СТО, например: СТО 07-12">
+                       placeholder="Введите номер СТО">
             </div>
 
             <button type="submit" id="submitBtn" class="submit-btn" disabled>Сформировать файл</button>
