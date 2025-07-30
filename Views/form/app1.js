@@ -127,19 +127,19 @@ document.addEventListener('DOMContentLoaded', function () {
             // Устанавливаем placeholder
             //localActTextInput.placeholder = 'Введите номер СТО, например: СТО 07-12';
             localActTextInput.value = 'СТО 07-12';
-            localActTextInput.classList.add('required-field');
+            //localActTextInput.classList.add('required-field');
 
             //// Переносим значение из скрытого поля в текстовое
             //localActTextInput.value = localActHiddenInput.value;
 
             // Обновляем скрытое поле при изменении текстового
-            localActTextInput.addEventListener('input', function () {
-                localActHiddenInput.value = this.value;
-            });
+            //localActTextInput.addEventListener('input', function () {
+            //    localActHiddenInput.value = this.value;
+            //});
 
-            /// Убираем подсветку при вводе
+            
             localActTextInput.addEventListener('input', function () {
-                if (this.value.trim() !== '') {
+                if (this.value !== '') {
                     this.classList.remove('required-field');
                 } else {
                     this.classList.add('required-field');
