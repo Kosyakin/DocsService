@@ -220,6 +220,7 @@
     left: 0;
     right: 0;
     height: 5px;
+    z-index: -1;
 }
 
 .header-line {
@@ -274,3 +275,8 @@
         background-color: #DB2B36;
         color: white;
     }
+
+.required-field {
+    border: 2px solid #DB2B36 !important;
+    
+}

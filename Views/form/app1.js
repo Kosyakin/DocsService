@@ -1,4 +1,4 @@
-﻿console.log('Кнопка:', document.getElementById('submitBtn'));
+﻿
 function setCurrentDate() {
     const dateField = document.getElementById('date');
     if (!dateField.value) { // Устанавливаем только если поле пустое
@@ -10,15 +10,15 @@ function setCurrentDate() {
 }
 
 function toggleDropdown(currentGroup) {
-    console.log("toggleDropdown");
-    // 1. Закрываем все другие выпадающие списки
+    
+    //Закрываем все другие выпадающие списки
     document.querySelectorAll('.input-group').forEach(group => {
         if (group !== currentGroup) {
             group.classList.remove('active');
         }
     });
 
-    // 2. Открываем/закрываем текущий список
+    //Открываем/закрываем текущий список
     currentGroup.classList.toggle('active');
    
 
@@ -63,13 +63,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Элементы для локального акта
     const localActDropdownGroup = document.getElementById('localActDropdownGroup');
-    console.log(localActDropdownGroup);
+    
     const localActInputFieldGroup = document.getElementById('localActInputFieldGroup');
-    console.log(localActInputFieldGroup);
+    
     const localActHiddenInput = document.getElementById('localAct');
-    console.log(localActHiddenInput);
+    
     const localActTextInput = document.getElementById('localActInputField');
-    console.log(localActTextInput);
+    
 
     // Находим отображаемый элемент (div с текстом)
     const localActDisplay = localActInput
@@ -102,37 +102,70 @@ document.addEventListener('DOMContentLoaded', function () {
 
     instructionTypeInput.addEventListener('change', function () {
         const selectedType = this.value;
+        const isSpecialType = selectedType === 'Внеплановый' || selectedType === 'Целевой';
 
         // --- Обновляем "Причину" ---
         const reason = reasonMap[selectedType];
         reasonInput.value = reason;
 
+        localActHiddenInput.value = ''; // Очищаем скрытое поле
+        localActTextInput.value = '';   // Очищаем текстовое поле 
+        document.querySelector('#localActDropdownGroup .custom-select').textContent = 'Наименование локального акта';
+
         if (selectedType == 'Внеплановый' || selectedType == 'Целевой') {
+
+            // Добавляем красные границы
+            reasonInput.classList.add('required-field');
             reasonInput.placeholder = "Заполните номер приказа";
+            
+            //reasonInput.value = "Заполните номер приказа";
 
             // Показываем текстовое поле
             localActDropdownGroup.style.display = 'none';
             localActInputFieldGroup.style.display = 'block';
 
             // Устанавливаем placeholder
-            localActTextInput.placeholder = 'Введите номер СТО, например: СТО 07-12';
+            //localActTextInput.placeholder = 'Введите номер СТО, например: СТО 07-12';
+            localActTextInput.value = 'СТО 07-12';
+            localActTextInput.classList.add('required-field');
 
-            // Переносим значение из скрытого поля в текстовое
-            localActTextInput.value = localActHiddenInput.value;
+            //// Переносим значение из скрытого поля в текстовое
+            //localActTextInput.value = localActHiddenInput.value;
 
             // Обновляем скрытое поле при изменении текстового
             localActTextInput.addEventListener('input', function () {
                 localActHiddenInput.value = this.value;
             });
+
+            /// Убираем подсветку при вводе
+            localActTextInput.addEventListener('input', function () {
+                if (this.value.trim() !== '') {
+                    this.classList.remove('required-field');
+                } else {
+                    this.classList.add('required-field');
+                }
+            });
+
+            reasonInput.addEventListener('input', function () {
+                if (this.value.trim() !== '') {
+                    this.classList.remove('required-field');
+                } else {
+                    this.classList.add('required-field');
+                }
+            });
             
         } else {
+            // Убираем красные границы
+            reasonInput.classList.remove('required-field');
+            localActTextInput.classList.remove('required-field');
+
             // Показываем выпадающий список
             localActDropdownGroup.style.display = 'block';
             localActInputFieldGroup.style.display = 'none';
 
             // Сбрасываем значение для стандартных типов
-            localActHiddenInput.value = '';
-            document.querySelector('#localActDropdownGroup .custom-select').textContent = 'Наименование локального акта';
+            //localActHiddenInput.value = '';
+            //document.querySelector('#localActDropdownGroup .custom-select').textContent = 'Наименование локального акта';
         }
         
     });
@@ -157,7 +190,7 @@ document.getElementById('dataForm').addEventListener('submit', async function (e
     try {
         const formData = new FormData(this);
 
-        // Для отладки (можно удалить после тестирования)
+       
         for (let [key, value] of formData.entries()) {
             console.log(key, value);
         }
@@ -235,7 +268,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const instructionType = document.getElementById('instructionType').value;
         const reason = document.querySelector('input[name="reason"]').value;
         const localAct = document.getElementById('localAct').value;
-        const localActInput = document.getElementById("localActInputFieldGroup").value;
+        const localActInput = document.getElementById("localActInputField").value;
         const anyEmployeeSelected = document.querySelector('input[name="employees"]:checked') !== null;
 
         const isFormValid = date && instructionType && reason && (localAct || localActInput) && anyEmployeeSelected;
@@ -255,6 +288,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Локальный акт (hidden input)
     document.getElementById('localAct').addEventListener('change', checkFormValidity);
+
+    document.getElementById('localActInputFieldGroup').addEventListener('change', checkFormValidity);
 
     // Чекбоксы сотрудников
     document.querySelectorAll('input[name="employees"]').forEach(checkbox => {
