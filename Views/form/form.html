@@ -10,83 +10,274 @@
         <div class="header-line"></div>
         <div class="header-line-2"></div>
     </header>
-    <div class="form-container">
+    <div class="form-with-tabs">
+        <div class="form-tabs" id="form-tabs">
+            <div class="tab active" data-tab="ot">ОТ</div>
+            <div class="tab" data-tab="pb">ПБ</div>
+            <div class="tab" data-tab="gocs">ГОиЧС</div>
 
-        <h1>Формирование листов регистрации инструктажей</h1>
-        <img src="images/File.png" class="img-file" />
+        </div>
 
-        <form id="dataForm" method="post" action="/Form/SubmitData">
-            <div class="input-group">
-                <input type="date" id="date" name="date" required>
-            </div>
+        <div class="form-container" data-tab-content="ot">
 
-            <div class="input-group">
-                <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
-                    Выбор сотрудников
+
+            <h1>Формирование листа регистрации инструктажа по охране труда</h1>
+            <img src="images/File.png" class="img-file" />
+
+            <form id="dataForm" method="post" action="/Form/SubmitData">
+                <div class="input-group">
+                    <input type="date" id="date" name="date" required>
                 </div>
 
-                <div class="dropdown-content">
-                    <label><input name="employees" type="checkbox" value="1" checked> Иванов И.И.</label>
-                    <label><input name="employees" type="checkbox" value="2" checked> Cидоров И.И.</label>
-                    <label><input name="employees" type="checkbox" value="3" checked> Петров И.И.</label>
-                    <label><input name="employees" type="checkbox" value="4" checked> Иванов В.И.</label>
-                    <label><input name="employees" type="checkbox" value="5" checked> Сидоров В.И.</label>
-                    <label><input name="employees" type="checkbox" value="6" checked> Петров В.И.</label>
+
+                <div class="input-group">
+
+                    <button class="additional-btn" id="edit">
+                        <img src="images/Users.png" class="additional-btn-img">
+                        
+                    </button>
+
+                    <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
+                        Выбор сотрудников
+                    </div>
+
+                    <div class="dropdown-content">
+                        <label><input name="employees" type="checkbox" value="1" checked> Иванов И.И.</label>
+                        <label><input name="employees" type="checkbox" value="2" checked> Cидоров И.И.</label>
+                        <label><input name="employees" type="checkbox" value="3" checked> Петров И.И.</label>
+                        <label><input name="employees" type="checkbox" value="4" checked> Иванов В.И.</label>
+                        <label><input name="employees" type="checkbox" value="5" checked> Сидоров В.И.</label>
+                        <label><input name="employees" type="checkbox" value="6" checked> Петров В.И.</label>
+                    </div>
+
+
+
+
                 </div>
 
-            </div>
+                <div class="input-group">
+                    <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
+                        Вид инструктажа по охране труда
+                    </div>
+                    <input type="hidden" name="instructionType" id="instructionType">
+                    <div class="dropdown-content">
+                        <div class="dropdown-item" name="typeInstr" onclick="selectItem(this, 'Первичный')">Первичный</div>
+                        <div class="dropdown-item" name="typeInstr" onclick="selectItem(this, 'Повторный')">Повторный</div>
+                        <div class="dropdown-item" name="typeInstr" onclick="selectItem(this, 'Внеплановый')">Внеплановый</div>
+                        <div class="dropdown-item" name="typeInstr" onclick="selectItem(this, 'Целевой')">Целевой</div>
+                    </div>
 
-            <div class="input-group">
-                <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
-                    Вид инструктажа по охране труда
                 </div>
-                <input type="hidden" name="instructionType" id="instructionType">
-                <div class="dropdown-content">
-                    <div class="dropdown-item" name="typeInstr" onclick="selectItem(this, 'Первичный')">Первичный</div>
-                    <div class="dropdown-item" name="typeInstr" onclick="selectItem(this, 'Повторный')">Повторный</div>
-                    <div class="dropdown-item" name="typeInstr" onclick="selectItem(this, 'Внеплановый')">Внеплановый</div>
-                    <div class="dropdown-item" name="typeInstr" onclick="selectItem(this, 'Целевой')">Целевой</div>
+
+                <div class="input-group">
+                    <input placeholder="Причина" name="reason" id="reason">
                 </div>
 
-            </div>
-
-            <div class="input-group">
-                <input placeholder="Причина" name="reason">
-            </div>
-
-            <div class="input-group" id="localActDropdownGroup">
-                <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
-                    Наименование локального акта
+                <div class="input-group" id="localActDropdownGroup">
+                    <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
+                        Наименование локального акта
+                    </div>
+                    <input type="hidden" name="localAct" id="localAct">
+                    <div class="dropdown-content">
+                        <div class="dropdown-item" onclick="selectItem(this, 'Текст1')">СТО 01</div>
+                        <div class="dropdown-item" onclick="selectItem(this, 'Текст2')">СТО 02</div>
+                        <div class="dropdown-item" onclick="selectItem(this, 'Текст3')">СТО 03</div>
+                        <div class="dropdown-item" onclick="selectItem(this, 'Текст4')">СТО 04</div>
+                        <div class="dropdown-item" onclick="selectItem(this, 'Текст5')">СТО 05</div>
+                    </div>
                 </div>
-                <input type="hidden" name="localAct" id="localAct">
-                <div class="dropdown-content">
-                    <div class="dropdown-item" onclick="selectItem(this, 'Текст1')">СТО 01</div>
-                    <div class="dropdown-item" onclick="selectItem(this, 'Текст2')">СТО 02</div>
-                    <div class="dropdown-item" onclick="selectItem(this, 'Текст3')">СТО 03</div>
-                    <div class="dropdown-item" onclick="selectItem(this, 'Текст4')">СТО 04</div>
-                    <div class="dropdown-item" onclick="selectItem(this, 'Текст5')">СТО 05</div>
+
+                <div class="input-group" id="localActInputFieldGroup" style="display: none;">
+                    <input type="text"
+                           name="localAct"
+                           id="localActInputField"
+                           placeholder="Введите номер СТО">
                 </div>
-            </div>
 
-            <div class="input-group" id="localActInputFieldGroup" style="display: none;">
-                <input type="text"
-                       name="localAct"
-                       id="localActInputField"
-                       placeholder="Введите номер СТО">
-            </div>
+                <button type="submit" id="submitBtn" class="submit-btn" disabled>Сформировать файл</button>
+            </form>
 
-            <button type="submit" id="submitBtn" class="submit-btn" disabled>Сформировать файл</button>
-        </form>
-        <div id="errorMessage" class="error-message"></div>
+
+
+            <div id="errorMessage" class="error-message"></div>
+        </div>
+
+
+        <div class="form-container hidden" data-tab-content="pb">
+
+
+            <h1>Формирование листа учета противопожарных инструктажей</h1>
+            <img src="images/File.png" class="img-file" />
+
+            <form id="dataForm1" method="post" action="/Form/SubmitData">
+                <div class="input-group">
+                    <input type="date" id="date1" name="date" required>
+                </div>
+
+                <div class="input-group">
+                    <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
+                        Выбор сотрудников
+                    </div>
+
+                    <div class="dropdown-content">
+                        <label><input name="employees1" type="checkbox" value="1" checked> Иванов И.И.</label>
+                        <label><input name="employees1" type="checkbox" value="2" checked> Cидоров И.И.</label>
+                        <label><input name="employees1" type="checkbox" value="3" checked> Петров И.И.</label>
+                        <label><input name="employees1" type="checkbox" value="4" checked> Иванов В.И.</label>
+                        <label><input name="employees1" type="checkbox" value="5" checked> Сидоров В.И.</label>
+                        <label><input name="employees1" type="checkbox" value="6" checked> Петров В.И.</label>
+                    </div>
+
+                    <img src="images/Users.png" class="additional-btn">
+
+                </div>
+
+                <div class="input-group">
+                    <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
+                        Вид инструктажа по охране труда
+                    </div>
+                    <input type="hidden" name="instructionType" id="instructionType1">
+                    <div class="dropdown-content">
+                        <div class="dropdown-item" name="typeInstr" onclick="selectItem(this, 'Первичный')">Первичный</div>
+                        <div class="dropdown-item" name="typeInstr" onclick="selectItem(this, 'Повторный')">Повторный</div>
+                        <div class="dropdown-item" name="typeInstr" onclick="selectItem(this, 'Внеплановый')">Внеплановый</div>
+
+                    </div>
+
+                </div>
+
+                <div class="input-group">
+                    <input placeholder="Причина" name="reason1" id="reason1">
+                </div>
+
+                <div class="input-group" id="localActDropdownGroup1">
+                    <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
+                        Наименование локального акта
+                    </div>
+                    <input type="hidden" name="localAct" id="localAct1">
+                    <div class="dropdown-content">
+                        <div class="dropdown-item" onclick="selectItem(this, 'Текст1')">СТО 01</div>
+                        <div class="dropdown-item" onclick="selectItem(this, 'Текст2')">СТО 02</div>
+                        <div class="dropdown-item" onclick="selectItem(this, 'Текст3')">СТО 03</div>
+                        <div class="dropdown-item" onclick="selectItem(this, 'Текст4')">СТО 04</div>
+                        <div class="dropdown-item" onclick="selectItem(this, 'Текст5')">СТО 05</div>
+                    </div>
+                </div>
+
+                <div class="input-group" id="localActInputFieldGroup1" style="display: none;">
+                    <input type="text"
+                           name="localAct"
+                           id="localActInputField1"
+                           placeholder="Введите номер СТО">
+                </div>
+
+                <button type="submit" id="submitBtn1" class="submit-btn" disabled>Сформировать файл</button>
+            </form>
+
+
+
+            <div id="errorMessage" class="error-message"></div>
+        </div>
+
+
+
+        <div class="form-container hidden" data-tab-content="gocs">
+
+
+            <h1>Формирование листа регистрации инструктажа по действиям в ЧС</h1>
+            <img src="images/File.png" class="img-file" />
+
+            <form id="dataForm2" method="post" action="/Form/SubmitData">
+                <div class="input-group">
+                    <input type="date" id="date2" name="date" required>
+                </div>
+
+                <div class="input-group">
+                    <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
+                        Выбор сотрудников
+                    </div>
+
+                    <div class="dropdown-content">
+                        <label><input name="employees2" type="checkbox" value="1" checked> Иванов И.И.</label>
+                        <label><input name="employees2" type="checkbox" value="2" checked> Cидоров И.И.</label>
+                        <label><input name="employees2" type="checkbox" value="3" checked> Петров И.И.</label>
+                        <label><input name="employees2" type="checkbox" value="4" checked> Иванов В.И.</label>
+                        <label><input name="employees2" type="checkbox" value="5" checked> Сидоров В.И.</label>
+                        <label><input name="employees2" type="checkbox" value="6" checked> Петров В.И.</label>
+                    </div>
+
+                    <img src="images/Users.png" class="additional-btn">
+
+                </div>
+
+                <div class="input-group">
+                    <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
+                        Вид инструктажа по охране труда
+                    </div>
+                    <input type="hidden" name="instructionType" id="instructionType2">
+                    <div class="dropdown-content">
+                        <div class="dropdown-item" name="typeInstr" onclick="selectItem(this, 'Первичный')">Первичный</div>
+                        <div class="dropdown-item" name="typeInstr" onclick="selectItem(this, 'Повторный')">Повторный</div>
+
+
+                    </div>
+
+                </div>
+
+                <div class="input-group">
+                    <input placeholder="Причина" name="reason" id="reason2">
+                </div>
+
+                <div class="input-group" id="localActDropdownGroup">
+                    <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
+                        Наименование локального акта
+                    </div>
+                    <input type="hidden" name="localAct" id="localAct2">
+                    <div class="dropdown-content">
+                        <div class="dropdown-item" onclick="selectItem(this, 'Текст1')">СТО 01</div>
+                        <div class="dropdown-item" onclick="selectItem(this, 'Текст2')">СТО 02</div>
+                        <div class="dropdown-item" onclick="selectItem(this, 'Текст3')">СТО 03</div>
+                        <div class="dropdown-item" onclick="selectItem(this, 'Текст4')">СТО 04</div>
+                        <div class="dropdown-item" onclick="selectItem(this, 'Текст5')">СТО 05</div>
+                    </div>
+                </div>
+
+                <div class="input-group" id="localActInputFieldGroup2" style="display: none;">
+                    <input type="text"
+                           name="localAct"
+                           id="localActInputField2"
+                           placeholder="Введите номер СТО">
+                </div>
+
+                <button type="submit" id="submitBtn2" class="submit-btn" disabled>Сформировать файл</button>
+            </form>
+
+
+
+            <div id="errorMessage" class="error-message"></div>
+        </div>
+
+        <div class="edit-employees hidden" id="edit-employees">
+
+
+            <h1>Редактирование списка сотрудников</h1>
+            <img src="images/Edit.png" class="img-file" />
+
+            
+
+
+
+            <div id="errorMessage" class="error-message"></div>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-line"></div>
+            <div class="footer-line-2"></div>
+            <img src="images/logo.png" class="footer-logo" />
+
+        </footer>
+        <script src="app1.js"></script>
     </div>
-
-    <footer class="footer">
-        <div class="footer-line"></div>
-        <div class="footer-line-2"></div>
-        <img src="images/logo.png" class="footer-logo" />
-
-    </footer>
-    <script src="app1.js"></script>
 </body>
 
 </html>

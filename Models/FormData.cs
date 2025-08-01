@@ -11,5 +11,7 @@
         public string Reason { get; set; }
 
         public string LocalAct { get; set; }
+
+        public string FormId { get; set; }
     }
 }
