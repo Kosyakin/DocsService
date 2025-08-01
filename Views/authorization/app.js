@@ -7,9 +7,9 @@
         }
 
         const data = await response.json();
-        document.getElementById("output").textContent = data.message;
+        getActiveFormElement("output").textContent = data.message;
     } catch (error) {
         console.error("Ошибка:", error);
-        document.getElementById("output").textContent = "Не удалось загрузить данные";
+        getActiveFormElement("output").textContent = "Не удалось загрузить данные";
     }
 });
