@@ -622,6 +622,7 @@ document.addEventListener('DOMContentLoaded', function () {
 document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', function () {
         const tabId = this.getAttribute('data-tab');
+        console.log(tabId);
 
         document.querySelectorAll('.tab').forEach(t => {
             t.classList.remove('active');
@@ -635,6 +636,19 @@ document.querySelectorAll('.tab').forEach(tab => {
         document.querySelector(`.form-container[data-tab-content="${tabId}"]`).classList.remove('hidden');
         //document.querySelectorAll('.form-container').forEach(c => console.log(c.classList));
         //console.log("Форма сменилась");
+
+
+        //switch (tabId) {
+        //    case "ot":
+        //        console.log(tabId);
+        //        document.querySelector(`.form-container[data-tab-content="pb"]`).classList.add('round');
+        //        break;
+        //    case "pb":
+        //        document.querySelector(`.form-container[data-tab-content="ot"]`).classList.add('round');
+        //        break;
+        //    case "gocs":
+        //        break;
+        //}
     })
 });
 
@@ -646,4 +660,59 @@ document.getElementById('edit').addEventListener('click', function (event) {
     document.querySelectorAll('.form-container').forEach(c => c.classList.add('hidden'));
     document.getElementById('edit-employees').classList.remove('hidden');
     document.getElementById('form-tabs').classList.add('hidden');
-})
+});
+
+document.getElementById('edit1').addEventListener('click', function (event) {
+    event.preventDefault();
+    console.log("Нажата кнопка edit");
+
+    document.querySelectorAll('.form-container').forEach(c => c.classList.add('hidden'));
+    document.getElementById('edit-employees').classList.remove('hidden');
+    document.getElementById('form-tabs').classList.add('hidden');
+});
+
+document.getElementById('edit2').addEventListener('click', function (event) {
+    event.preventDefault();
+    console.log("Нажата кнопка edit");
+
+    document.querySelectorAll('.form-container').forEach(c => c.classList.add('hidden'));
+    document.getElementById('edit-employees').classList.remove('hidden');
+    document.getElementById('form-tabs').classList.add('hidden');
+});
+
+document.getElementById('backBtn').addEventListener('click', function (event) {
+    event.preventDefault();
+    console.log("Нажата кнопка backBtn");
+
+    document.getElementById('form-tabs').classList.remove('hidden');
+    document.getElementById('edit-employees').classList.add('hidden');
+    document.querySelector('[data-tab-content="ot"]').classList.remove('hidden');
+});
+
+document.querySelectorAll('.delete').forEach(button => {
+    button.addEventListener('click', function () {
+        const row = this.closest('tr');
+        row.parentNode.removeChild(row);
+    });
+});
+
+document.getElementById('addEmployee').addEventListener('click', function () {
+    console.log("addEmployee");
+
+    const tbody = document.querySelector('#employeesTable tbody');
+
+    const newRow = document.createElement('tr');
+
+    newRow.innerHTML = `
+        <td><input type="text" placeholder="Фамилия И.О."></td>
+        <td><input type="text" placeholder="Дата рождения"></td>
+        <td><input type="text" placeholder="Должность"></td>
+        <td><button class="table-btn delete">Удалить</button></td>
+    `;
+
+    tbody.appendChild(newRow);
+
+    newRow.querySelector('.delete').addEventListener('click', function () {
+        tbody.removeChild(newRow);
+    });
+});

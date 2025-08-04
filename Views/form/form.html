@@ -22,7 +22,7 @@
 
 
             <h1>Формирование листа регистрации инструктажа по охране труда</h1>
-            <img src="images/File.png" class="img-file" />
+            <!--<img src="images/File.png" class="img-file" />-->
 
             <form id="dataForm" method="post" action="/Form/SubmitData">
                 <div class="input-group">
@@ -107,7 +107,7 @@
 
 
             <h1>Формирование листа учета противопожарных инструктажей</h1>
-            <img src="images/File.png" class="img-file" />
+            <!--<img src="images/File.png" class="img-file" />-->
 
             <form id="dataForm1" method="post" action="/Form/SubmitData">
                 <div class="input-group">
@@ -115,6 +115,12 @@
                 </div>
 
                 <div class="input-group">
+                    
+                    <button class="additional-btn" id="edit1">
+                        <img src="images/Users.png" class="additional-btn-img">
+
+                    </button>
+
                     <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
                         Выбор сотрудников
                     </div>
@@ -128,7 +134,7 @@
                         <label><input name="employees1" type="checkbox" value="6" checked> Петров В.И.</label>
                     </div>
 
-                    <img src="images/Users.png" class="additional-btn">
+                    
 
                 </div>
 
@@ -185,7 +191,7 @@
 
 
             <h1>Формирование листа регистрации инструктажа по действиям в ЧС</h1>
-            <img src="images/File.png" class="img-file" />
+            <!--<img src="images/File.png" class="img-file" />-->
 
             <form id="dataForm2" method="post" action="/Form/SubmitData">
                 <div class="input-group">
@@ -193,6 +199,11 @@
                 </div>
 
                 <div class="input-group">
+                    <button class="additional-btn" id="edit2">
+                        <img src="images/Users.png" class="additional-btn-img">
+
+                    </button>
+
                     <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
                         Выбор сотрудников
                     </div>
@@ -206,7 +217,7 @@
                         <label><input name="employees2" type="checkbox" value="6" checked> Петров В.И.</label>
                     </div>
 
-                    <img src="images/Users.png" class="additional-btn">
+                    
 
                 </div>
 
@@ -261,13 +272,81 @@
 
 
             <h1>Редактирование списка сотрудников</h1>
-            <img src="images/Edit.png" class="img-file" />
-
-            
+            <!--<img src="images/Edit.png" class="img-file" />-->
 
 
+            <div class="table-container">
+                <table class="employees-table" id="employeesTable">
+                    <thead>
+                        <tr>
+                            <th>ФИО</th>
+                            <th>Дата рождения</th>
+                            <th>Должность</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="text" value="Иванов И.И."></td>
+                            <td><input type="date" value="04.08.2025"></td>
+                            <td><input type="text" value="Инженер"></td>
+                            <td><button class="table-btn delete">Удалить</button></td>
 
-            <div id="errorMessage" class="error-message"></div>
+                        </tr>
+
+                        <tr>
+                            <td><input type="text" value="Сидоров И.И."></td>
+                            <td><input type="date" value="04.08.2025"></td>
+                            <td><input type="text" value="Инженер"></td>
+                            <td><button class="table-btn delete">Удалить</button></td>
+
+                        </tr>
+
+                        <tr>
+                            <td><input type="text" value="Петров И.И."></td>
+                            <td><input type="date" value="04.08.2025"></td>
+                            <td><input type="text" value="Инженер"></td>
+                            <td><button class="table-btn delete">Удалить</button></td>
+
+                        </tr>
+
+                        <tr>
+                            <td><input type="text" value="Иванов В.И."></td>
+                            <td><input type="date" value="04.08.2025"></td>
+                            <td><input type="text" value="Инженер"></td>
+                            <td><button class="table-btn delete">Удалить</button></td>
+
+                        </tr>
+
+                        <tr>
+                            <td><input type="text" value="Сидоров В.И."></td>
+                            <td><input type="date" value="04.08.2025"></td>
+                            <td><input type="text" value="Инженер"></td>
+                            <td><button class="table-btn delete">Удалить</button></td>
+
+                        </tr>
+
+                        <tr>
+                            <td><input type="text" value="Петров В.И."></td>
+                            <td><input type="date" value="04.08.2025"></td>
+                            <td><input type="text" value="Инженер"></td>
+                            <td><button class="table-btn delete">Удалить</button></td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+            </div>
+
+            <div class="table-actions">
+                <button class="table-btn" id="backBtn">← Назад</button>
+                <button class="table-btn add" id="addEmployee">Добавить сотрудника</button>
+                <button class="table-btn" id="saveEmployees">Сохранить изменения</button>
+            </div>
+            <!--<div id="errorMessage" class="error-message"></div>-->
         </div>
 
         <footer class="footer">

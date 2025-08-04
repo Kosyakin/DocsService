@@ -95,7 +95,7 @@
     appearance: none; 
 }
 
-    /* Кастомная стрелка */
+    
     .custom-select::after {
         content: "▼";
         position: absolute;
@@ -312,13 +312,11 @@
     margin-bottom: 0; /* Убираем отступ снизу */
     border-radius: 10px 10px 0 0; /* Скругляем только верхние углы */
     overflow: hidden; /* Для скругления углов */
-    background: #E6E6E6; /* Цвет неактивных вкладок */
-    background: white;
-    
+    background: #D9D9D9; /* Цвет неактивных вкладок */
+/*    background: white;*/
     border-radius: 20px 20px 0 0;
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
     width: 580px;
-    
 }
 
 .tab {
@@ -330,13 +328,18 @@
 }
 
     .tab.active {
-        background: #DB2B36;
-        color: white;
+        background: #FFFFFF;
+        color: black;
         font-weight: bold;
     }
 
     .tab:hover:not(.active) {
-        background: #d0d0d0;
+        background: #B5B5B5;
+        color: white;
+    }
+
+    .tab.round {
+        border-bottom-left-radius: 10px;
     }
 
 
@@ -345,8 +348,9 @@
     padding: 40px;
     border-radius: 20px 20px 20px 20px;
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
-    width: 500px;
+    width: 1000px;
     text-align: center;
+    
 }
 
     .edit-employees h1 {
@@ -365,4 +369,169 @@
 
 .form-tabs.hidden {
     display: none !important;
+}
+
+/*.custom-back {
+    content: "▼";
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #555;
+    pointer-events: none;
+}*/
+
+.table-container {
+    background: rgba(217, 217, 217, 0.3);
+    padding: 0px; 
+    border-radius: 20px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    text-align: center;
+    width: 95%; /* Оптимальная ширина */
+    max-width: 1000px; /* Максимальная ширина */
+}
+
+.employees-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px auto 0;
+    border: none;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+    .employees-table th,
+    .employees-table td {
+/*        background: rgba(217, 217, 217, 0.5);*/
+/*        border: 2px solid #FFFFFF;*/
+        padding: 0; /* Убираем отступы ячейки */
+        text-align: center;
+        position: relative; /* Для позиционирования input */
+/*        font-weight: normal !important;*/
+    }
+
+    /* Стили для полей ввода */
+    .employees-table input {
+        width: 100%;
+        padding: 12px 8px; /* Увеличиваем отступы внутри input */
+        box-sizing: border-box;
+        border: none;
+        background: transparent;
+        height: 100%; /* Занимаем всю высоту ячейки */
+        outline: none; /* Убираем стандартное выделение */
+        font-size: 14px;
+        text-align: center;
+    }
+
+    /* Эффект при наведении на строку */
+    .employees-table tr:hover td {
+        background-color: rgba(217, 217, 217, 0.8); 
+    }
+
+    /* Альтернативный вариант - подсветка конкретной ячейки */
+    /*.employees-table td:hover {
+        background-color: rgba(217, 217, 217, 0.9);
+    }*/
+
+    /* Стили для заголовков */
+    .employees-table th {
+        background-color: #f5f5f5;
+        padding: 12px 8px;
+        font-weight: normal;
+    }
+
+/* Кнопки действий */
+.table-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
+.table-btn {
+    padding: 10px 20px;
+    background-color: #656565;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    font-size: 14px;
+    transition: background-color 0.3s; /* Плавное изменение цвета */
+}
+
+    .table-btn:hover {
+        background-color: #DB2B36; /* Темнее при наведении */
+    }
+
+    .table-btn.delete {
+        background-color: #656565;
+        padding: 4px 8px; /* Уменьшаем отступы (было 8px 15px) */
+        font-size: 12px; /* Уменьшаем размер шрифта */
+        min-width: 60px; /* Фиксированная минимальная ширина */
+
+        line-height: 1; /* Правильное выравнивание текста */
+        margin: 5px;
+    }
+
+        .table-btn.delete:hover {
+            background-color: #DB2B36;
+        }
+
+    .table-btn.add {
+        background-color: #656565;
+    }
+
+        .table-btn.add:hover {
+            background-color: #DB2B36;
+        }
+
+.back-btn {
+    margin-bottom: 15px;
+    padding: 10px 20px;
+    background-color: #656565;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: background-color 0.3s;
+}
+
+    
+
+/* Убираем границы у крайних ячеек */
+.employees-table tr:first-child th {
+    border-top: none;
+}
+
+.employees-table tr:last-child td {
+    border-bottom: none;
+}
+
+.employees-table th:first-child,
+.employees-table td:first-child {
+    border-left: none;
+}
+
+.employees-table th:last-child,
+.employees-table td:last-child {
+    border-right: none;
+}
+
+.employees-table td:last-child,
+.employees-table th:last-child {
+    border-top: none !important;
+    border-bottom: none !important;
+}
+
+/*tfoot td {
+    border: none;
+    padding: 0;
+    height: 0;
+}*/
+
+.employees-table tr:nth-child(even) {
+    background-color: rgba(217, 217, 217, 0.3);
 }
