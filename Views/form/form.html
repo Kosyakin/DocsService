@@ -34,7 +34,7 @@
 
                     <button class="additional-btn" id="edit">
                         <img src="images/Users.png" class="additional-btn-img">
-                        
+
                     </button>
 
                     <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
@@ -115,7 +115,7 @@
                 </div>
 
                 <div class="input-group">
-                    
+
                     <button class="additional-btn" id="edit1">
                         <img src="images/Users.png" class="additional-btn-img">
 
@@ -134,7 +134,7 @@
                         <label><input name="employees1" type="checkbox" value="6" checked> Петров В.И.</label>
                     </div>
 
-                    
+
 
                 </div>
 
@@ -177,6 +177,10 @@
                            placeholder="Введите номер СТО">
                 </div>
 
+                <div class="input-group">
+                    <input placeholder="Номер документа (удостоверение, свидетельство)" name="numDoc" id="numDoc">
+                </div>
+
                 <button type="submit" id="submitBtn1" class="submit-btn" disabled>Сформировать файл</button>
             </form>
 
@@ -217,7 +221,7 @@
                         <label><input name="employees2" type="checkbox" value="6" checked> Петров В.И.</label>
                     </div>
 
-                    
+
 
                 </div>
 
@@ -268,7 +272,15 @@
             <div id="errorMessage" class="error-message"></div>
         </div>
 
-        <div class="edit-employees hidden" id="edit-employees">
+
+
+
+
+    </div>
+
+    <div id="form-edit-emp" class="form-edit-emp hidden">
+
+        <div class="edit-employees" id="edit-employees">
 
 
             <h1>Редактирование списка сотрудников</h1>
@@ -344,19 +356,31 @@
             <div class="table-actions">
                 <button class="table-btn" id="backBtn">← Назад</button>
                 <button class="table-btn add" id="addEmployee">Добавить сотрудника</button>
-                <button class="table-btn" id="saveEmployees">Сохранить изменения</button>
+                <!--<button class="table-btn" id="saveEmployees">Сохранить изменения</button>-->
             </div>
             <!--<div id="errorMessage" class="error-message"></div>-->
         </div>
-
-        <footer class="footer">
-            <div class="footer-line"></div>
-            <div class="footer-line-2"></div>
-            <img src="images/logo.png" class="footer-logo" />
-
-        </footer>
-        <script src="app1.js"></script>
     </div>
+
+    <div id="confirmDialog" class="modal hidden">
+        <div class="modal-content">
+            <p>У вас есть несохраненные изменения. Хотите сохранить перед выходом?</p>
+            <div class="modal-buttons">
+                <button id="confirmCancel" class="table-btn">Отмена</button>
+                <button id="confirmDiscard" class="table-btn">Не сохранять</button>
+                <button id="confirmSave" class="table-btn">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="footer">
+        <div class="footer-line"></div>
+        <div class="footer-line-2"></div>
+        <img src="images/logo.png" class="footer-logo" />
+
+    </footer>
+    <script src="app1.js"></script>
 </body>
 
 </html>

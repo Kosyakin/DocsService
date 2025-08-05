@@ -310,11 +310,11 @@
     display: flex;
     width: 100%;
     margin-bottom: 0; /* Убираем отступ снизу */
-    border-radius: 10px 10px 0 0; /* Скругляем только верхние углы */
+    /*border-radius: 10px 10px 0 0;*/ /* Скругляем только верхние углы */
     overflow: hidden; /* Для скругления углов */
-    background: #D9D9D9; /* Цвет неактивных вкладок */
-/*    background: white;*/
-    border-radius: 20px 20px 0 0;
+    /*background: #B9B9B9;*/ /* Цвет неактивных вкладок */
+    /*    background: white;*/
+    border-radius: 40px 40px 0 0;
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
     width: 580px;
 }
@@ -322,9 +322,11 @@
 .tab {
     flex: 1;
     text-align: center;
-    padding: 12px 0;
+    padding: 12px 12px;
     cursor: pointer;
     transition: all 0.3s;
+    border-radius: 40px 40px 0 0;
+    background: #BABABA;
 }
 
     .tab.active {
@@ -343,14 +345,32 @@
     }
 
 
+
+
+.form-edit-emp {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+    .form-edit-emp.hidden {
+        display: none !important;
+    }
+
+
 .edit-employees {
     background: white;
     padding: 40px;
     border-radius: 20px 20px 20px 20px;
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
-    width: 1000px;
-    text-align: center;
     
+
 }
 
     .edit-employees h1 {
@@ -359,28 +379,19 @@
         font-size: 28px;
     }
 
-    .edit-employees.active {
+/*    .edit-employees.active {
         display: block;
     }
 
     .edit-employees.hidden {
         display: none !important;
-    }
+    }*/
 
 .form-tabs.hidden {
     display: none !important;
 }
 
-/*.custom-back {
-    content: "▼";
-    position: absolute;
-    right: 30px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 14px;
-    color: #555;
-    pointer-events: none;
-}*/
+
 
 .table-container {
     background: rgba(217, 217, 217, 0.3);
@@ -389,8 +400,10 @@
     margin: 0 auto;
     box-sizing: border-box;
     text-align: center;
-    width: 95%; /* Оптимальная ширина */
-    max-width: 1000px; /* Максимальная ширина */
+    max-height: 800px;
+    overflow-y: auto;
+    /*width: 95%;*/ /* Оптимальная ширина */
+    /*max-width: 1000px;*/ /* Максимальная ширина */
 }
 
 .employees-table {
@@ -405,12 +418,13 @@
 
     .employees-table th,
     .employees-table td {
-/*        background: rgba(217, 217, 217, 0.5);*/
-/*        border: 2px solid #FFFFFF;*/
+        /*        background: rgba(217, 217, 217, 0.5);*/
+        /*        border: 2px solid #FFFFFF;*/
         padding: 0; /* Убираем отступы ячейки */
         text-align: center;
         position: relative; /* Для позиционирования input */
-/*        font-weight: normal !important;*/
+        /*        font-weight: normal !important;*/
+        
     }
 
     /* Стили для полей ввода */
@@ -422,7 +436,7 @@
         background: transparent;
         height: 100%; /* Занимаем всю высоту ячейки */
         outline: none; /* Убираем стандартное выделение */
-        font-size: 14px;
+        font-size: 18px;
         text-align: center;
     }
 
@@ -535,3 +549,36 @@
 .employees-table tr:nth-child(even) {
     background-color: rgba(217, 217, 217, 0.3);
 }
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    text-align: center;
+}
+.modal.hidden {
+    display: none !important;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    max-width: 400px;
+    border: 1px;
+    border-color: #DB2B36;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
