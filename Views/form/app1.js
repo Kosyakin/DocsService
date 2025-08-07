@@ -14,6 +14,16 @@ function setCurrentDate() {
     
 }
 
+//document.getElementById("date").addEventListener("change", function () {
+//    const selectedDate = new Date(this.value);
+//    const selectedYear = selectedDate.getFullYear();
+
+//    if (selectedYear < 2000 || selectedYear > 2030) {
+//        alert("Год должен быть между 2000 и 2030!");
+//        this.value = ""; // Сброс значения
+//    }
+//});
+
 function setCurrentDate1() {
 
     const dateField = document.getElementById('date1');
@@ -728,8 +738,32 @@ document.getElementById('backBtn').addEventListener('click', function (event) {
 
 document.querySelectorAll('.delete').forEach(button => {
     button.addEventListener('click', function () {
+        const confirmDialogDel = document.getElementById("confirmDialogDel")
+        const confirmDel = document.getElementById("confirmDialogDel");
+        const confDel = confirmDel.querySelector("#confirmDel");
+        const nconfDel = confirmDel.querySelector("#nconfirmDel");
         const row = this.closest('tr');
-        row.parentNode.removeChild(row);
+        console.log(row);
+        const rowParent = row.parentNode;
+        console.log(rowParent);
+
+        confirmDialogDel.classList.remove('hidden');
+
+        confDel.addEventListener('click', function () {
+            if (row && rowParent.contains(row)) {
+                rowParent.removeChild(row);
+            }
+
+            
+            confirmDialogDel.classList.add('hidden');
+        });
+
+        nconfDel.addEventListener('click', function () {
+            confirmDialogDel.classList.add('hidden');
+            return;
+        });
+        
+        
     });
 });
 
@@ -738,18 +772,110 @@ document.getElementById('addEmployee').addEventListener('click', function () {
 
     const tbody = document.querySelector('#employeesTable tbody');
 
+    
+    
+
     const newRow = document.createElement('tr');
+    const addRow = document.getElementById('addEmp-tr');
+    const inputs = addRow.querySelectorAll('input');
+    const nameInput = inputs[0];
+    const dateInput = inputs[1];
+    const positionInput = inputs[2];
+    //const inputs = addRow.querySelectorAll('input[type="text"]');
+
+    //const Name = inputs[0].value.trim();
+    //const birthDate = addRow.querySelector('input[type="date"]').value;
+    //const position = inputs[1].value.trim();
+    const name = nameInput.value.trim();
+    const birthDate = dateInput.value;
+    const position = positionInput.value.trim();
+
+    addRow.classList.remove('error-row');
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() - 18);
+    dateField = maxDate.toISOString().substr(0, 10);
+    
+
+    
+
+    if (!name || !birthDate || !position || '1900-01-01' > birthDate || dateField < birthDate) {
+        addRow.classList.add('error-row');
+        setTimeout(() => {
+            addRow.classList.remove('error-row');
+        }, 3000);
+        return;
+    }
+    
+    
 
     newRow.innerHTML = `
-        <td><input type="text" placeholder="Фамилия И.О."></td>
-        <td><input type="date" placeholder="Дата рождения"></td>
-        <td><input type="text" placeholder="Должность"></td>
+        <td><input type="text" value="${name}"></td>
+        <td><input type="date" value="${birthDate}"></td>
+        <td><input type="text" value="${position}"></td>
         <td><button class="table-btn delete">Удалить</button></td>
     `;
 
-    tbody.appendChild(newRow);
+    tbody.insertBefore(newRow, addRow);
+    
 
     newRow.querySelector('.delete').addEventListener('click', function () {
-        tbody.removeChild(newRow);
+        const confirmDialog = document.getElementById("confirmDialogDel");
+        const row = this.closest('tr');
+
+        confirmDialog.classList.remove('hidden');
+
+        document.getElementById("confirmDel").onclick = function () {
+            row.remove();
+            confirmDialog.classList.add('hidden');
+        };
+
+        document.getElementById("nconfirmDel").onclick = function () {
+            confirmDialog.classList.add('hidden');
+        };
     });
+
+    nameInput.value = '';
+    dateInput.value = '';
+    positionInput.value = '';
 });
+
+//document.addEventListener('DOMContentLoaded', function () {
+//    const tabs = document.querySelectorAll('.tab');
+
+//    tabs.forEach(tab => {
+//        tab.addEventListener('click', function () {
+//            // Удаляем активный класс у всех вкладок
+//            tabs.forEach(t => t.classList.remove('active'));
+
+//            // Добавляем активный класс текущей вкладке
+//            this.classList.add('active');
+
+//            // Обновляем разделители
+//            updateSeparators();
+//        });
+//    });
+
+//    function updateSeparators() {
+//        const activeTab = document.querySelector('.tab.active');
+
+//        // Сначала скрываем все разделители
+//        document.querySelectorAll('.tab::after').forEach(sep => {
+//            sep.style.backgroundColor = 'transparent';
+//        });
+
+//        // Показываем разделители только между неактивными вкладками
+//        document.querySelectorAll('.tab:not(.active)').forEach(tab => {
+//            if (!tab.classList.contains('active') && !tab.nextElementSibling?.classList.contains('active')) {
+//                tab.style.setProperty('--separator-color', 'rgba(0, 0, 0, 0.2)');
+//            }
+//        });
+
+//        // Особый разделитель после активной вкладки
+//        if (activeTab && activeTab.nextElementSibling && !activeTab.nextElementSibling.classList.contains('active')) {
+//            activeTab.style.setProperty('--separator-color', 'rgba(255, 255, 255, 0.3)');
+//        }
+//    }
+
+//    // Инициализация при загрузке
+//    updateSeparators();
+//});

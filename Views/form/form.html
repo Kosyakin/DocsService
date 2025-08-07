@@ -26,7 +26,7 @@
 
             <form id="dataForm" method="post" action="/Form/SubmitData">
                 <div class="input-group">
-                    <input type="date" id="date" name="date" required>
+                    <input type="date" id="date" name="date" min="1900-01-01" max="2100-12-31" required>
                 </div>
 
 
@@ -111,7 +111,7 @@
 
             <form id="dataForm1" method="post" action="/Form/SubmitData">
                 <div class="input-group">
-                    <input type="date" id="date1" name="date" required>
+                    <input type="date" id="date1" name="date" min="1900-01-01" max="2100-12-31" required>
                 </div>
 
                 <div class="input-group">
@@ -199,7 +199,7 @@
 
             <form id="dataForm2" method="post" action="/Form/SubmitData">
                 <div class="input-group">
-                    <input type="date" id="date2" name="date" required>
+                    <input type="date" id="date2" name="date" min="1900-01-01" max="2100-12-31" required>
                 </div>
 
                 <div class="input-group">
@@ -281,7 +281,11 @@
     <div id="form-edit-emp" class="form-edit-emp hidden">
 
         <div class="edit-employees" id="edit-employees">
-
+            <div class="table-actions">
+                <button class="table-btn" id="backBtn">← Назад</button>
+                <!--<button class="table-btn add" id="addEmployee">Добавить сотрудника</button>-->
+                <!--<button class="table-btn" id="saveEmployees">Сохранить изменения</button>-->
+            </div>
 
             <h1>Редактирование списка сотрудников</h1>
             <!--<img src="images/Edit.png" class="img-file" />-->
@@ -300,7 +304,7 @@
                     <tbody>
                         <tr>
                             <td><input type="text" value="Иванов И.И."></td>
-                            <td><input type="date" value="04.08.2025"></td>
+                            <td><input type="date" value="04.08.2025" min="1900-01-01" max="2100-12-31"></td>
                             <td><input type="text" value="Инженер"></td>
                             <td><button class="table-btn delete">Удалить</button></td>
 
@@ -308,7 +312,7 @@
 
                         <tr>
                             <td><input type="text" value="Сидоров И.И."></td>
-                            <td><input type="date" value="04.08.2025"></td>
+                            <td><input type="date" value="04.08.2025" min="1900-01-01" max="2100-12-31"></td>
                             <td><input type="text" value="Инженер"></td>
                             <td><button class="table-btn delete">Удалить</button></td>
 
@@ -316,7 +320,7 @@
 
                         <tr>
                             <td><input type="text" value="Петров И.И."></td>
-                            <td><input type="date" value="04.08.2025"></td>
+                            <td><input type="date" value="04.08.2025" min="1900-01-01" max="2100-12-31"></td>
                             <td><input type="text" value="Инженер"></td>
                             <td><button class="table-btn delete">Удалить</button></td>
 
@@ -324,7 +328,7 @@
 
                         <tr>
                             <td><input type="text" value="Иванов В.И."></td>
-                            <td><input type="date" value="04.08.2025"></td>
+                            <td><input type="date" value="04.08.2025" min="1900-01-01" max="2100-12-31"></td>
                             <td><input type="text" value="Инженер"></td>
                             <td><button class="table-btn delete">Удалить</button></td>
 
@@ -332,7 +336,7 @@
 
                         <tr>
                             <td><input type="text" value="Сидоров В.И."></td>
-                            <td><input type="date" value="04.08.2025"></td>
+                            <td><input type="date" value="04.08.2025" min="1900-01-01" max="2100-12-31"></td>
                             <td><input type="text" value="Инженер"></td>
                             <td><button class="table-btn delete">Удалить</button></td>
 
@@ -340,9 +344,17 @@
 
                         <tr>
                             <td><input type="text" value="Петров В.И."></td>
-                            <td><input type="date" value="04.08.2025"></td>
+                            <td><input type="date" value="04.08.2025" min="1900-01-01" max="2100-12-31"></td>
                             <td><input type="text" value="Инженер"></td>
                             <td><button class="table-btn delete">Удалить</button></td>
+
+                        </tr>
+
+                        <tr id="addEmp-tr">
+                            <td><input type="text" placeholder="Фамилия И.О."></td>
+                            <td><input type="date" placeholder="Дата рождения" min="1900-01-01" max="2100-12-31"></td>
+                            <td><input type="text" placeholder="Должность"></td>
+                            <td><button id="addEmployee" class="table-btn-add-emp"><img class="table-btn-add-emp-img" src="images/Plus.png" /></button></td>
 
                         </tr>
 
@@ -353,11 +365,7 @@
 
             </div>
 
-            <div class="table-actions">
-                <button class="table-btn" id="backBtn">← Назад</button>
-                <button class="table-btn add" id="addEmployee">Добавить сотрудника</button>
-                <!--<button class="table-btn" id="saveEmployees">Сохранить изменения</button>-->
-            </div>
+
             <!--<div id="errorMessage" class="error-message"></div>-->
         </div>
     </div>
@@ -373,6 +381,15 @@
         </div>
     </div>
 
+    <div id="confirmDialogDel" class="modal hidden">
+        <div class="modal-content">
+            <p>Вы уверены, что хотите удалить данного сотрудника?</p>
+            <div class="modal-buttons">
+                <button id="confirmDel" class="table-btn">Да</button>
+                <button id="nconfirmDel" class="table-btn">Нет</button>
+            </div>
+        </div>
+    </div>
 
     <footer class="footer">
         <div class="footer-line"></div>
