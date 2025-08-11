@@ -4,7 +4,7 @@
     {
         public DateTime Date { get; set; }
 
-        public List<int> Employees { get; set; } = new List<int>();
+        public List<string> Employees { get; set; } = new List<string>();
 
         public string InstructionType { get; set; }
 
@@ -12,7 +12,7 @@
 
         public string LocalAct { get; set; }
 
-        public string FormId { get; set; }
+        public int FormId { get; set; }
 
         public int NumDoc { get; set; }
     }

@@ -3,15 +3,19 @@
 //    return activeForm.querySelector('[]')
 //}
 function setCurrentDate() {
-
     const dateField = document.getElementById('date');
     if (!dateField.value) { // Устанавливаем только если поле пустое
         const today = new Date();
-        const formattedDate = today.toISOString().substr(0, 10);
+
+        // Получаем компоненты даты
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+
+        // Форматируем как YYYY-MM-DD
+        const formattedDate = `${year}-${month}-${day}`;
         dateField.value = formattedDate;
-        
     }
-    
 }
 
 //document.getElementById("date").addEventListener("change", function () {
@@ -351,7 +355,7 @@ document.getElementById('dataForm').addEventListener('submit', async function (e
 
     try {
         const formData = new FormData(this);
-        formData.append('formId', this.id);
+        formData.append('FormId', 1);
         if (formData.has('localAct')) {
             const localActValues = formData.getAll('localAct');
             formData.delete('localAct');
@@ -376,14 +380,14 @@ document.getElementById('dataForm').addEventListener('submit', async function (e
             const blob = await response.blob();
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url;
-            a.download = 'Инструктажи.docx';
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(() => {
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(url);
-            }, 100);
+            //a.href = url;
+            //a.download = 'Инструктажи.docx';
+            //document.body.appendChild(a);
+            //a.click();
+            //setTimeout(() => {
+            //    document.body.removeChild(a);
+            //    window.URL.revokeObjectURL(url);
+            //}, 100);
         } else {
             const error = await response.text();
             document.getElementById('errorMessage').textContent = error;
@@ -421,14 +425,14 @@ document.getElementById('dataForm1').addEventListener('submit', async function (
             const blob = await response.blob();
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url;
-            a.download = 'Инструктажи.docx';
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(() => {
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(url);
-            }, 100);
+            //a.href = url;
+            //a.download = 'Инструктажи.docx';
+            //document.body.appendChild(a);
+            //a.click();
+            //setTimeout(() => {
+            //    document.body.removeChild(a);
+            //    window.URL.revokeObjectURL(url);
+            //}, 100);
         } else {
             const error = await response.text();
             document.getElementById('errorMessage').textContent = error;
@@ -466,14 +470,14 @@ document.getElementById('dataForm2').addEventListener('submit', async function (
             const blob = await response.blob();
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url;
-            a.download = 'Инструктажи.docx';
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(() => {
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(url);
-            }, 100);
+            //a.href = url;
+            //a.download = 'Инструктажи.docx';
+            //document.body.appendChild(a);
+            //a.click();
+            //setTimeout(() => {
+            //    document.body.removeChild(a);
+            //    window.URL.revokeObjectURL(url);
+            //}, 100);
         } else {
             const error = await response.text();
             document.getElementById('errorMessage').textContent = error;
@@ -494,6 +498,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const submitBtn = document.getElementById('submitBtn');
     const submitBtn1 = document.getElementById('submitBtn1');
     const submitBtn2 = document.getElementById('submitBtn2');
+
     if (!submitBtn) return;
 
     function checkFormValidity(formId) {
@@ -706,7 +711,7 @@ document.getElementById('edit2').addEventListener('click', function (event) {
 document.getElementById('backBtn').addEventListener('click', function (event) {
     event.preventDefault();
     console.log("Нажата кнопка backBtn");
-   
+    
 
     document.getElementById("confirmDialog").classList.remove('hidden');
 
@@ -716,12 +721,15 @@ document.getElementById('backBtn').addEventListener('click', function (event) {
 
     document.getElementById("confirmDiscard").addEventListener('click', function () {
         const tabId = localStorage.getItem('lastActiveTab') || 'ot';
+        document.getElementById("table").innerHTML = localStorage.getItem('originalTableContent');
 
         document.getElementById("confirmDialog").classList.add('hidden');
         document.getElementById('form-tabs').classList.remove('hidden');
         //document.getElementById('edit-employees').classList.add('hidden');
         document.getElementById('form-edit-emp').classList.add('hidden');
         document.querySelector(`[data-tab-content="${tabId}"]`).classList.remove('hidden');
+
+        
     });
 
     document.getElementById("confirmSave").addEventListener('click', function () {
@@ -839,43 +847,73 @@ document.getElementById('addEmployee').addEventListener('click', function () {
     positionInput.value = '';
 });
 
-//document.addEventListener('DOMContentLoaded', function () {
-//    const tabs = document.querySelectorAll('.tab');
 
-//    tabs.forEach(tab => {
-//        tab.addEventListener('click', function () {
-//            // Удаляем активный класс у всех вкладок
-//            tabs.forEach(t => t.classList.remove('active'));
+async function loadEmployeesDropDown() {
+    try {
+        const response = await fetch('/Employees/Employees');
+        const employees = await response.json();
+        console.log(`Response in employees: ${employees}`)
+        //console.log("Поля первого сотрудника:", Object.keys(employees[0]));
+        //employees.forEach(emp => {
+        //    console.log(emp.ID);
+        //});
 
-//            // Добавляем активный класс текущей вкладке
-//            this.classList.add('active');
+        const dropdown = document.getElementById('dropdown-content');
+        employees.forEach(employee => {
+            const label = document.createElement('label');
+            label.innerHTML = `
+            <input name="employees" type="checkbox" value="${employee.id}" checked> ${employee.fullName}`;
+            dropdown.appendChild(label);
+        });
+    } catch (error) {
+        console.error('Ошибка загрузки сотрудников: ', error);
+    }
+}
 
-//            // Обновляем разделители
-//            updateSeparators();
-//        });
-//    });
+async function loadEmployeesTable() {
+    try {
+        const response = await fetch('/Employees/Employees');
+        const employees = await response.json();
+        console.log(`Response in employees: ${employees}`)
+        //console.log("Поля первого сотрудника:", Object.keys(employees[0]));
+        //employees.forEach(emp => {
+        //    console.log(emp.ID);
+        //});
+        
 
-//    function updateSeparators() {
-//        const activeTab = document.querySelector('.tab.active');
+        const table = document.getElementById('table');
+        employees.forEach(employee => {
+            const tr = document.createElement('tr');
+            const addEmpTr = document.getElementById("addEmp-tr");
+            table.insertBefore(tr, addEmpTr);
 
-//        // Сначала скрываем все разделители
-//        document.querySelectorAll('.tab::after').forEach(sep => {
-//            sep.style.backgroundColor = 'transparent';
-//        });
+            td = document.createElement('td');
+            td.innerHTML = `
+            <input type="text" value="${employee.fullName}">`;
+            tr.appendChild(td);
 
-//        // Показываем разделители только между неактивными вкладками
-//        document.querySelectorAll('.tab:not(.active)').forEach(tab => {
-//            if (!tab.classList.contains('active') && !tab.nextElementSibling?.classList.contains('active')) {
-//                tab.style.setProperty('--separator-color', 'rgba(0, 0, 0, 0.2)');
-//            }
-//        });
+            td = document.createElement('td');
+            td.innerHTML = `
+            <input type="date" value="${employees.birthDate}" min="1900-01-01" max="2100-12-31">`;
+            tr.appendChild(td);
 
-//        // Особый разделитель после активной вкладки
-//        if (activeTab && activeTab.nextElementSibling && !activeTab.nextElementSibling.classList.contains('active')) {
-//            activeTab.style.setProperty('--separator-color', 'rgba(255, 255, 255, 0.3)');
-//        }
-//    }
+            td = document.createElement('td');
+            td.innerHTML = `
+            <input type="text" value="${employee.position}">`;
+            tr.appendChild(td);
 
-//    // Инициализация при загрузке
-//    updateSeparators();
-//});
+            td = document.createElement('td');
+            td.innerHTML = `
+            <button class="table-btn delete">Удалить</button>`;
+            tr.appendChild(td);
+        });
+
+        let originalTableContent = document.getElementById("table").innerHTML;
+        localStorage.setItem('originalTableContent', originalTableContent);
+    } catch (error) {
+        console.error('Ошибка загрузки сотрудников: ', error);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadEmployeesDropDown);
+document.addEventListener('DOMContentLoaded', loadEmployeesTable);
