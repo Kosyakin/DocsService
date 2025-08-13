@@ -118,7 +118,7 @@ namespace DocsService.Controllers
 
                         foreach (TableCell cell in newRow.Elements<TableCell>())
                         {
-                            if (formId == "dataForm" || formId == "dataForm2" || formId == "dataForm1") 
+                            if (formId == "dataForm" || formId == "dataForm2") 
                             {ReplaceTextInOTandGOCS(cell, data, employee);}
                             if (formId == "dataForm1")
                             { ReplaceTextInPB(cell, data, employee); }
@@ -165,7 +165,7 @@ namespace DocsService.Controllers
             {
                 textElement.Text = textElement.Text
                     .Replace("{{DATE}}", formData.Date.ToString("dd.MM.yyyy"))
-                    .Replace("{{INSTYPE}}", formData.InstructionType)
+                    .Replace("{{IT}}", formData.InstructionType)
                     .Replace("{{NAME_EMP}}", $"{employee.LastName} {employee.FirstName} {employee.MiddleName}")
                     .Replace("{{POST}}", employee.Position);
                     
