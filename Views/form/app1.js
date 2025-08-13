@@ -1,7 +1,4 @@
-﻿//function getActiveFormElement(name) {
-//    const activeForm = document.querySelector(`.form-container:not(.hidden)`);
-//    return activeForm.querySelector('[]')
-//}
+﻿
 function setCurrentDate() {
     const dateField = document.getElementById('date');
     if (!dateField.value) { // Устанавливаем только если поле пустое
@@ -18,15 +15,7 @@ function setCurrentDate() {
     }
 }
 
-//document.getElementById("date").addEventListener("change", function () {
-//    const selectedDate = new Date(this.value);
-//    const selectedYear = selectedDate.getFullYear();
 
-//    if (selectedYear < 2000 || selectedYear > 2030) {
-//        alert("Год должен быть между 2000 и 2030!");
-//        this.value = ""; // Сброс значения
-//    }
-//});
 
 function setCurrentDate1() {
 
@@ -62,13 +51,13 @@ function toggleDropdown(currentGroup) {
 
     //Открываем/закрываем текущий список
     currentGroup.classList.toggle('active');
-   
+
 
 
 }
 
 document.addEventListener('click', (e) => {
-    
+
     if (!e.target.closest('.input-group')) {
         document.querySelectorAll('.input-group').forEach(group => {
             group.classList.remove('active');
@@ -88,13 +77,13 @@ function selectItem(element, value) {
     const hiddenInput = inputGroup.querySelector('input[type="hidden"]');
     if (hiddenInput) {
         hiddenInput.value = value;
-        
+
         hiddenInput.dispatchEvent(new Event('change'));
     }
 
     // Закрываем выпадающий список
     inputGroup.classList.remove('active');
-    
+
 
 }
 
@@ -105,8 +94,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    
-   
+
+
 
     // Таблица соответствия: тип инструктажа - причина
     const reasonMap = {
@@ -125,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
     instructionTypeInput.addEventListener('change', function () {
         const reasonInput = document.querySelector('input[name="reason"]');
         const localActInput = document.querySelector('input[name="localAct"]');
-       
+
 
 
         // Элементы для локального акта
@@ -148,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
         localActTextInput.value = '';   // Очищаем текстовое поле 
         document.querySelector('#localActDropdownGroup .custom-select').textContent = 'Наименование локального акта';
 
-       
+
 
         if (selectedType == 'Внеплановый' || selectedType == 'Целевой') {
 
@@ -159,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function () {
             localActInputFieldGroup.style.display = 'block';
 
             localActTextInput.value = 'СТО 07-12';
-            
+
             localActTextInput.addEventListener('input', function () {
                 if (this.value !== '') {
                     this.classList.remove('required-field');
@@ -175,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     this.classList.add('required-field');
                 }
             });
-            
+
         } else {
             // Убираем красные границы
             reasonInput.classList.remove('required-field');
@@ -193,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         }
-        
+
     });
 
     instructionTypeInput1.addEventListener('change', function () {
@@ -348,151 +337,211 @@ window.addEventListener('load', setCurrentDate2);
 
 
 
-document.getElementById('dataForm').addEventListener('submit', async function (e) {
-    console.log("Событие submit вызвано!");
-    
-    
+document.querySelectorAll('.dynamicForm').forEach(form => {
+    form.addEventListener('submit', async function (e) {
+        console.log("Событие submit вызвано!");
+        e.preventDefault();
 
-    try {
-        const formData = new FormData(this);
-        formData.append('FormId', 1);
-        if (formData.has('localAct')) {
-            const localActValues = formData.getAll('localAct');
-            formData.delete('localAct');
 
-            // Добавляем только непустые значения обратно
-            localActValues.forEach(value => {
-                if (value) formData.append('localAct', value);
+
+        try {
+            const formData = new FormData(this);
+
+            formData.append('FormId', this.id);
+            if (formData.has('localAct')) {
+                const localActValues = formData.getAll('localAct');
+                formData.delete('localAct');
+
+                // Добавляем только непустые значения обратно
+                localActValues.forEach(value => {
+                    if (value) formData.append('localAct', value);
+                });
+            }
+
+            console.log(`Форма с данными клиента`);
+            for (let [key, value] of formData.entries()) {
+                console.log(key, value);
+            }
+
+            const response = await fetch(this.action, {
+                method: 'POST',
+                body: formData
             });
-        }
 
-       
-        for (let [key, value] of formData.entries()) {
-            console.log(key, value);
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                if (this.id == "dataForm") { a.download = 'форма 04-СТО 07-12 Лист регистрации инструктажа по охране труда'; }
+                if (this.id == "dataForm1") { a.download = 'форма 05-СТО 07-12 Лист учета противопожарных инструктажей'; }
+                if (this.id == "dataForm2") { a.download = 'форма 07-СТО 07-12 Лист регистрации инструктажа по действиям в ЧС'; }
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                }, 100);
+            } else {
+                const error = await response.text();
+                document.getElementById('errorMessage').textContent = error;
+            }
+        } catch (error) {
+            console.error('Ошибка:', error);
+            document.getElementById('errorMessage').textContent =
+                'Ошибка при отправке формы: ' + error.message;
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Сформировать файл';
         }
-
-        const response = await fetch(this.action, {
-            method: 'POST',
-            body: formData
-        });
-
-        if (response.ok) {
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            //a.href = url;
-            //a.download = 'Инструктажи.docx';
-            //document.body.appendChild(a);
-            //a.click();
-            //setTimeout(() => {
-            //    document.body.removeChild(a);
-            //    window.URL.revokeObjectURL(url);
-            //}, 100);
-        } else {
-            const error = await response.text();
-            document.getElementById('errorMessage').textContent = error;
-        }
-    } catch (error) {
-        console.error('Ошибка:', error);
-        document.getElementById('errorMessage').textContent =
-            'Ошибка при отправке формы: ' + error.message;
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Сформировать файл';
-    }
+    });
 });
 
-document.getElementById('dataForm1').addEventListener('submit', async function (e) {
-    console.log("Событие submit1 вызвано!");
+//document.getElementById('dataForm1').addEventListener('submit', async function (e) {
+//    console.log("Событие submit1 вызвано!");
 
 
 
-    try {
-        const formData = new FormData(this);
-        formData.append('formId', this.id);
+//    try {
+//        const formData = new FormData(this);
+//        formData.append('formId', this.id);
 
 
-        for (let [key, value] of formData.entries()) {
-            console.log(key, value);
-        }
+//        for (let [key, value] of formData.entries()) {
+//            console.log(key, value);
+//        }
 
-        const response = await fetch(this.action, {
-            method: 'POST',
-            body: formData
-        });
+//        const response = await fetch(this.action, {
+//            method: 'POST',
+//            body: formData
+//        });
 
-        if (response.ok) {
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            //a.href = url;
-            //a.download = 'Инструктажи.docx';
-            //document.body.appendChild(a);
-            //a.click();
-            //setTimeout(() => {
-            //    document.body.removeChild(a);
-            //    window.URL.revokeObjectURL(url);
-            //}, 100);
-        } else {
-            const error = await response.text();
-            document.getElementById('errorMessage').textContent = error;
-        }
-    } catch (error) {
-        console.error('Ошибка:', error);
-        document.getElementById('errorMessage').textContent =
-            'Ошибка при отправке формы: ' + error.message;
-    } finally {
-        submitBtn1.disabled = false;
-        submitBtn1.textContent = 'Сформировать файл';
+//        if (response.ok) {
+//            const blob = await response.blob();
+//            const url = window.URL.createObjectURL(blob);
+//            const a = document.createElement('a');
+//            //a.href = url;
+//            //a.download = 'Инструктажи.docx';
+//            //document.body.appendChild(a);
+//            //a.click();
+//            //setTimeout(() => {
+//            //    document.body.removeChild(a);
+//            //    window.URL.revokeObjectURL(url);
+//            //}, 100);
+//        } else {
+//            const error = await response.text();
+//            document.getElementById('errorMessage').textContent = error;
+//        }
+//    } catch (error) {
+//        console.error('Ошибка:', error);
+//        document.getElementById('errorMessage').textContent =
+//            'Ошибка при отправке формы: ' + error.message;
+//    } finally {
+//        submitBtn1.disabled = false;
+//        submitBtn1.textContent = 'Сформировать файл';
+//    }
+//});
+
+//document.getElementById('dataForm2').addEventListener('submit', async function (e) {
+//    console.log("Событие submit2 вызвано!");
+
+
+
+//    try {
+//        const formData = new FormData(this);
+//        formData.append('formId', this.id);
+
+//        for (let [key, value] of formData.entries()) {
+//            console.log(key, value);
+
+//        }
+
+//        const response = await fetch(this.action, {
+//            method: 'POST',
+//            body: formData
+//        });
+
+//        if (response.ok) {
+//            const blob = await response.blob();
+//            const url = window.URL.createObjectURL(blob);
+//            const a = document.createElement('a');
+//            //a.href = url;
+//            //a.download = 'Инструктажи.docx';
+//            //document.body.appendChild(a);
+//            //a.click();
+//            //setTimeout(() => {
+//            //    document.body.removeChild(a);
+//            //    window.URL.revokeObjectURL(url);
+//            //}, 100);
+//        } else {
+//            const error = await response.text();
+//            document.getElementById('errorMessage').textContent = error;
+//        }
+//    } catch (error) {
+//        console.error('Ошибка:', error);
+//        document.getElementById('errorMessage').textContent =
+//            'Ошибка при отправке формы: ' + error.message;
+//    } finally {
+//        submitBtn2.disabled = false;
+//        submitBtn2.textContent = 'Сформировать файл';
+//    }
+//});
+
+function checkFormValidity(formId) {
+
+    switch (formId) {
+        case 'dataForm':
+            const date = document.getElementById('date').value;
+            const instructionType = document.getElementById('instructionType').value;
+            const reason = document.querySelector('input[name="reason"]').value;
+            const localAct = document.getElementById('localAct').value;
+            const localActInput = document.getElementById("localActInputField").value;
+            const dropdown0 = document.getElementById("dropdown0");
+            const anyEmployeeSelected = dropdown0.querySelectorAll('input[name="employees"]:checked').length;
+            console.log(`CountEmp: ${anyEmployeeSelected}`);
+            const isFormValid = date && instructionType && reason && (localAct || localActInput) && anyEmployeeSelected;
+            submitBtn.disabled = !isFormValid;
+
+            break;
+
+        case 'dataForm1':
+            console.log(formId);
+            const date1 = document.getElementById('date1').value;
+            const instructionType1 = document.getElementById('instructionType1').value;
+            const reason1 = document.getElementById('reason1').value;
+            const localAct1 = document.getElementById('localAct1').value;
+            const localActInput1 = document.getElementById("localActInputField1").value;
+            const dropdown1 = document.getElementById("dropdown1");
+            const anyEmployeeSelected1 = dropdown1.querySelectorAll('input[name="employees"]:checked').length;
+            console.log(`CountEmp1: ${anyEmployeeSelected1}`);
+            const numDoc = document.getElementById("numDoc").value;
+            console.log(numDoc);
+
+            const isFormValid1 = date1 && instructionType1 && reason1 && (localAct1 || localActInput1) && anyEmployeeSelected1 && numDoc;
+            submitBtn1.disabled = !isFormValid1;
+
+            break;
+
+        case 'dataForm2':
+            const date2 = document.getElementById('date2').value;
+            const instructionType2 = document.getElementById('instructionType2').value;
+            const reason2 = document.getElementById('reason2').value;
+            const localAct2 = document.getElementById('localAct2').value;
+            const localActInput2 = document.getElementById("localActInputField2").value;
+            const dropdown2 = document.getElementById("dropdown2");
+            const anyEmployeeSelected2 = dropdown2.querySelectorAll('input[name="employees"]:checked').length;
+            console.log(`CountEmp2: ${anyEmployeeSelected2}`);
+
+            const isFormValid2 = date2 && instructionType2 && reason2 && (localAct2 || localActInput2) && anyEmployeeSelected2;
+            submitBtn2.disabled = !isFormValid2;
+
+            break;
+
+        default:
+            console.log("Default")
     }
-});
 
-document.getElementById('dataForm2').addEventListener('submit', async function (e) {
-    console.log("Событие submit2 вызвано!");
-
-
-
-    try {
-        const formData = new FormData(this);
-        formData.append('formId', this.id);
-
-        for (let [key, value] of formData.entries()) {
-            console.log(key, value);
-            
-        }
-
-        const response = await fetch(this.action, {
-            method: 'POST',
-            body: formData
-        });
-
-        if (response.ok) {
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            //a.href = url;
-            //a.download = 'Инструктажи.docx';
-            //document.body.appendChild(a);
-            //a.click();
-            //setTimeout(() => {
-            //    document.body.removeChild(a);
-            //    window.URL.revokeObjectURL(url);
-            //}, 100);
-        } else {
-            const error = await response.text();
-            document.getElementById('errorMessage').textContent = error;
-        }
-    } catch (error) {
-        console.error('Ошибка:', error);
-        document.getElementById('errorMessage').textContent =
-            'Ошибка при отправке формы: ' + error.message;
-    } finally {
-        submitBtn2.disabled = false;
-        submitBtn2.textContent = 'Сформировать файл';
-    }
-});
-
-
+}
 
 document.addEventListener('DOMContentLoaded', function () {
     const submitBtn = document.getElementById('submitBtn');
@@ -501,56 +550,57 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!submitBtn) return;
 
-    function checkFormValidity(formId) {
+    //function checkFormValidity(formId) {
 
-        switch (formId) {
-            case 'dataForm':
-                const date = document.getElementById('date').value;
-                const instructionType = document.getElementById('instructionType').value;
-                const reason = document.querySelector('input[name="reason"]').value;
-                const localAct = document.getElementById('localAct').value;
-                const localActInput = document.getElementById("localActInputField").value;
-                const anyEmployeeSelected = document.querySelector('input[name="employees"]:checked') !== null;
+    //    switch (formId) {
+    //        case 'dataForm':
+    //            const date = document.getElementById('date').value;
+    //            const instructionType = document.getElementById('instructionType').value;
+    //            const reason = document.querySelector('input[name="reason"]').value;
+    //            const localAct = document.getElementById('localAct').value;
+    //            const localActInput = document.getElementById("localActInputField").value;
+    //            const dropdown0 = document.getElementById("dropdown0");
+    //            const anyEmployeeSelected = dropdown0.querySelectorAll('input[name="employees"]:checked').length > 0;
+    //            console.log(anyEmployeeSelected);
+    //            const isFormValid = date && instructionType && reason && (localAct || localActInput) && anyEmployeeSelected;
+    //            submitBtn.disabled = !isFormValid;
 
-                const isFormValid = date && instructionType && reason && (localAct || localActInput) && anyEmployeeSelected;
-                submitBtn.disabled = !isFormValid;
+    //            break;
 
-                break;
+    //        case 'dataForm1':
+    //            console.log(formId);
+    //            const date1 = document.getElementById('date1').value;
+    //            const instructionType1 = document.getElementById('instructionType1').value;
+    //            const reason1 = document.getElementById('reason1').value;
+    //            const localAct1 = document.getElementById('localAct1').value;
+    //            const localActInput1 = document.getElementById("localActInputField1").value;
+    //            const anyEmployeeSelected1 = document.querySelector('input[name="employees1"]:checked') !== null;
+    //            const numDoc = document.getElementById("numDoc").value;
+    //            console.log(numDoc);
 
-            case 'dataForm1':
-                console.log(formId);
-                const date1 = document.getElementById('date1').value;
-                const instructionType1 = document.getElementById('instructionType1').value;
-                const reason1 = document.getElementById('reason1').value;
-                const localAct1 = document.getElementById('localAct1').value;
-                const localActInput1 = document.getElementById("localActInputField1").value;
-                const anyEmployeeSelected1 = document.querySelector('input[name="employees1"]:checked') !== null;
-                const numDoc = document.getElementById("numDoc").value;
-                console.log(numDoc);
+    //            const isFormValid1 = date1 && instructionType1 && reason1 && (localAct1 || localActInput1) && anyEmployeeSelected1 && numDoc;
+    //            submitBtn1.disabled = !isFormValid1;
 
-                const isFormValid1 = date1 && instructionType1 && reason1 && (localAct1 || localActInput1) && anyEmployeeSelected1 && numDoc;
-                submitBtn1.disabled = !isFormValid1;
+    //            break;
 
-                break;
+    //        case 'dataForm2':
+    //            const date2 = document.getElementById('date2').value;
+    //            const instructionType2 = document.getElementById('instructionType2').value;
+    //            const reason2 = document.getElementById('reason2').value;
+    //            const localAct2 = document.getElementById('localAct2').value;
+    //            const localActInput2 = document.getElementById("localActInputField2").value;
+    //            const anyEmployeeSelected2 = document.querySelector('input[name="employees2"]:checked') !== null;
 
-            case 'dataForm2':
-                const date2 = document.getElementById('date2').value;
-                const instructionType2 = document.getElementById('instructionType2').value;
-                const reason2 = document.getElementById('reason2').value;
-                const localAct2 = document.getElementById('localAct2').value;
-                const localActInput2 = document.getElementById("localActInputField2").value;
-                const anyEmployeeSelected2 = document.querySelector('input[name="employees2"]:checked') !== null;
+    //            const isFormValid2 = date2 && instructionType2 && reason2 && (localAct2 || localActInput2) && anyEmployeeSelected2;
+    //            submitBtn2.disabled = !isFormValid2;
 
-                const isFormValid2 = date2 && instructionType2 && reason2 && (localAct2 || localActInput2) && anyEmployeeSelected2;
-                submitBtn2.disabled = !isFormValid2;
+    //            break;
 
-                break;
+    //        default:
+    //            console.log("Default")
+    //    }
 
-            default:
-                console.log("Default")
-        }
-        
-    }
+    //}
 
     // --- Назначаем обработчики ---
 
@@ -570,7 +620,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Тип инструктажа (hidden input)
     document.getElementById('instructionType').addEventListener('change', function (event) {
-        
+
         const formId = event.target.form.id;
         console.log(`instructionType: ${formId}`);
         checkFormValidity(formId);
@@ -626,9 +676,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Чекбоксы сотрудников
-    document.querySelectorAll('input[name="employees"]').forEach(checkbox => {
+    const dropdown0 = document.getElementById("dropdown0");
+    dropdown0.querySelectorAll('input[name="employees"]').forEach(checkbox => {
         checkbox.addEventListener('change', function (event) {
             const formId = event.target.form.id;
+
             checkFormValidity(formId);
         });
     });
@@ -657,7 +709,7 @@ document.addEventListener('DOMContentLoaded', function () {
 document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', function () {
         const tabId = this.getAttribute('data-tab');
-        
+
 
         document.querySelectorAll('.tab').forEach(t => {
             t.classList.remove('active');
@@ -673,7 +725,7 @@ document.querySelectorAll('.tab').forEach(tab => {
         //console.log("Форма сменилась");
 
         localStorage.setItem('lastActiveTab', tabId);
-       
+
     })
 });
 
@@ -711,46 +763,102 @@ document.getElementById('edit2').addEventListener('click', function (event) {
 document.getElementById('backBtn').addEventListener('click', function (event) {
     event.preventDefault();
     console.log("Нажата кнопка backBtn");
-    
-
     document.getElementById("confirmDialog").classList.remove('hidden');
 
-    document.getElementById("confirmCancel").addEventListener('click', function () {
-        document.getElementById("confirmDialog").classList.add('hidden');
-    });
-
-    document.getElementById("confirmDiscard").addEventListener('click', function () {
-        const tabId = localStorage.getItem('lastActiveTab') || 'ot';
-        document.getElementById("table").innerHTML = localStorage.getItem('originalTableContent');
-
-        document.getElementById("confirmDialog").classList.add('hidden');
-        document.getElementById('form-tabs').classList.remove('hidden');
-        //document.getElementById('edit-employees').classList.add('hidden');
-        document.getElementById('form-edit-emp').classList.add('hidden');
-        document.querySelector(`[data-tab-content="${tabId}"]`).classList.remove('hidden');
-
-        
-    });
-
-    document.getElementById("confirmSave").addEventListener('click', function () {
-        const tabId = localStorage.getItem('lastActiveTab') || 'ot';
-        document.getElementById("confirmDialog").classList.add('hidden');
-        document.getElementById('form-tabs').classList.remove('hidden');
-        //document.getElementById('edit-employees').classList.add('hidden');
-        document.getElementById('form-edit-emp').classList.add('hidden');
-        document.querySelector(`[data-tab-content="${tabId}"]`).classList.remove('hidden');
-    });
-
-    
 });
 
-document.querySelectorAll('.delete').forEach(button => {
-    button.addEventListener('click', function () {
+document.getElementById("confirmCancel").addEventListener('click', function () {
+    document.getElementById("confirmDialog").classList.add('hidden');
+});
+
+document.getElementById("confirmDiscard").addEventListener('click', function () {
+    console.log("Нажата кнопка Не сохранять");
+    const tabId = localStorage.getItem('lastActiveTab') || 'ot';
+    const addEmpRow = document.getElementById('addEmp-tr');
+    const table = document.getElementById('table');
+    while (table.firstChild) {
+        table.removeChild(table.firstChild);
+    }
+
+
+    loadEmployeesTable();
+    if (addEmpRow) {
+        table.appendChild(addEmpRow);
+    }
+
+    document.getElementById("confirmDialog").classList.add('hidden');
+    document.getElementById('form-tabs').classList.remove('hidden');
+    //document.getElementById('edit-employees').classList.add('hidden');
+    document.getElementById('form-edit-emp').classList.add('hidden');
+    document.querySelector(`[data-tab-content="${tabId}"]`).classList.remove('hidden');
+
+
+});
+
+document.getElementById("confirmSave").addEventListener('click', async function () {
+    const tabId = localStorage.getItem('lastActiveTab') || 'ot';
+    document.getElementById("confirmDialog").classList.add('hidden');
+    document.getElementById('form-tabs').classList.remove('hidden');
+    //document.getElementById('edit-employees').classList.add('hidden');
+    document.getElementById('form-edit-emp').classList.add('hidden');
+    document.querySelector(`[data-tab-content="${tabId}"]`).classList.remove('hidden');
+
+    const table = document.getElementById('employeesTable');
+    const rows = table.querySelectorAll('tr[data-id]');
+
+    const employeesData = Array.from(rows).map(row => {
+        console.log(row);
+        const empId = row.dataset.id;
+        //console.log(empId);
+        const cells = row.querySelectorAll('td');
+        console.log(cells[1].querySelector('input').value);
+
+        return {
+            id: parseInt(empId),
+            lastName: cells[0].querySelector('input').value.trim(),
+            firstName: cells[1].querySelector('input').value.trim(),
+            middleName: cells[2].querySelector('input').value.trim(),
+            birthDate: cells[3].querySelector('input').value,
+            position: cells[4].querySelector('input').value.trim()
+        };
+    });
+
+    console.log(employeesData);
+
+    try {
+        const response = await fetch('/Employees/UpdateEmployees', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(employeesData)
+        });
+
+        if (response.ok) {
+            console.log('Данные успешно сохранены');
+            loadEmployeesDropDown();
+            loadEmployeesTable();
+            //localStorage.setItem('originalTableContent', originalTableContent);
+        } else {
+            console.error('Ошибка при сохранении: ', await response.text());
+        }
+    } catch (error) {
+        console.log('Ошибка: ', error);
+    }
+});
+
+document.getElementById('employeesTable').addEventListener('click', function (event) {
+    if (event.target.classList.contains('delete')) {
+        const button = event.target;
+        const row = button.closest('tr');
+
+        if (!row) return;
+
         const confirmDialogDel = document.getElementById("confirmDialogDel")
         const confirmDel = document.getElementById("confirmDialogDel");
         const confDel = confirmDel.querySelector("#confirmDel");
         const nconfDel = confirmDel.querySelector("#nconfirmDel");
-        const row = this.closest('tr');
+        //const row = this.closest('tr');
         console.log(row);
         const rowParent = row.parentNode;
         console.log(rowParent);
@@ -759,10 +867,11 @@ document.querySelectorAll('.delete').forEach(button => {
 
         confDel.addEventListener('click', function () {
             if (row && rowParent.contains(row)) {
+                deleteRowFromBD(row.dataset.id);
                 rowParent.removeChild(row);
             }
 
-            
+
             confirmDialogDel.classList.add('hidden');
         });
 
@@ -770,9 +879,9 @@ document.querySelectorAll('.delete').forEach(button => {
             confirmDialogDel.classList.add('hidden');
             return;
         });
-        
-        
-    });
+
+
+    }
 });
 
 document.getElementById('addEmployee').addEventListener('click', function () {
@@ -780,21 +889,26 @@ document.getElementById('addEmployee').addEventListener('click', function () {
 
     const tbody = document.querySelector('#employeesTable tbody');
 
-    
-    
+
+
 
     const newRow = document.createElement('tr');
+    newRow.dataset.id = -1;
     const addRow = document.getElementById('addEmp-tr');
     const inputs = addRow.querySelectorAll('input');
     const nameInput = inputs[0];
-    const dateInput = inputs[1];
-    const positionInput = inputs[2];
+    const nameInput1 = inputs[1];
+    const nameInput2 = inputs[2];
+    const dateInput = inputs[3];
+    const positionInput = inputs[4];
     //const inputs = addRow.querySelectorAll('input[type="text"]');
 
     //const Name = inputs[0].value.trim();
     //const birthDate = addRow.querySelector('input[type="date"]').value;
     //const position = inputs[1].value.trim();
     const name = nameInput.value.trim();
+    const name1 = nameInput1.value.trim();
+    const name2 = nameInput2.value.trim();
     const birthDate = dateInput.value;
     const position = positionInput.value.trim();
 
@@ -802,29 +916,31 @@ document.getElementById('addEmployee').addEventListener('click', function () {
     const maxDate = new Date();
     maxDate.setFullYear(maxDate.getFullYear() - 18);
     dateField = maxDate.toISOString().substr(0, 10);
-    
 
-    
 
-    if (!name || !birthDate || !position || '1900-01-01' > birthDate || dateField < birthDate) {
+
+
+    if (!name || !name1 || !name2 || !birthDate || !position || '1900-01-01' > birthDate || dateField < birthDate) {
         addRow.classList.add('error-row');
         setTimeout(() => {
             addRow.classList.remove('error-row');
         }, 3000);
         return;
     }
-    
-    
+
+
 
     newRow.innerHTML = `
         <td><input type="text" value="${name}"></td>
+        <td><input type="text" value="${name1}"></td>
+        <td><input type="text" value="${name2}"></td>
         <td><input type="date" value="${birthDate}"></td>
         <td><input type="text" value="${position}"></td>
         <td><button class="table-btn delete">Удалить</button></td>
     `;
 
     tbody.insertBefore(newRow, addRow);
-    
+
 
     newRow.querySelector('.delete').addEventListener('click', function () {
         const confirmDialog = document.getElementById("confirmDialogDel");
@@ -843,6 +959,8 @@ document.getElementById('addEmployee').addEventListener('click', function () {
     });
 
     nameInput.value = '';
+    nameInput1.value = '';
+    nameInput2.value = '';
     dateInput.value = '';
     positionInput.value = '';
 });
@@ -858,13 +976,40 @@ async function loadEmployeesDropDown() {
         //    console.log(emp.ID);
         //});
 
-        const dropdown = document.getElementById('dropdown-content');
-        employees.forEach(employee => {
-            const label = document.createElement('label');
-            label.innerHTML = `
+        const dropdowns = document.querySelectorAll('.dropdown-emp');
+        dropdowns.forEach(dropdown => {
+            dropdown.innerHTML = '';
+            employees.forEach(employee => {
+                const label = document.createElement('label');
+                console.log(employee.id);
+                label.innerHTML = `
             <input name="employees" type="checkbox" value="${employee.id}" checked> ${employee.fullName}`;
-            dropdown.appendChild(label);
+                //console.log(label);
+                const checkbox = label.querySelector('input');
+
+
+                checkbox.addEventListener('change', function () {
+                    if (dropdown.id == 'dropdown0') { formId = `dataForm`; }
+                    else if (dropdown.id == 'dropdown1') { formId = `dataForm1`; }
+                    else { formId = `dataForm2`; }
+                    
+                    console.log(`Изменение состояния чекбокса на форме: ${formId}`);
+                    checkFormValidity(formId);
+                });
+
+
+                dropdown.appendChild(label);
+            });
         });
+        //dropdown.innerHTML = '';
+        //employees.forEach(employee => {
+        //    const label = document.createElement('label');
+        //    console.log(employee.id);
+        //    label.innerHTML = `
+        //    <input name="employees" type="checkbox" value="${employee.id}" checked> ${employee.fullName}`;
+        //    console.log(label);
+        //    dropdown.appendChild(label);
+        //});
     } catch (error) {
         console.error('Ошибка загрузки сотрудников: ', error);
     }
@@ -875,26 +1020,54 @@ async function loadEmployeesTable() {
         const response = await fetch('/Employees/Employees');
         const employees = await response.json();
         console.log(`Response in employees: ${employees}`)
-        //console.log("Поля первого сотрудника:", Object.keys(employees[0]));
+        console.log("Поля первого сотрудника:", employees[0]);
         //employees.forEach(emp => {
         //    console.log(emp.ID);
         //});
-        
+
 
         const table = document.getElementById('table');
+        const addEmpTr = document.getElementById('addEmp-tr');
+
+        while (table.firstChild) {
+            table.removeChild(table.firstChild);
+        }
+
+
+
+        if (addEmpTr) {
+            table.appendChild(addEmpTr);
+        }
+
+
         employees.forEach(employee => {
             const tr = document.createElement('tr');
-            const addEmpTr = document.getElementById("addEmp-tr");
+            tr.dataset.id = employee.id;
+            console.log(Object.keys(employee));
+
+            //const addEmpTr = document.getElementById("addEmp-tr");
             table.insertBefore(tr, addEmpTr);
+
+
 
             td = document.createElement('td');
             td.innerHTML = `
-            <input type="text" value="${employee.fullName}">`;
+            <input type="text" value="${employee.lastName}">`;
             tr.appendChild(td);
 
             td = document.createElement('td');
             td.innerHTML = `
-            <input type="date" value="${employees.birthDate}" min="1900-01-01" max="2100-12-31">`;
+            <input type="text" value="${employee.firstName}">`;
+            tr.appendChild(td);
+
+            td = document.createElement('td');
+            td.innerHTML = `
+            <input type="text" value="${employee.middleName}">`;
+            tr.appendChild(td);
+
+            td = document.createElement('td');
+            td.innerHTML = `
+            <input type="date" value="${employee.birthDate.slice(0, 10)}" min="1900-01-01" max="2100-12-31">`;
             tr.appendChild(td);
 
             td = document.createElement('td');
@@ -906,13 +1079,60 @@ async function loadEmployeesTable() {
             td.innerHTML = `
             <button class="table-btn delete">Удалить</button>`;
             tr.appendChild(td);
+
+
         });
 
-        let originalTableContent = document.getElementById("table").innerHTML;
-        localStorage.setItem('originalTableContent', originalTableContent);
+        //tr = document.createElement('tr');
+        //tr.id = "addEmp-tr";
+
+        //td = document.createElement('td');
+        //td.innerHTML = `
+        //    <input type="text" placeholder="Фамилия">
+        //`;
+        //tr.appendChild(td);
+
+        //td = document.createElement('td');
+        //td.innerHTML = `
+        //    <input type="text" placeholder="Имя">
+        //`;
+        //tr.appendChild(td);
+
+        //td = document.createElement('td');
+        //td.innerHTML = `
+        //   <input type="text" placeholder="Отчество">
+        //`;
+        //tr.appendChild(td);
+
+        //td = document.createElement('td');
+        //td.innerHTML = `
+        //    <input type="date" placeholder="Дата рождения" min="1900-01-01" max="2100-12-31">
+        //`;
+        //tr.appendChild(td);
+
+        //td = document.createElement('td');
+        //td.innerHTML = `
+        //    <input type="text" placeholder="Должность">
+        //`;
+        //tr.appendChild(td);
+
+        //td = document.createElement('td');
+        //td.innerHTML = `
+        //    <button id="addEmployee" class="table-btn-add-emp"><img class="table-btn-add-emp-img" src="images/Plus.png" />
+        //`;
+        //tr.appendChild(td);
+
+        //let originalTableContent = document.getElementById("table").innerHTML;
+        //localStorage.setItem('originalTableContent', originalTableContent);
     } catch (error) {
         console.error('Ошибка загрузки сотрудников: ', error);
     }
+}
+
+async function deleteRowFromBD(id) {
+    const response = await fetch(`/Employees/${id}`, {
+        method: 'DELETE'
+    });
 }
 
 document.addEventListener('DOMContentLoaded', loadEmployeesDropDown);

@@ -5,8 +5,8 @@ namespace DocsService.Models
 {
     public class Employees
     {
-        public int ID {get; set; }
-        
+        public int ID { get; set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -15,7 +15,7 @@ namespace DocsService.Models
 
         public DateTime BirthDate { get; set; }
 
-        public string Position { get; set;}
+        public string Position { get; set; }
 
         public string FullName => $"{LastName} {FirstName} {MiddleName}".Trim();
     }

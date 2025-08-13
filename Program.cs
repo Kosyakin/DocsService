@@ -66,35 +66,35 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = ""
 });
 
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.EnsureCreated(); // Создает БД и таблицы, если их нет
+//using (var scope = app.Services.CreateScope())
+//{
+//    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+//    db.Database.EnsureCreated(); // Создает БД и таблицы, если их нет
 
-    if (!db.Employees.Any())
-    {
-        db.Employees.AddRange(
-            new Employees
-            {
-                ID = 1,
-                LastName = "Иванов",
-                FirstName = "Иван",
-                MiddleName = "Иванович",
-                BirthDate = new DateTime(1985, 5, 15),
-                Position = "Инженер"
-            },
-            new Employees
-            {
-                ID = 2,
-                LastName = "Петров",
-                FirstName = "Петр",
-                MiddleName = "Петрович",
-                BirthDate = new DateTime(1990, 8, 22),
-                Position = "Механик"
-            }
-        );
-        db.SaveChanges();
-    }
-}
+//    if (!db.Employees.Any())
+//    {
+//        db.Employees.AddRange(
+//            new Employees
+//            {
+//                ID = 1,
+//                LastName = "Иванов",
+//                FirstName = "Иван",
+//                MiddleName = "Иванович",
+//                BirthDate = new DateTime(1985, 5, 15),
+//                Position = "Инженер"
+//            },
+//            new Employees
+//            {
+//                ID = 2,
+//                LastName = "Петров",
+//                FirstName = "Петр",
+//                MiddleName = "Петрович",
+//                BirthDate = new DateTime(1990, 8, 22),
+//                Position = "Механик"
+//            }
+//        );
+//        db.SaveChanges();
+//    }
+//}
 
 app.Run();

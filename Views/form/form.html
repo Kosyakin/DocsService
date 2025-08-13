@@ -24,7 +24,7 @@
             <h1>Формирование листа регистрации инструктажа по охране труда</h1>
             <!--<img src="images/File.png" class="img-file" />-->
 
-            <form id="dataForm" method="post" action="/Form/SubmitData">
+            <form id="dataForm" method="post" action="/Form/SubmitData" class="dynamicForm">
                 <div class="input-group">
                     <input type="date" id="date" name="date" min="1900-01-01" max="2100-12-31" required>
                 </div>
@@ -41,7 +41,7 @@
                         Выбор сотрудников
                     </div>
 
-                    <div class="dropdown-content" id="dropdown-content">
+                    <div class="dropdown-content dropdown-emp" id="dropdown0">
                         <!--<label><input name="employees" type="checkbox" value="Иванов И.И." checked> Иванов И.И.</label>
                         <label><input name="employees" type="checkbox" value="Cидоров И.И." checked> Cидоров И.И.</label>
                         <label><input name="employees" type="checkbox" value="Петров И.И." checked> Петров И.И.</label>
@@ -110,7 +110,7 @@
             <h1>Формирование листа учета противопожарных инструктажей</h1>
             <!--<img src="images/File.png" class="img-file" />-->
 
-            <form id="dataForm1" method="post" action="/Form/SubmitData">
+            <form id="dataForm1" method="post" action="/Form/SubmitData" class="dynamicForm">
                 <div class="input-group">
                     <input type="date" id="date1" name="date" min="1900-01-01" max="2100-12-31" required>
                 </div>
@@ -126,13 +126,8 @@
                         Выбор сотрудников
                     </div>
 
-                    <div class="dropdown-content">
-                        <label><input name="employees1" type="checkbox" value="1" checked> Иванов И.И.</label>
-                        <label><input name="employees1" type="checkbox" value="2" checked> Cидоров И.И.</label>
-                        <label><input name="employees1" type="checkbox" value="3" checked> Петров И.И.</label>
-                        <label><input name="employees1" type="checkbox" value="4" checked> Иванов В.И.</label>
-                        <label><input name="employees1" type="checkbox" value="5" checked> Сидоров В.И.</label>
-                        <label><input name="employees1" type="checkbox" value="6" checked> Петров В.И.</label>
+                    <div class="dropdown-content dropdown-emp" id="dropdown1">
+
                     </div>
 
 
@@ -154,7 +149,7 @@
                 </div>
 
                 <div class="input-group">
-                    <input placeholder="Причина" name="reason1" id="reason1">
+                    <input placeholder="Причина" name="reason" id="reason1">
                 </div>
 
                 <div class="input-group" id="localActDropdownGroup1">
@@ -199,7 +194,7 @@
             <h1>Формирование листа регистрации инструктажа по действиям в ЧС</h1>
             <!--<img src="images/File.png" class="img-file" />-->
 
-            <form id="dataForm2" method="post" action="/Form/SubmitData">
+            <form id="dataForm2" method="post" action="/Form/SubmitData" class="dynamicForm">
                 <div class="input-group">
                     <input type="date" id="date2" name="date" min="1900-01-01" max="2100-12-31" required>
                 </div>
@@ -214,13 +209,8 @@
                         Выбор сотрудников
                     </div>
 
-                    <div class="dropdown-content">
-                        <label><input name="employees2" type="checkbox" value="1" checked> Иванов И.И.</label>
-                        <label><input name="employees2" type="checkbox" value="2" checked> Cидоров И.И.</label>
-                        <label><input name="employees2" type="checkbox" value="3" checked> Петров И.И.</label>
-                        <label><input name="employees2" type="checkbox" value="4" checked> Иванов В.И.</label>
-                        <label><input name="employees2" type="checkbox" value="5" checked> Сидоров В.И.</label>
-                        <label><input name="employees2" type="checkbox" value="6" checked> Петров В.И.</label>
+                    <div class="dropdown-content dropdown-emp" id="dropdown2">
+
                     </div>
 
 
@@ -298,7 +288,9 @@
                 <table class="employees-table" id="employeesTable">
                     <thead>
                         <tr>
-                            <th>ФИО</th>
+                            <th>Фамилия</th>
+                            <th>Имя</th>
+                            <th>Отчество</th>
                             <th>Дата рождения</th>
                             <th>Должность</th>
                             <th></th>
@@ -313,48 +305,12 @@
 
                         </tr>-->
 
-                        <!--<tr>
-                            <td><input type="text" value="Сидоров И.И."></td>
-                            <td><input type="date" value="04.08.2025" min="1900-01-01" max="2100-12-31"></td>
-                            <td><input type="text" value="Инженер"></td>
-                            <td><button class="table-btn delete">Удалить</button></td>
-
-                        </tr>
-
-                        <tr>
-                            <td><input type="text" value="Петров И.И."></td>
-                            <td><input type="date" value="04.08.2025" min="1900-01-01" max="2100-12-31"></td>
-                            <td><input type="text" value="Инженер"></td>
-                            <td><button class="table-btn delete">Удалить</button></td>
-
-                        </tr>
-
-                        <tr>
-                            <td><input type="text" value="Иванов В.И."></td>
-                            <td><input type="date" value="04.08.2025" min="1900-01-01" max="2100-12-31"></td>
-                            <td><input type="text" value="Инженер"></td>
-                            <td><button class="table-btn delete">Удалить</button></td>
-
-                        </tr>
-
-                        <tr>
-                            <td><input type="text" value="Сидоров В.И."></td>
-                            <td><input type="date" value="04.08.2025" min="1900-01-01" max="2100-12-31"></td>
-                            <td><input type="text" value="Инженер"></td>
-                            <td><button class="table-btn delete">Удалить</button></td>
-
-                        </tr>
-
-                        <tr>
-                            <td><input type="text" value="Петров В.И."></td>
-                            <td><input type="date" value="04.08.2025" min="1900-01-01" max="2100-12-31"></td>
-                            <td><input type="text" value="Инженер"></td>
-                            <td><button class="table-btn delete">Удалить</button></td>
-
-                        </tr>-->
+                        
 
                         <tr id="addEmp-tr">
-                            <td><input type="text" placeholder="Фамилия И.О."></td>
+                            <td><input type="text" placeholder="Фамилия"></td>
+                            <td><input type="text" placeholder="Имя"></td>
+                            <td><input type="text" placeholder="Отчество"></td>
                             <td><input type="date" placeholder="Дата рождения" min="1900-01-01" max="2100-12-31"></td>
                             <td><input type="text" placeholder="Должность"></td>
                             <td><button id="addEmployee" class="table-btn-add-emp"><img class="table-btn-add-emp-img" src="images/Plus.png" /></button></td>
@@ -371,11 +327,11 @@
 
             <!--<div id="errorMessage" class="error-message"></div>-->
         </div>
-    </div>
+    </div>-+
 
     <div id="confirmDialog" class="modal hidden">
         <div class="modal-content">
-            <p>У вас есть несохраненные изменения. Хотите сохранить перед выходом?</p>
+            <p>Хотите сохранить изменения перед выходом?</p>
             <div class="modal-buttons">
                 <button id="confirmCancel" class="table-btn">Отмена</button>
                 <button id="confirmDiscard" class="table-btn">Не сохранять</button>
