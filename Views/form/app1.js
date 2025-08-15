@@ -322,6 +322,29 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
     });
+
+    //const userBtn = document.querySelector('.userInfoBtn');
+    //const authForm = document.querySelector('.auth-form');
+    //console.log(`userBtn: ${userBtn}`);
+    //console.log(`authForm: ${authForm}`);
+
+    //userBtn.addEventListener('click', function (e) {
+    //    console.log(`e: ${e}`);
+    //    e.stopPropagation();
+    //    this.classList.toggle('active');
+    //});
+
+    //document.addEventListener('click', function (e) {
+    //    if (!authForm.contains(e.target)) {
+    //        userBtn.classList.remove('active');
+    //    }
+    //});
+
+    //// Предотвращаем закрытие при клике внутри формы
+    //authForm.addEventListener('click', function (e) {
+    //    e.stopPropagation();
+    //});
+
 });
 
 
@@ -356,6 +379,10 @@ document.querySelectorAll('.dynamicForm').forEach(form => {
                 localActValues.forEach(value => {
                     if (value) formData.append('localAct', value);
                 });
+            }
+
+            if (!formData.has('numDoc')) {
+                formData.append('numDoc', "-1");
             }
 
             console.log(`Форма с данными клиента`);
@@ -838,7 +865,6 @@ document.getElementById("confirmSave").addEventListener('click', async function 
             console.log('Данные успешно сохранены');
             loadEmployeesDropDown();
             loadEmployeesTable();
-            //localStorage.setItem('originalTableContent', originalTableContent);
         } else {
             console.error('Ошибка при сохранении: ', await response.text());
         }
@@ -1137,3 +1163,11 @@ async function deleteRowFromBD(id) {
 
 document.addEventListener('DOMContentLoaded', loadEmployeesDropDown);
 document.addEventListener('DOMContentLoaded', loadEmployeesTable);
+
+
+//Логика работы формы с информацией об авторизованном пользователе
+document.getElementById('userInfoBtn').addEventListener('click', function () {
+    this.classList.toggle('active');
+});
+
+

@@ -14,6 +14,6 @@
 
         public string FormId { get; set; }
 
-        //public string NumDoc { get; set; }
+        public string NumDoc { get; set; }
     }
 }

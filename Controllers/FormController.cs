@@ -140,11 +140,13 @@ namespace DocsService.Controllers
 
         private void ReplaceTextInOTandGOCS(TableCell cell, FormData formData, Employees employee)
         {
-            
-            Text textElement = cell.Descendants<Text>().FirstOrDefault();
-            if (textElement != null)
+
+            string cellText = string.Concat(cell.Descendants<Text>().Select(t => t.Text));
+
+
+            if (cellText != null)
             {
-                textElement.Text = textElement.Text
+                cellText = cellText
                     .Replace("{{DATE}}", formData.Date.ToString("dd.MM.yyyy"))
                     .Replace("{{INSTRUCTIONTYPE}}", formData.InstructionType)
                     .Replace("{{REASON}}", formData.Reason)
@@ -153,6 +155,18 @@ namespace DocsService.Controllers
                     .Replace("{{DATE_OF_BIRTH}}", employee.BirthDate.Date.ToString("dd.MM.yyyy"))
                     .Replace("{{POST}}", employee.Position)
                     .Replace("{{YEAR_BIRTH}}", employee.BirthDate.Year.ToString());
+
+            }
+
+            foreach (var textElement in cell.Descendants<Text>())
+            {
+                textElement.Text = "";
+            }
+
+            var firstTextElement = cell.Descendants<Text>().FirstOrDefault();
+            if (firstTextElement != null)
+            {
+                firstTextElement.Text = cellText;
             }
 
         }
@@ -160,18 +174,31 @@ namespace DocsService.Controllers
         private void ReplaceTextInPB(TableCell cell, FormData formData, Employees employee)
         {
 
-            Text textElement = cell.Descendants<Text>().FirstOrDefault();
-            if (textElement != null)
+            string cellText = string.Concat(cell.Descendants<Text>().Select(t => t.Text));
+
+           
+                if (cellText != null)
+                {
+                    cellText = cellText
+                        .Replace("{{DATE}}", formData.Date.ToString("dd.MM.yyyy"))
+                        .Replace("{{IT}}", formData.InstructionType)
+                        .Replace("{{NAME_EMP}}", $"{employee.LastName} {employee.FirstName} {employee.MiddleName}")
+                        .Replace("{{POST}}", employee.Position)
+                        .Replace("{{NAME}}", "name")
+                        .Replace("{{NUM_DOC}}", formData.NumDoc);
+
+                }
+
+            foreach (var textElement in cell.Descendants<Text>())
             {
-                textElement.Text = textElement.Text
-                    .Replace("{{DATE}}", formData.Date.ToString("dd.MM.yyyy"))
-                    .Replace("{{IT}}", formData.InstructionType)
-                    .Replace("{{NAME_EMP}}", $"{employee.LastName} {employee.FirstName} {employee.MiddleName}")
-                    .Replace("{{POST}}", employee.Position);
-                    
-                    
+                textElement.Text = "";
             }
 
+            var firstTextElement = cell.Descendants<Text>().FirstOrDefault();
+            if (firstTextElement != null)
+            {
+                firstTextElement.Text = cellText;
+            }
         }
 
         //private void ReplaceTextInGOCS(TableCell cell, FormData formData, Employees employee)

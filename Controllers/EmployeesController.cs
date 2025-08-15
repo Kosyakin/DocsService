@@ -37,10 +37,10 @@ namespace DocsService.Controllers
         [HttpPost("UpdateEmployees")]
         public async Task<IActionResult> UpdateEmployees([FromBody] List<Employees> employees)
         {
-            if (employees == null || !employees.Any())
-            {
-                return BadRequest("Нет данных для обновления");
-            }
+            //if (employees == null || !employees.Any())
+            //{
+            //    return BadRequest("Нет данных для обновления");
+            //}
             foreach (var emp in employees)
             {
                 var empDB = await _context.Employees.FindAsync(emp.ID);
