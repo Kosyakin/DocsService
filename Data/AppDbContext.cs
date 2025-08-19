@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using DocsService.Models;
+﻿using DocsService.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace DocsService.Data
 {
-    public class AppDbContext: DbContext
+    public class AppDbContext: IdentityDbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -11,6 +12,7 @@ namespace DocsService.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Employees>().HasData(
                 new Employees
                 {

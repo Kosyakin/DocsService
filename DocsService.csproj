@@ -11,14 +11,37 @@
 
   <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="3.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.19" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.8" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\authorization\images\" />
-    <Folder Include="Views\form\images\" />
+    <None Include="wwwroot\authorization\app.js" />
+    <None Include="wwwroot\authorization\authorization.html" />
+    <None Include="wwwroot\authorization\images\background.png" />
+    <None Include="wwwroot\authorization\images\logo.png" />
+    <None Include="wwwroot\authorization\images\User.png" />
+    <None Include="wwwroot\authorization\style-auth.css" />
+    <None Include="wwwroot\form\app1.js" />
+    <None Include="wwwroot\form\auth_form.js" />
+    <None Include="wwwroot\form\form.html" />
+    <None Include="wwwroot\form\images\background.png" />
+    <None Include="wwwroot\form\images\Delete.png" />
+    <None Include="wwwroot\form\images\Edit.png" />
+    <None Include="wwwroot\form\images\File.png" />
+    <None Include="wwwroot\form\images\logo.png" />
+    <None Include="wwwroot\form\images\Plus.png" />
+    <None Include="wwwroot\form\images\User plus.png" />
+    <None Include="wwwroot\form\images\User.png" />
+    <None Include="wwwroot\form\images\Users.png" />
+    <None Include="wwwroot\form\style.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\" />
   </ItemGroup>
 
 </Project>

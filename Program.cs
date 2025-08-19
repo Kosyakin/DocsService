@@ -7,23 +7,19 @@ using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Добавление сервисов в контейнер
+builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
 
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", policy =>
-    {
-        policy.AllowAnyOrigin()  // Разрешить запросы с любых доменов
-              .AllowAnyMethod()
-              .AllowAnyHeader();
-    });
-});
+//бд с пользователями
+//var people = new List<Users>
+//{
+//    new Users("test1", "123456"),
+//    new Users("test2", "567")
+
+//}
 
 builder.Services.AddCors(options =>
 {
@@ -53,34 +49,60 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
+// Настройка кук аутентификации
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromHours(1);
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+    options.SlidingExpiration = true;
+});
 
+//Настройка аутентификации с куками
+builder.Services.AddAntiforgery(options =>
+{
+    options.HeaderName = "RequestVerificationToken"; // Имя заголовка для CSRF-токена
+    options.Cookie.Name = "CSRF-TOKEN"; // Имя куки
+    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; // Только HTTPS
+    options.FormFieldName = "__RequestVerificationToken"; // Имя поля в форме
+});
 
+builder.Logging.AddConsole();
+builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-app.UseStaticFiles();
-
-app.UseCors("AllowAll");
+//app.UseCors("AllowAll");
 app.UseRouting();
 app.UseCors("AllowAll");
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "Views/form/")),
-    RequestPath = ""
-});
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//    FileProvider = new PhysicalFileProvider(
+//        Path.Combine(Directory.GetCurrentDirectory(), "Views/form/")),
+//    RequestPath = "/form"
+//});
+
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//    FileProvider = new PhysicalFileProvider(
+//        Path.Combine(Directory.GetCurrentDirectory(), "Views/authorization/")),
+//    RequestPath = "/authorization"
+//});
+
+app.MapControllers();
+
+app.MapGet("/", () => Results.Redirect("/Account/Login"));
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "{controller=Account}/{action=Login}/{id?}");
 
 
 app.Run();
