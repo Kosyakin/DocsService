@@ -14,9 +14,8 @@
         <h1>Авторизация пользователя</h1>
         <img src="../authorization/images/User.png" class="img-user" />
         <form id="loginForm" method="post" action="/Account/Login">
-            <!-- Добавляем CSRF-токен для защиты от подделки запросов -->
-            <input type="hidden" name="__RequestVerificationToken"
-                   value="@ViewBag.CsrfToken" id="csrf-token" />
+            
+            
 
             <div class="input-group">
                 <input type="text" id="login" name="login" placeholder="Логин" required />

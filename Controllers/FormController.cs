@@ -4,6 +4,7 @@ using DocsService.Models;
 using DocumentFormat.OpenXml.Packaging;
 
 using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using System.IO;
 
 namespace DocsService.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     public class FormController : Controller
     {
