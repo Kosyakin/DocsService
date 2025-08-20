@@ -144,6 +144,8 @@ namespace DocsService.Controllers
         {
 
             string cellText = string.Concat(cell.Descendants<Text>().Select(t => t.Text));
+            string name_user = "Иванов Иван Иванович";
+            string post_user = "начальник отдела";
 
 
             if (cellText != null)
@@ -152,6 +154,8 @@ namespace DocsService.Controllers
                     .Replace("{{DATE}}", formData.Date.ToString("dd.MM.yyyy"))
                     .Replace("{{INSTRUCTIONTYPE}}", formData.InstructionType)
                     .Replace("{{REASON}}", formData.Reason)
+                    .Replace("{{NAME}}", name_user)
+                    .Replace("{{USER_POST}}", post_user)
                     .Replace("{{LOCAL_ACT}}", formData.LocalAct)
                     .Replace("{{NAME_EMP}}", $"{employee.LastName} {employee.FirstName} {employee.MiddleName}")
                     .Replace("{{DATE_OF_BIRTH}}", employee.BirthDate.Date.ToString("dd.MM.yyyy"))
@@ -177,17 +181,20 @@ namespace DocsService.Controllers
         {
 
             string cellText = string.Concat(cell.Descendants<Text>().Select(t => t.Text));
+            string name_user = "Иванов Иван Иванович";
+            string post_user = "начальник отдела";
 
-           
-                if (cellText != null)
+            if (cellText != null)
                 {
                     cellText = cellText
                         .Replace("{{DATE}}", formData.Date.ToString("dd.MM.yyyy"))
                         .Replace("{{IT}}", formData.InstructionType)
                         .Replace("{{NAME_EMP}}", $"{employee.LastName} {employee.FirstName} {employee.MiddleName}")
                         .Replace("{{POST}}", employee.Position)
-                        .Replace("{{NAME}}", "name")
-                        .Replace("{{NUM_DOC}}", formData.NumDoc);
+                        .Replace("{{NAME}}", name_user)
+                        .Replace("{{USER_POST}}", post_user)
+                        .Replace("{{NUM_DOC}}", formData.NumDoc)
+                        ;
 
                 }
 

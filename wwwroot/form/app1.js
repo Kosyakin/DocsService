@@ -189,6 +189,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const reasonInput1 = document.getElementById('reason1');
         //const localActInput = document.querySelector('input[name="localAct"]');
         const numDoc = document.getElementById("numDoc");
+        
         console.log(`here: ${numDoc}`);
 
 
@@ -209,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const reason = reasonMap[selectedType];
         reasonInput1.value = reason;
 
-        numDoc.classList.add('required-field');
+        //numDoc.classList.add('required-field');
         numDoc.addEventListener('input', function () {
             if (this.value.trim() !== '') {
                 this.classList.remove('required-field');
@@ -818,7 +819,7 @@ document.getElementById("confirmDiscard").addEventListener('click', function () 
     //document.getElementById('edit-employees').classList.add('hidden');
     document.getElementById('form-edit-emp').classList.add('hidden');
     document.querySelector(`[data-tab-content="${tabId}"]`).classList.remove('hidden');
-
+    loadEmployeesDropDown();
 
 });
 
@@ -895,6 +896,7 @@ document.getElementById('employeesTable').addEventListener('click', function (ev
             if (row && rowParent.contains(row)) {
                 deleteRowFromBD(row.dataset.id);
                 rowParent.removeChild(row);
+                loadEmployeesDropDown();
             }
 
 
