@@ -188,9 +188,9 @@ document.addEventListener('DOMContentLoaded', function () {
     instructionTypeInput1.addEventListener('change', function () {
         const reasonInput1 = document.getElementById('reason1');
         //const localActInput = document.querySelector('input[name="localAct"]');
-        const numDoc = document.getElementById("numDoc");
+        //const numDoc = document.getElementById("numDoc");
         
-        console.log(`here: ${numDoc}`);
+        //console.log(`here: ${numDoc}`);
 
 
         // Элементы для локального акта
@@ -211,13 +211,13 @@ document.addEventListener('DOMContentLoaded', function () {
         reasonInput1.value = reason;
 
         //numDoc.classList.add('required-field');
-        numDoc.addEventListener('input', function () {
-            if (this.value.trim() !== '') {
-                this.classList.remove('required-field');
-            } else {
-                this.classList.add('required-field');
-            }
-        });
+        //numDoc.addEventListener('input', function () {
+        //    if (this.value.trim() !== '') {
+        //        this.classList.remove('required-field');
+        //    } else {
+        //        this.classList.add('required-field');
+        //    }
+        //});
 
         if (selectedType == 'Внеплановый' || selectedType == 'Целевой') {
 
@@ -382,9 +382,9 @@ document.querySelectorAll('.dynamicForm').forEach(form => {
                 });
             }
 
-            if (!formData.has('numDoc')) {
-                formData.append('numDoc', "-1");
-            }
+            //if (!formData.has('numDoc')) {
+            //    formData.append('numDoc', "-1");
+            //}
 
             console.log(`Форма с данными клиента`);
             for (let [key, value] of formData.entries()) {
@@ -725,10 +725,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    document.getElementById("numDoc").addEventListener('change', function (event) {
-        const formId = event.target.form.id;
-        checkFormValidity(formId);
-    });
+    //document.getElementById("numDoc").addEventListener('change', function (event) {
+    //    const formId = event.target.form.id;
+    //    checkFormValidity(formId);
+    //});
 
     // --- Проверка при загрузке ---
     checkFormValidity();

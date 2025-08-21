@@ -9,6 +9,7 @@ namespace DocsService.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<Employees> Employees { get; set; }
+        public DbSet<User> Users {  get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,6 +33,30 @@ namespace DocsService.Data
                     BirthDate = new DateTime(1990, 8, 22),
                     Position = "Механик"
                 });
+
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = 1,
+                    Email = "ivanov.com",
+                    Password = "12345",
+                    Name = "Иванов Иван Иванович",
+                    Post = "Начальник отдела 1",
+                    numDoc = "123456789"
+                },
+                new User
+                {
+                    Id = 2,
+                    Email = "petrov.com",
+                    Password = "6789",
+                    Name = "Петров Петр Петрович",
+                    Post = "Начальник отдела 2",
+                    numDoc = "987654321"
+                });
+
+            //modelBuilder.Entity<User>()
+            //    .HasIndex(u => u.Id)
+            //    .IsUnique();
         }
     }
 }

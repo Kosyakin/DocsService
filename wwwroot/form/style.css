@@ -720,7 +720,7 @@
 /* Открытое состояние */
 .userInfoBtn.active {
     width: 500px; /* Общая ширина (40px иконка + 260px карточка) */
-    height: 100px;
+    height: 150px;
     
 }
 
