@@ -8,58 +8,52 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 
+
 namespace DocsService.Controllers
 {
-    
+
     public class AccountController : Controller
     {
-        private readonly Dictionary<string, string> _employees = new Dictionary<string, string>
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+
+        public AccountController(
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
-            {"user1", "12345" },
-            {"user2", "6789" }
-        };
-        
-        // Страница авторизации
+            _userManager = userManager;
+            _signInManager = signInManager;
+        }
+
         [HttpGet("/")]
         public IActionResult Login()
         {
             return PhysicalFile(
-        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/authorization/authorization.html"),
-        "text/html"
-    );
+                Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/authorization/authorization.html"),
+                "text/html"
+            );
         }
 
-        // Проверка логина/пароля
         [HttpPost("Account/Login")]
         public async Task<IActionResult> Login(string login, string password)
         {
+            var result = await _signInManager.PasswordSignInAsync(login, password, isPersistent: true, lockoutOnFailure: false);
 
-            if (_employees.TryGetValue(login, out var correctPassword) && password == correctPassword)
+            if (result.Succeeded)
             {
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, login),
-                    
-                };
-
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity));
-
                 return PhysicalFile(
                     Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/form/form.html"),
-                    "text/html");
+                    "text/html"
+                );
             }
 
-            // если ошибка
             TempData["Error"] = "Неверный логин или пароль";
             return Redirect("/");
         }
 
-        // Выход
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await _signInManager.SignOutAsync();
             return Redirect("/");
         }
     }

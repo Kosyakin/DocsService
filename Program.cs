@@ -1,4 +1,4 @@
-using DocsService.Data;
+п»їusing DocsService.Data;
 using DocsService.Models;
 using DocumentFormat.OpenXml.InkML;
 using DocumentFormat.OpenXml.Office2013.Word;
@@ -11,9 +11,10 @@ using Microsoft.Extensions.FileProviders;
 using System.Security.Claims;
 
 
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Добавление сервисов в контейнер
+// Р”РѕР±Р°РІР»РµРЅРёРµ СЃРµСЂРІРёСЃРѕРІ РІ РєРѕРЅС‚РµР№РЅРµСЂ
 builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
@@ -25,25 +26,36 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.AllowAnyOrigin()  // Разрешаем запросы с любых доменов
-              .AllowAnyMethod()  // Разрешаем все HTTP-методы (GET, POST и т.д.)
-              .AllowAnyHeader()  // Разрешаем все заголовки
-              .WithExposedHeaders("*");  // Разрешаем все доступные заголовки в ответе
+        policy.AllowAnyOrigin()  // Р Р°Р·СЂРµС€Р°РµРј Р·Р°РїСЂРѕСЃС‹ СЃ Р»СЋР±С‹С… РґРѕРјРµРЅРѕРІ
+              .AllowAnyMethod()  // Р Р°Р·СЂРµС€Р°РµРј РІСЃРµ HTTP-РјРµС‚РѕРґС‹ (GET, POST Рё С‚.Рґ.)
+              .AllowAnyHeader()  // Р Р°Р·СЂРµС€Р°РµРј РІСЃРµ Р·Р°РіРѕР»РѕРІРєРё
+              .WithExposedHeaders("*");  // Р Р°Р·СЂРµС€Р°РµРј РІСЃРµ РґРѕСЃС‚СѓРїРЅС‹Рµ Р·Р°РіРѕР»РѕРІРєРё РІ РѕС‚РІРµС‚Рµ
     });
 });
 
-// получаем строку подключения из файла конфигурации
+// РїРѕР»СѓС‡Р°РµРј СЃС‚СЂРѕРєСѓ РїРѕРґРєР»СЋС‡РµРЅРёСЏ РёР· С„Р°Р№Р»Р° РєРѕРЅС„РёРіСѓСЂР°С†РёРё
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
 
 
 
-// аутентификация с помощью куки
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    options.LoginPath = "/Account/Login");
-builder.Services.AddAuthorization();
+// Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёСЏ СЃ РїРѕРјРѕС‰СЊСЋ РєСѓРєРё
+//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+//    .AddCookie(options =>
+//    options.LoginPath = "/Account/Login");
+//builder.Services.AddAuthorization();
+
+builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
+})
+    .AddEntityFrameworkStores<AppDbContext>();
 
 
 
