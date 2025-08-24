@@ -7,18 +7,68 @@
         const loginFilled = loginInput.value.trim() !== '';
         const passwordFilled = passwordInput.value.trim() !== '';
 
-        submitBtn.disabled = !(loginFilled && passwordFilled);
-        console.log(submitBtn.disabled);
+        const isFormValid = loginFilled && passwordFilled;
 
-        if (!submitBtn.disabled) {
-            submitBtn.classList.add('disabled');
+        submitBtn.disabled = !isFormValid;
+
+        
+        if (isFormValid) {
+            submitBtn.classList.remove('disabled'); 
         } else {
-            submitBtn.classList.remove('disabled');
+            submitBtn.classList.add('disabled');   
         }
+
+        console.log('Form valid:', isFormValid, 'Button disabled:', submitBtn.disabled);
     }
 
     loginInput.addEventListener('input', checkValid);
     passwordInput.addEventListener('input', checkValid);
 
     checkValid();
+});
+
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault(); 
+
+    const loginInput = document.getElementById("login");
+    const passwordInput = document.getElementById("password");
+
+    if (!loginInput || !passwordInput) {
+        console.error('Input elements not found!');
+        return;
+    }
+
+    const formData = {
+        email: loginInput.value,
+        password: passwordInput.value
+    };
+
+    console.log('Sending:');
+
+    try {
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+            credentials: 'include'
+        });
+
+        console.log('Response status:', response.status);
+
+        if (response.ok) {
+            //console.log(response);
+            //const result = await response.json();
+            //console.log('Success:', result);
+            window.location.href = '/account';
+        } else {
+            //const error = await response.json();
+            //console.error('Error:', error);
+            alert('Неверный пароль');
+        }
+    } catch (error) {
+        console.error('Network error:', error);
+        
+    }
 });

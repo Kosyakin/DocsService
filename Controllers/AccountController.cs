@@ -7,23 +7,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace DocsService.Controllers
 {
-
+    
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        
 
-        public AccountController(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-        }
+        //public AccountController(
+        //    UserManager<ApplicationUser> userManager,
+        //    SignInManager<ApplicationUser> signInManager)
+        //{
+        //    _userManager = userManager;
+        //    _signInManager = signInManager;
+        //}
 
         [HttpGet("/")]
         public IActionResult Login()
@@ -34,28 +34,28 @@ namespace DocsService.Controllers
             );
         }
 
-        [HttpPost("Account/Login")]
-        public async Task<IActionResult> Login(string login, string password)
-        {
-            var result = await _signInManager.PasswordSignInAsync(login, password, isPersistent: true, lockoutOnFailure: false);
+        //[HttpGet("Account")]
+        //public async Task<IActionResult> Login(string login, string password)
+        //{
+            
 
-            if (result.Succeeded)
-            {
-                return PhysicalFile(
-                    Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/form/form.html"),
-                    "text/html"
-                );
-            }
+        //    if (result.Succeeded)
+        //    {
+        //        return PhysicalFile(
+        //            Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/form/form.html"),
+        //            "text/html"
+        //        );
+        //    }
 
-            TempData["Error"] = "Неверный логин или пароль";
-            return Redirect("/");
-        }
+        //    TempData["Error"] = "Неверный логин или пароль";
+        //    return Redirect("/");
+        //}
 
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            return Redirect("/");
-        }
+        //public async Task<IActionResult> Logout()
+        //{
+        //    await _signInManager.SignOutAsync();
+        //    return Redirect("/");
+        //}
     }
 
 }

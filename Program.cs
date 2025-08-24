@@ -1,15 +1,22 @@
 ﻿using DocsService.Data;
+using DocsService.Endpoints;
+using DocsService.Extentions; // Добавьте эту директиву
+using DocsService.Interfaces;
 using DocsService.Models;
+using DocsService.Repositories;
+using DocsService.Services;
 using DocumentFormat.OpenXml.InkML;
 using DocumentFormat.OpenXml.Office2013.Word;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
 using System.Security.Claims;
-
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,10 +24,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Добавление сервисов в контейнер
 builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen();
 
-
-
+//builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
+var serviceProvider = builder.Services.BuildServiceProvider();
+var jwtOptions = serviceProvider.GetService<IOptions<JwtOptions>>();
+builder.Services.AddApiAuthentication(jwtOptions);
 
 builder.Services.AddCors(options =>
 {
@@ -35,44 +46,88 @@ builder.Services.AddCors(options =>
 
 // получаем строку подключения из файла конфигурации
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//    options.UseInMemoryDatabase("DocsServiceDb"));
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
 
+//var services = builder.Services;
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<UserService>();
+
+builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 
-// аутентификация с помощью куки
-//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-//    .AddCookie(options =>
-//    options.LoginPath = "/Account/Login");
-//builder.Services.AddAuthorization();
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
-{
-    options.SignIn.RequireConfirmedAccount = false;
-    options.Password.RequireDigit = false;
-    options.Password.RequireLowercase = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequiredLength = 6;
-})
-    .AddEntityFrameworkStores<AppDbContext>();
+
 
 
 
 var app = builder.Build();
 
-
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "DocsService API V1");
+        options.RoutePrefix = "swagger"; // Доступ по /swagger
+    });
+}
 
 app.UseRouting();
 app.UseCors("AllowAll");
+
+
+app.UseHttpsRedirection();
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
+app.UseCookiePolicy(new CookiePolicyOptions
+{
+    MinimumSameSitePolicy = SameSiteMode.Strict,
+    HttpOnly = HttpOnlyPolicy.Always,
+    Secure = CookieSecurePolicy.Always
+});
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-
-
 app.MapControllers();
+app.MapUsersEndpoints();
+
+app.MapGet("get", () =>
+{
+    return Results.Ok("ok");
+}).RequireAuthorization();
+
+//app.MapGet("/", () => Results.File("wwwroot\\authorization\\authorization.html"));
+app.MapGet("/account", async (HttpContext context, UserService userService) =>
+{
+    if (!context.User.Identity.IsAuthenticated)
+    {
+        return Results.Unauthorized();
+    }
+
+    var userIdClaim = context.User.FindFirst("userId");
+    if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
+    {
+        return Results.Unauthorized();
+    }
+
+    var user = await userService.GetUserById(userId);
+
+    var htmlContent = await System.IO.File.ReadAllTextAsync("wwwroot/form/form.html");
+
+    // Заменяем плейсхолдеры реальными данными
+    htmlContent = htmlContent
+        .Replace("{{UserName}}", $"{user.LastName} {user.FirstName} {user.MiddleName}")
+        .Replace("{{Position}}", user.Position)
+        .Replace("{{DocumentNumber}}", user.DocumentNumber)
+        .Replace("{{Email}}", user.Email);
+
+    return Results.Content(htmlContent, "text/html");
+}).RequireAuthorization();
 
 app.Run();

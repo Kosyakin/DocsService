@@ -47,7 +47,7 @@
 .login-btn {
     width: 50%;
     padding: 18px;
-    background-color: #E6E6E6;
+    background-color: #DB2B36;
     color: white;
     border: none;
     border-radius: 20px;
@@ -55,26 +55,23 @@
     cursor: pointer;
     transition: background-color 0.3s;
     margin-top: 10px;
-    color: #000000;
+    color: #FFFFFF;
 }
 
-/*    .login-btn:hover:not(.disabled) {
-        background-color: #DB2B36;
+    .login-btn:hover {
+        background-color: #656565;
         color: #FFFFFF;
-    }*/
-
-    .login-btn:disabled {
-        background-color: #E6E6E6;
     }
+
+
 
     .login-btn.disabled {
-        background-color: #DB2B36;
-        color: #FFFFFF;
+        background-color: #E6E6E6;
+        color: #000000;
+        
     }
 
-        .login-btn.disabled:hover {
-            background-color: #656565;
-        }
+
 
 .error-message {
     color: #dc3545;

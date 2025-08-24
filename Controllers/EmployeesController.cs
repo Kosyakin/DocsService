@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using DocsService.Data;
 using DocsService.Models;
 using System.Runtime.InteropServices;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DocsService.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     public class EmployeesController: ControllerBase
     {
