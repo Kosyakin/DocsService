@@ -80,13 +80,13 @@ namespace DocsService.Services
             };
         }
 
-        public async Task SendPasswordReminderAsync(string email)
-        {
-            var user = await _usersRepository.GetByEmail(email);
-            if (user != null)
-            {
-                await _emailService.SendReminderAsync(email, "напоминание пароля", DateTime.Now);
-            }
-        }
+        //public async Task SendPasswordReminderAsync(string email)
+        //{
+        //    var user = await _usersRepository.GetByEmail(email);
+        //    if (user != null)
+        //    {
+        //        await _emailService.SendReminderAsync(email, "напоминание пароля", DateTime.Now);
+        //    }
+        //}
     }
 }

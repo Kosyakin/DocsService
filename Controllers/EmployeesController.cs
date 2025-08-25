@@ -18,10 +18,12 @@ namespace DocsService.Controllers
             _context = context;
         }
 
-        [HttpGet("Employees")]
-        public async Task<ActionResult<IEnumerable<Employees>>> GetEmployees()
+        [HttpGet("Employees{email}")]
+        public async Task<ActionResult<IEnumerable<Employees>>> GetEmployees(string email)
         {
+            
             var employees = await _context.Employees
+                .Where(e => e.Email_User == email)
         .Select(e => new {
             e.ID,
             e.FullName,

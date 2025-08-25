@@ -33,7 +33,7 @@ namespace DocsService.Data
                     MiddleName = "Петрович",
                     BirthDate = new DateTime(1990, 8, 22),
                     Position = "Механик",
-                    Email_User = "kurdina.00@gmail.com"
+                    Email_User = "login.00@gmail.com"
                 });
 
             //modelBuilder.Entity<User>().HasData(

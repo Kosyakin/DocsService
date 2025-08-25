@@ -756,8 +756,8 @@ document.getElementById("confirmDiscard").addEventListener('click', function () 
         table.removeChild(table.firstChild);
     }
 
-
-    loadEmployeesTable();
+    const email = document.getElementById("userInfoBtn").dataset.email;
+    loadEmployeesTable(email);
     if (addEmpRow) {
         table.appendChild(addEmpRow);
     }
@@ -767,7 +767,8 @@ document.getElementById("confirmDiscard").addEventListener('click', function () 
     //document.getElementById('edit-employees').classList.add('hidden');
     document.getElementById('form-edit-emp').classList.add('hidden');
     document.querySelector(`[data-tab-content="${tabId}"]`).classList.remove('hidden');
-    loadEmployeesDropDown();
+    
+    loadEmployeesDropDown(email);
 
 });
 
@@ -813,8 +814,9 @@ document.getElementById("confirmSave").addEventListener('click', async function 
 
         if (response.ok) {
             console.log('Данные успешно сохранены');
-            loadEmployeesDropDown();
-            loadEmployeesTable();
+            const email = document.getElementById("userInfoBtn").dataset.email;
+            loadEmployeesDropDown(email);
+            loadEmployeesTable(email);
         } else {
             console.error('Ошибка при сохранении: ', await response.text());
         }
@@ -845,7 +847,8 @@ document.getElementById('employeesTable').addEventListener('click', function (ev
             if (row && rowParent.contains(row)) {
                 deleteRowFromBD(row.dataset.id);
                 rowParent.removeChild(row);
-                loadEmployeesDropDown();
+                const email = document.getElementById("userInfoBtn").dataset.email;
+                loadEmployeesDropDown(email);
             }
 
 
@@ -943,9 +946,9 @@ document.getElementById('addEmployee').addEventListener('click', function () {
 });
 
 
-async function loadEmployeesDropDown() {
+async function loadEmployeesDropDown(email) {
     try {
-        const response = await fetch('/Employees/Employees');
+        const response = await fetch(`/Employees/Employees${email}`);
         const employees = await response.json();
         console.log(`Response in employees: ${employees}`)
         //console.log("Поля первого сотрудника:", Object.keys(employees[0]));
@@ -984,9 +987,9 @@ async function loadEmployeesDropDown() {
     }
 }
 
-async function loadEmployeesTable() {
+async function loadEmployeesTable(email) {
     try {
-        const response = await fetch('/Employees/Employees');
+        const response = await fetch(`/Employees/Employees${email}`);
         const employees = await response.json();
         console.log(`Response in employees: ${employees}`)
         console.log("Поля первого сотрудника:", employees[0]);
@@ -1104,8 +1107,16 @@ async function deleteRowFromBD(id) {
     });
 }
 
-document.addEventListener('DOMContentLoaded', loadEmployeesDropDown);
-document.addEventListener('DOMContentLoaded', loadEmployeesTable);
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const email = document.getElementById("userInfoBtn").dataset.email;
+    loadEmployeesDropDown(email);
+});
+document.addEventListener('DOMContentLoaded', async () =>
+{
+    const email = document.getElementById("userInfoBtn").dataset.email;
+    loadEmployeesTable(email);
+});
 
 
 //Логика работы формы с информацией об авторизованном пользователе

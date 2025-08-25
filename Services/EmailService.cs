@@ -38,8 +38,10 @@ namespace DocsService.Services
             }
         }
 
-        public async Task SendReminderAsync(string email, string reminderType, DateTime reminderDate)
+        public async Task SendReminderAsync(string email, string reminderType, DateTime reminderDate, List<Employees> employees)
         {
+            
+            
             var subject = $"Напоминание: {reminderType}";
             var message = $"пупупупу";
 

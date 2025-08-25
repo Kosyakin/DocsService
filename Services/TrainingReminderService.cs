@@ -16,6 +16,7 @@ namespace DocsService.Services
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            // Подождать первую минуту
             await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
 
             while (!stoppingToken.IsCancellationRequested)
@@ -26,10 +27,12 @@ namespace DocsService.Services
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex);
+                    Console.WriteLine($"Ошибка в сервисе напоминаний: {ex}");
                 }
+
+                // Подождать 24 часа до следующей проверки
+                await Task.Delay(TimeSpan.FromHours(24), stoppingToken);
             }
-            await Task.Delay(TimeSpan.FromHours(24), stoppingToken);
         }
 
         private async Task CheckAndSendRemindersAsync()
@@ -40,7 +43,7 @@ namespace DocsService.Services
 
             var today = DateTime.Today;
 
-            if ((today.Month == 8 && today.Day == 25) || (today.Month == 9 && today.Day == 1))
+            if ((today.Month == 8 && today.Day == 25) || (today.Month == 8 && today.Day == 26))
             {
                 var managers = await dbContext.Users
                 .Where(u => dbContext.Employees.Any(e => e.Email_User == u.Email))
@@ -54,6 +57,8 @@ namespace DocsService.Services
                 .Distinct()
                 .ToListAsync();
 
+                
+
                 if (!managers.Any())
                 {
                     return;
@@ -61,9 +66,13 @@ namespace DocsService.Services
 
                 foreach (var manager in managers)
                 {
+                    var employees = await dbContext.Employees
+                    .Where(e => e.Email_User == manager.Email)
+                    .ToListAsync();
+                    
                     try
                     {
-                        await emailService.SendReminderAsync(manager.Email, "DocsService", today);
+                        await emailService.SendReminderAsync(manager.Email, "DocsService", today, employees);
                     }
                     catch (Exception ex)
                     {
