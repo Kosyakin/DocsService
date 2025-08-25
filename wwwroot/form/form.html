@@ -12,7 +12,7 @@
     </header>
     <div class="page-container">
         <div class="auth-form">
-            <button type="button" id="userInfoBtn" class="userInfoBtn">
+            <button type="button" id="userInfoBtn" class="userInfoBtn" data-email="{{Email}}">
                 <img src="../form/images/User.png" class="img-userInfo-btn" />
                 <div class="user-info-card">
                     <p><strong>Имя:</strong> {{UserName}}</p>
@@ -20,9 +20,11 @@
                     <p><strong>Номер документа:</strong> {{DocumentNumber}}</p>
                     <p><strong>Почта:</strong> {{Email}}</p>
                 </div>
-                
+
             </button>
-            
+
+         
+
         </div>
 
         <div class="form-with-tabs">

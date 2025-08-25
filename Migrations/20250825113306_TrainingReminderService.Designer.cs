@@ -4,6 +4,7 @@ using DocsService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DocsService.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250825113306_TrainingReminderService")]
+    partial class TrainingReminderService
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,13 +36,12 @@ namespace DocsService.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Email_User")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("Id_User")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("LastDatePB")
                         .HasColumnType("datetime2");
@@ -68,8 +70,8 @@ namespace DocsService.Migrations
                         {
                             ID = 1,
                             BirthDate = new DateTime(1985, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email_User = "kurdina.00@gmail.com",
                             FirstName = "Иван",
+                            Id_User = new Guid("00000000-0000-0000-0000-000000000000"),
                             LastDatePB = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastName = "Иванов",
                             MiddleName = "Иванович",
@@ -80,8 +82,8 @@ namespace DocsService.Migrations
                         {
                             ID = 2,
                             BirthDate = new DateTime(1990, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email_User = "kurdina.00@gmail.com",
                             FirstName = "Петр",
+                            Id_User = new Guid("00000000-0000-0000-0000-000000000000"),
                             LastDatePB = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastName = "Петров",
                             MiddleName = "Петрович",

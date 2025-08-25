@@ -17,6 +17,13 @@ namespace DocsService.Models
 
         public string Position { get; set; }
 
+        //Реализация напоминаний
+        //public Guid Id_User { get; set; }
+        public string Email_User {  get; set; }
+
+        public DateTime LastDatePB { get; set; }
+        public DateTime NextDatePB { get; set; }
+
         public string FullName => $"{LastName} {FirstName} {MiddleName}".Trim();
     }
 }

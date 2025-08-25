@@ -578,59 +578,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!submitBtn) return;
 
-    //function checkFormValidity(formId) {
-
-    //    switch (formId) {
-    //        case 'dataForm':
-    //            const date = document.getElementById('date').value;
-    //            const instructionType = document.getElementById('instructionType').value;
-    //            const reason = document.querySelector('input[name="reason"]').value;
-    //            const localAct = document.getElementById('localAct').value;
-    //            const localActInput = document.getElementById("localActInputField").value;
-    //            const dropdown0 = document.getElementById("dropdown0");
-    //            const anyEmployeeSelected = dropdown0.querySelectorAll('input[name="employees"]:checked').length > 0;
-    //            console.log(anyEmployeeSelected);
-    //            const isFormValid = date && instructionType && reason && (localAct || localActInput) && anyEmployeeSelected;
-    //            submitBtn.disabled = !isFormValid;
-
-    //            break;
-
-    //        case 'dataForm1':
-    //            console.log(formId);
-    //            const date1 = document.getElementById('date1').value;
-    //            const instructionType1 = document.getElementById('instructionType1').value;
-    //            const reason1 = document.getElementById('reason1').value;
-    //            const localAct1 = document.getElementById('localAct1').value;
-    //            const localActInput1 = document.getElementById("localActInputField1").value;
-    //            const anyEmployeeSelected1 = document.querySelector('input[name="employees1"]:checked') !== null;
-    //            const numDoc = document.getElementById("numDoc").value;
-    //            console.log(numDoc);
-
-    //            const isFormValid1 = date1 && instructionType1 && reason1 && (localAct1 || localActInput1) && anyEmployeeSelected1 && numDoc;
-    //            submitBtn1.disabled = !isFormValid1;
-
-    //            break;
-
-    //        case 'dataForm2':
-    //            const date2 = document.getElementById('date2').value;
-    //            const instructionType2 = document.getElementById('instructionType2').value;
-    //            const reason2 = document.getElementById('reason2').value;
-    //            const localAct2 = document.getElementById('localAct2').value;
-    //            const localActInput2 = document.getElementById("localActInputField2").value;
-    //            const anyEmployeeSelected2 = document.querySelector('input[name="employees2"]:checked') !== null;
-
-    //            const isFormValid2 = date2 && instructionType2 && reason2 && (localAct2 || localActInput2) && anyEmployeeSelected2;
-    //            submitBtn2.disabled = !isFormValid2;
-
-    //            break;
-
-    //        default:
-    //            console.log("Default")
-    //    }
-
-    //}
-
-    // --- Назначаем обработчики ---
+    
 
     // Дата
     document.getElementById('date').addEventListener('change', function (event) {
@@ -847,7 +795,8 @@ document.getElementById("confirmSave").addEventListener('click', async function 
             firstName: cells[1].querySelector('input').value.trim(),
             middleName: cells[2].querySelector('input').value.trim(),
             birthDate: cells[3].querySelector('input').value,
-            position: cells[4].querySelector('input').value.trim()
+            position: cells[4].querySelector('input').value.trim(),
+            Email_User: document.getElementById("userInfoBtn").dataset.email
         };
     });
 
@@ -1029,15 +978,7 @@ async function loadEmployeesDropDown() {
                 dropdown.appendChild(label);
             });
         });
-        //dropdown.innerHTML = '';
-        //employees.forEach(employee => {
-        //    const label = document.createElement('label');
-        //    console.log(employee.id);
-        //    label.innerHTML = `
-        //    <input name="employees" type="checkbox" value="${employee.id}" checked> ${employee.fullName}`;
-        //    console.log(label);
-        //    dropdown.appendChild(label);
-        //});
+        
     } catch (error) {
         console.error('Ошибка загрузки сотрудников: ', error);
     }

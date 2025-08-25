@@ -53,6 +53,7 @@ namespace DocsService.Controllers
                     empDB.MiddleName = emp.MiddleName;
                     empDB.BirthDate = emp.BirthDate;
                     empDB.Position = emp.Position;
+                    empDB.Email_User = emp.Email_User;
                 }
                 else if (emp.ID == -1)
                 {
@@ -62,7 +63,8 @@ namespace DocsService.Controllers
                         FirstName = emp.FirstName,
                         MiddleName = emp.MiddleName,
                         BirthDate = emp.BirthDate,
-                        Position = emp.Position
+                        Position = emp.Position,
+                        Email_User = emp.Email_User,
                     };
 
                     _context.Employees.Add(newEmpDB);

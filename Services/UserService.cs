@@ -19,12 +19,14 @@ namespace DocsService.Services
         private readonly IPasswordHasher _passwordHasher;
         private readonly IUsersRepository _usersRepository;
         private readonly IJwtProvider _jwtProvider;
+        private readonly IEmailService _emailService;
         public UserService(IUsersRepository usersRepository, IPasswordHasher passwordHasher,
-            IJwtProvider jwtProvider) 
+            IJwtProvider jwtProvider, IEmailService emailService) 
         {
             _passwordHasher = passwordHasher;
             _usersRepository = usersRepository;
             _jwtProvider = jwtProvider;
+            _emailService = emailService;
         }
         public async Task Register(string userName, string email, string password,
             string firstName, string lastName, string middleName,
@@ -35,6 +37,11 @@ namespace DocsService.Services
                 firstName, lastName, middleName,
                 position, documentNumber);
             await _usersRepository.Add(user);
+
+            await _emailService.SendEmailAsync(email, "Добро пожаловать в DocsService",
+            $@"<h3>Добро пожаловать, {firstName}!</h3>
+               <p>Вы успешно зарегистрировались в системе DocsService.</p>
+               <p>Ваш логин: {userName}</p>");
         }
 
         public async Task<string> Login(string email, string password)
@@ -71,6 +78,15 @@ namespace DocsService.Services
                 DocumentNumber = userEntity.DocumentNumber,
                 Email = userEntity.Email
             };
+        }
+
+        public async Task SendPasswordReminderAsync(string email)
+        {
+            var user = await _usersRepository.GetByEmail(email);
+            if (user != null)
+            {
+                await _emailService.SendReminderAsync(email, "напоминание пароля", DateTime.Now);
+            }
         }
     }
 }

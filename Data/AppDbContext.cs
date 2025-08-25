@@ -22,7 +22,8 @@ namespace DocsService.Data
                     FirstName = "Иван",
                     MiddleName = "Иванович",
                     BirthDate = new DateTime(1985, 5, 15),
-                    Position = "Инженер"
+                    Position = "Инженер",
+                    Email_User = "kurdina.00@gmail.com"
                 },
                 new Employees
                 {
@@ -31,7 +32,8 @@ namespace DocsService.Data
                     FirstName = "Петр",
                     MiddleName = "Петрович",
                     BirthDate = new DateTime(1990, 8, 22),
-                    Position = "Механик"
+                    Position = "Механик",
+                    Email_User = "kurdina.00@gmail.com"
                 });
 
             //modelBuilder.Entity<User>().HasData(

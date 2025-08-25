@@ -58,9 +58,12 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddScoped<IEmailService, EmailService>();
 
+builder.Services.AddScoped<UserService>();
 
-
+builder.Services.AddHostedService<TrainingReminderService>();
 
 
 
@@ -102,7 +105,7 @@ app.MapGet("get", () =>
     return Results.Ok("ok");
 }).RequireAuthorization();
 
-//app.MapGet("/", () => Results.File("wwwroot\\authorization\\authorization.html"));
+
 app.MapGet("/account", async (HttpContext context, UserService userService) =>
 {
     if (!context.User.Identity.IsAuthenticated)
@@ -122,7 +125,8 @@ app.MapGet("/account", async (HttpContext context, UserService userService) =>
 
     // Заменяем плейсхолдеры реальными данными
     htmlContent = htmlContent
-        .Replace("{{UserName}}", $"{user.LastName} {user.FirstName} {user.MiddleName}")
+    .Replace("{{Email}}", user.Email)    
+    .Replace("{{UserName}}", $"{user.LastName} {user.FirstName} {user.MiddleName}")
         .Replace("{{Position}}", user.Position)
         .Replace("{{DocumentNumber}}", user.DocumentNumber)
         .Replace("{{Email}}", user.Email);
