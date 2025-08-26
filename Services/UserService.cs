@@ -39,9 +39,9 @@ namespace DocsService.Services
             await _usersRepository.Add(user);
 
             await _emailService.SendEmailAsync(email, "Добро пожаловать в DocsService",
-            $@"<h3>Добро пожаловать, {firstName}!</h3>
+            $@"<h3>Добрый день, {firstName}!</h3>
                <p>Вы успешно зарегистрировались в системе DocsService.</p>
-               <p>Ваш логин: {userName}</p>");
+               <p>Ваш логин: {email}</p>");
         }
 
         public async Task<string> Login(string email, string password)

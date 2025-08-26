@@ -17,7 +17,7 @@ namespace DocsService.Endpoints
         private static async Task<IResult> Register(RegisterUserRequests request, UserService usersService)
         {
             await usersService.Register(request.UserName, request.Email, request.Password,
-                request.FirstName, request.LastName, request.LastName,
+                request.FirstName, request.LastName, request.MiddleName,
                 request.Position, request.DocumentNumber);
             return Results.Ok();
         }

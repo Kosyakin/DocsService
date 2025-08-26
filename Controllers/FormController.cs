@@ -1,6 +1,6 @@
 ﻿using DocsService.Data;
+using DocsService.Interfaces;
 using DocsService.Models;
-
 using DocumentFormat.OpenXml.Packaging;
 
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
+using System.Threading.Tasks;
+using Xceed.Document.NET;
+using Xceed.Words.NET;
 
 namespace DocsService.Controllers
 {
@@ -18,10 +21,12 @@ namespace DocsService.Controllers
     {
 
         private readonly AppDbContext _context;
+        private readonly IUsersRepository _usersRepository;
 
-        public FormController(AppDbContext context)
+        public FormController(AppDbContext context, IUsersRepository usersRepository)
         {
             _context = context;
+            _usersRepository = usersRepository;
         }
 
         [HttpPost("SubmitData")]
@@ -68,7 +73,8 @@ namespace DocsService.Controllers
                 MiddleName = e.MiddleName,
                 Position = e.Position,
                 //FullName = $"{e.LastName} {e.FirstName} {e.MiddleName}".Trim(),
-                BirthDate = e.BirthDate
+                BirthDate = e.BirthDate,
+                Email_User = e.Email_User
             }).ToListAsync();
 
             if (!employeesDB.Any())
@@ -97,92 +103,175 @@ namespace DocsService.Controllers
             using var memoryStream = new MemoryStream();
             memoryStream.Write(templateBytes, 0, templateBytes.Length);
 
-            using (var doc = WordprocessingDocument.Open(memoryStream, true))
+            using (var doc = DocX.Load(templatePath))
             {
-                var body = doc.MainDocumentPart.Document.Body;
-                var table = body.Descendants<Table>().FirstOrDefault();
+                var table = doc.Tables.FirstOrDefault();
+                if (table == null)
+                    throw new InvalidOperationException("Таблица не найдена в шаблоне.");
 
-                if (table != null)
+
+                // Определяем шаблонную строку (например, последняя строка или с меткой)
+                Row templateRow = null;
+
+                if (formId == "dataForm")
                 {
-                    var templateRow = table.Elements<TableRow>().ElementAt(3);
-                    if (formId == "dataForm1") { templateRow = table.Elements<TableRow>().ElementAt(4); }
-                    
-                    
-                    templateRow.Remove();
-
-                     //await EmployeesFromDB(data);
-
-                    foreach (var employee in employeesDB)
-                    {
-                        var newRow = (TableRow)templateRow.Clone();
-                        
-
-
-                        foreach (TableCell cell in newRow.Elements<TableCell>())
-                        {
-                            if (formId == "dataForm" || formId == "dataForm2") 
-                            {ReplaceTextInOTandGOCS(cell, data, employee);}
-                            if (formId == "dataForm1")
-                            { ReplaceTextInPB(cell, data, employee); }
-
-                        }
-
-                        table.AppendChild(newRow);
-                    }
-
-
+                    templateRow = table.Rows[3]; // 4-я строка (индекс 3)
+                    table.RemoveRow(3);
+                }
+                else if (formId == "dataForm2")
+                {
+                    templateRow = table.Rows[3];
+                    table.RemoveRow(3);
+                }
+                else if (formId == "dataForm1")
+                {
+                    templateRow = table.Rows[4]; // 5-я строка
+                    table.RemoveRow(4);
                 }
 
+                if (templateRow == null)
+                    throw new InvalidOperationException("Шаблонная строка не найдена.");
 
-                doc.MainDocumentPart.Document.Save();
+                // Удаляем шаблонную строку (её будем клонировать)
+                
+
+                //await EmployeesFromDB(data);
+
+                foreach (var employee in employeesDB)
+                    {
+                    var newRow = table.InsertRow(templateRow, table.Rows.Count);
+                    var user = await (from emp in _context.Employees
+                                      join u in _context.Users on emp.Email_User equals u.Email
+                                      where u.Email == employee.Email_User
+                                      select new
+                                      {
+                                          u.FirstName,
+                                          u.LastName,
+                                          u.MiddleName,
+                                          u.Position,
+                                          u.DocumentNumber
+                                      })
+                              .FirstOrDefaultAsync();
+
+                    if (user == null)
+                    {
+                        throw new InvalidOperationException($"Пользователь с email '{employee.Email_User}' не найден.");
+                    }
+
+                    string post_user = user.Position;
+
+
+                    // Заменяем текст в каждой ячейке новой строки
+                    foreach (var cell in newRow.Cells)
+                    {
+                        // Полный текст ячейки — DocX позволяет легко получить и заменить
+                        cell.ReplaceText("{{NAME_EMP}}", $"{employee.LastName} {employee.FirstName} {employee.MiddleName}");
+                        cell.ReplaceText("{{DATE_OF_BIRTH}}", employee.BirthDate.ToString("dd.MM.yyyy"));
+                        cell.ReplaceText("{{POST}}", employee.Position);
+
+                        cell.ReplaceText("{{NAME}}", $"{user.LastName} {user.FirstName} {user.MiddleName}");
+                        cell.ReplaceText("{{USER_POST}}", user.Position.ToLower());
+                        cell.ReplaceText("{{NUM_DOC}}", user.DocumentNumber);
+
+                        // Глобальные поля (можно повторить, если нужно)
+                        cell.ReplaceText("{{DATE}}", data.Date.ToString("dd.MM.yyyy"));
+                        cell.ReplaceText("{{INSTRUCTIONTYPE}}", data.InstructionType);
+                        cell.ReplaceText("{{REASON}}", data.Reason);
+                        cell.ReplaceText("{{LOCAL_ACT}}", data.LocalAct);
+                        cell.ReplaceText("{{IT}}", data.InstructionType);
+                        cell.ReplaceText("{{YEAR_BIRTH}}", employee.BirthDate.Year.ToString());
+                        
+                    }
+
+                    //table.AppendChild(newRow);
+                }
+
+                // Сохраняем в память
+                //using (var memoryStream = new MemoryStream())
+                //{
+                    doc.SaveAs(memoryStream);
+                    return memoryStream.ToArray();
+                //}
+
+
+
+                //doc.MainDocumentPart.Document.Save();
             }
 
-            return memoryStream.ToArray();
+
+
+            //return memoryStream.ToArray();
         }
 
-        private void ReplaceTextInOTandGOCS(TableCell cell, FormData formData, Employees employee)
+        private async Task ReplaceTextInOT(TableCell cell, FormData formData, Employees employee)
+        {
+            // Получаем данные пользователя
+            var user = await (from emp in _context.Employees
+                              join u in _context.Users on emp.Email_User equals u.Email
+                              where u.Email == employee.Email_User
+                              select new
+                              {
+                                  u.FirstName,
+                                  u.LastName,
+                                  u.MiddleName,
+                                  u.Position
+                              })
+                              .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                throw new InvalidOperationException($"Пользователь с email '{employee.Email_User}' не найден.");
+            }
+
+            string post_user = user.Position;
+
+            /// Собираем полный текст
+    string fullText = string.Concat(cell.Descendants<Text>().Select(t => t.Text));
+
+            // Выполняем замены
+            string updatedText = fullText
+                .Replace("{{DATE}}", formData.Date.ToString("dd.MM.yyyy"))
+                .Replace("{{NAME_EMP}}", $"{employee.LastName} {employee.FirstName} {employee.MiddleName}")
+                .Replace("{{DATE_OF_BIRTH}}", employee.BirthDate.ToString("dd.MM.yyyy"))
+                .Replace("{{POST}}", employee.Position)
+                .Replace("{{INSTRUCTIONTYPE}}", formData.InstructionType)
+                .Replace("{{REASON}}", formData.Reason)
+                .Replace("{{LOCAL_ACT}}", formData.LocalAct)
+                .Replace("{{NAME}}", $"{user.LastName} {user.FirstName} {user.MiddleName}")
+                .Replace("{{USER_POST}}", user.Position);
+
+            // Удаляем все старые Text
+            var textElements = cell.Descendants<Text>().ToList();
+            foreach (var text in textElements)
+            {
+                text.Text = "";
+            }
+
+            // Пишем результат в первый Text
+            if (textElements.Any())
+            {
+                textElements[0].Text = updatedText;
+            }
+        }
+
+        private async void ReplaceTextInPB(TableCell cell, FormData formData, Employees employee)
         {
 
             string cellText = string.Concat(cell.Descendants<Text>().Select(t => t.Text));
-            string name_user = "Иванов Иван Иванович";
-            string post_user = "начальник отдела";
-
-
-            if (cellText != null)
-            {
-                cellText = cellText
-                    .Replace("{{DATE}}", formData.Date.ToString("dd.MM.yyyy"))
-                    .Replace("{{INSTRUCTIONTYPE}}", formData.InstructionType)
-                    .Replace("{{REASON}}", formData.Reason)
-                    .Replace("{{NAME}}", name_user)
-                    .Replace("{{USER_POST}}", post_user)
-                    .Replace("{{LOCAL_ACT}}", formData.LocalAct)
-                    .Replace("{{NAME_EMP}}", $"{employee.LastName} {employee.FirstName} {employee.MiddleName}")
-                    .Replace("{{DATE_OF_BIRTH}}", employee.BirthDate.Date.ToString("dd.MM.yyyy"))
-                    .Replace("{{POST}}", employee.Position)
-                    .Replace("{{YEAR_BIRTH}}", employee.BirthDate.Year.ToString());
-
-            }
-
-            foreach (var textElement in cell.Descendants<Text>())
-            {
-                textElement.Text = "";
-            }
-
-            var firstTextElement = cell.Descendants<Text>().FirstOrDefault();
-            if (firstTextElement != null)
-            {
-                firstTextElement.Text = cellText;
-            }
-
-        }
-
-        private void ReplaceTextInPB(TableCell cell, FormData formData, Employees employee)
-        {
-
-            string cellText = string.Concat(cell.Descendants<Text>().Select(t => t.Text));
-            string name_user = "Иванов Иван Иванович";
-            string post_user = "начальник отдела";
+            var user = await(from emp in _context.Employees
+                             join u in _context.Users on emp.Email_User equals u.Email
+                             select new
+                             {
+                                 u.FirstName,
+                                 u.LastName,
+                                 u.MiddleName,
+                                 u.Position, 
+                                 u.DocumentNumber
+                             })
+                              .FirstOrDefaultAsync();
+            if (user == null) { throw new InvalidOperationException($"Пользователь с email '{employee.Email_User}' не найден в таблице Users."); }
+            ;
+            string post_user = user.Position;
 
             if (cellText != null)
                 {
@@ -191,9 +280,9 @@ namespace DocsService.Controllers
                         .Replace("{{IT}}", formData.InstructionType)
                         .Replace("{{NAME_EMP}}", $"{employee.LastName} {employee.FirstName} {employee.MiddleName}")
                         .Replace("{{POST}}", employee.Position)
-                        .Replace("{{NAME}}", name_user)
+                        .Replace("{{NAME}}", $"{user.LastName} {user.FirstName} {user.MiddleName}")
                         .Replace("{{USER_POST}}", post_user)
-                        .Replace("{{NUM_DOC}}", formData.NumDoc)
+                        .Replace("{{NUM_DOC}}", user.DocumentNumber)
                         ;
 
                 }
@@ -210,23 +299,58 @@ namespace DocsService.Controllers
             }
         }
 
-        //private void ReplaceTextInGOCS(TableCell cell, FormData formData, Employees employee)
-        //{
+        private async Task ReplaceTextInGOCHS(TableCell cell, FormData formData, Employees employee)
+        {
 
-        //    Text textElement = cell.Descendants<Text>().FirstOrDefault();
-        //    if (textElement != null)
-        //    {
-        //        textElement.Text = textElement.Text
-        //            .Replace("{{DATE}}", formData.Date.ToString("dd.MM.yyyy"))
-        //            .Replace("{{INSTRUCTIONTYPE}}", formData.InstructionType)
-        //            .Replace("{{REASON}}", formData.Reason)
-        //            .Replace("{{LOCAL_ACT}}", formData.LocalAct)
-        //            .Replace("{{NAME_EMP}}", $"{employee.LastName} {employee.FirstName} {employee.MiddleName}")
-        //            .Replace("{{DATE_OF_BIRTH}}", employee.BirthDate.Date.ToString("dd.MM.yyyy"))
-        //            .Replace("{{POST}}", employee.Position);
-        //    }
+            string cellText = string.Concat(cell.Descendants<Text>().Select(t => t.Text));
+            var user = await (from emp in _context.Employees
+                              join u in _context.Users on emp.Email_User equals u.Email
+                              where u.Email == employee.Email_User
+                              select new
+                              {
+                                  u.FirstName,
+                                  u.LastName,
+                                  u.MiddleName,
+                                  u.Position
+                              })
+                              .FirstOrDefaultAsync();
+            if (user == null) { throw new InvalidOperationException($"Пользователь с email '{employee.Email_User}' не найден в таблице Users."); }
+            ;
+            string post_user = user.Position;
 
-        //}
+
+
+
+
+            if (cellText != null)
+            {
+                cellText = cellText
+                    .Replace("{{DATE}}", formData.Date.ToString("dd.MM.yyyy"))
+                    .Replace("{{NAME_EMP}}", $"{employee.LastName} {employee.FirstName} {employee.MiddleName}")
+                    .Replace("{{YEAR_BIRTH}}", employee.BirthDate.Year.ToString())
+                    .Replace("{{POST}}", employee.Position)
+                    .Replace("{{NAME}}", $"{user.LastName} {user.FirstName} {user.MiddleName}")
+                    .Replace("{{USER_POST}}", post_user.ToLower());
+                    
+                    
+                    
+                    
+                    
+
+            }
+
+            foreach (var textElement in cell.Descendants<Text>())
+            {
+                textElement.Text = "";
+            }
+
+            var firstTextElement = cell.Descendants<Text>().FirstOrDefault();
+            if (firstTextElement != null)
+            {
+                firstTextElement.Text = cellText;
+            }
+
+        }
 
 
     }

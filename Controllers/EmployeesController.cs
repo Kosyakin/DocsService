@@ -31,7 +31,8 @@ namespace DocsService.Controllers
             e.BirthDate,
             e.FirstName,
             e.LastName,
-            e.MiddleName
+            e.MiddleName,
+            e.Email_User
         })
         .ToListAsync();
 

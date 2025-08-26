@@ -31,7 +31,7 @@ namespace DocsService.Services
                 }
 
                 // Подождать 24 часа до следующей проверки
-                await Task.Delay(TimeSpan.FromHours(24), stoppingToken);
+                await Task.Delay(TimeSpan.FromMinutes(60), stoppingToken);
             }
         }
 
@@ -72,7 +72,14 @@ namespace DocsService.Services
                     
                     try
                     {
-                        await emailService.SendReminderAsync(manager.Email, "DocsService", today, employees);
+                        if (today.Month == 8 && today.Day == 26)
+                        {
+                            await emailService.SendReminderAsync(manager.Email, "проведение повторного инструктажа по ОТ", today, employees);
+                        }
+                        if (today.Month == 8 && today.Day == 26)
+                        {
+                            await emailService.SendReminderAsync(manager.Email, "проведение повторного инструктажа по ПБ", today, employees);
+                        }
                     }
                     catch (Exception ex)
                     {

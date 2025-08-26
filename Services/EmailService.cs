@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace DocsService.Services
 {
-    public class EmailService: IEmailService
+    public class EmailService : IEmailService
     {
         private readonly EmailSettings _emailSettings;
 
@@ -24,7 +24,7 @@ namespace DocsService.Services
             emailMessage.To.Add(new MailboxAddress("", email));
             emailMessage.Subject = subject;
 
-            emailMessage.Body = new TextPart("html")
+            emailMessage.Body = new TextPart("plain")
             {
                 Text = message
             };
@@ -40,10 +40,18 @@ namespace DocsService.Services
 
         public async Task SendReminderAsync(string email, string reminderType, DateTime reminderDate, List<Employees> employees)
         {
-            
-            
+
+
             var subject = $"Напоминание: {reminderType}";
-            var message = $"пупупупу";
+
+            var employeesListText = employees.Any()
+                ? string.Join("\r\n", employees.Select(e => $"{e.LastName} {e.FirstName} {e.MiddleName} - {e.Position}"))
+                : "Список сотрудников пуст.";
+
+            var message = $@"Необходимо в указанные сроки ({reminderDate.ToString("dd.MM.yyyy")}-{reminderDate.AddDays(10).ToString("dd.MM.yyyy")})
+провести повторный инструктаж для сотрудников:
+
+{employeesListText}";
 
             await SendEmailAsync(email, subject, message);
         }

@@ -542,10 +542,9 @@ function checkFormValidity(formId) {
             const dropdown1 = document.getElementById("dropdown1");
             const anyEmployeeSelected1 = dropdown1.querySelectorAll('input[name="employees"]:checked').length;
             console.log(`CountEmp1: ${anyEmployeeSelected1}`);
-            const numDoc = document.getElementById("numDoc").value;
-            console.log(numDoc);
+            
 
-            const isFormValid1 = date1 && instructionType1 && reason1 && (localAct1 || localActInput1) && anyEmployeeSelected1 && numDoc;
+            const isFormValid1 = date1 && instructionType1 && reason1 && (localAct1 || localActInput1) && anyEmployeeSelected1;
             submitBtn1.disabled = !isFormValid1;
 
             break;
