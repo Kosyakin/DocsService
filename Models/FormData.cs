@@ -13,5 +13,7 @@
         public string LocalAct { get; set; }
 
         public string FormId { get; set; }
+
+        //public string NumDoc { get; set; }
     }
 }

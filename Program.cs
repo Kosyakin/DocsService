@@ -1,61 +1,137 @@
+п»їusing DocsService.Data;
+using DocsService.Endpoints;
+using DocsService.Extentions; // Р”РѕР±Р°РІСЊС‚Рµ СЌС‚Сѓ РґРёСЂРµРєС‚РёРІСѓ
+using DocsService.Interfaces;
+using DocsService.Models;
+using DocsService.Repositories;
+using DocsService.Services;
+using DocumentFormat.OpenXml.InkML;
+using DocumentFormat.OpenXml.Office2013.Word;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
+using System.Security.Claims;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Р”РѕР±Р°РІР»РµРЅРёРµ СЃРµСЂРІРёСЃРѕРІ РІ РєРѕРЅС‚РµР№РЅРµСЂ
+builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
+var serviceProvider = builder.Services.BuildServiceProvider();
+var jwtOptions = serviceProvider.GetService<IOptions<JwtOptions>>();
+builder.Services.AddApiAuthentication(jwtOptions);
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.AllowAnyOrigin()  // Разрешить запросы с любых доменов
-              .AllowAnyMethod()
-              .AllowAnyHeader();
+        policy.AllowAnyOrigin()  // Р Р°Р·СЂРµС€Р°РµРј Р·Р°РїСЂРѕСЃС‹ СЃ Р»СЋР±С‹С… РґРѕРјРµРЅРѕРІ
+              .AllowAnyMethod()  // Р Р°Р·СЂРµС€Р°РµРј РІСЃРµ HTTP-РјРµС‚РѕРґС‹ (GET, POST Рё С‚.Рґ.)
+              .AllowAnyHeader()  // Р Р°Р·СЂРµС€Р°РµРј РІСЃРµ Р·Р°РіРѕР»РѕРІРєРё
+              .WithExposedHeaders("*");  // Р Р°Р·СЂРµС€Р°РµРј РІСЃРµ РґРѕСЃС‚СѓРїРЅС‹Рµ Р·Р°РіРѕР»РѕРІРєРё РІ РѕС‚РІРµС‚Рµ
     });
 });
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", policy =>
-    {
-        policy.AllowAnyOrigin()  // Разрешаем запросы с любых доменов
-              .AllowAnyMethod()  // Разрешаем все HTTP-методы (GET, POST и т.д.)
-              .AllowAnyHeader()  // Разрешаем все заголовки
-              .WithExposedHeaders("*");  // Разрешаем все доступные заголовки в ответе
-    });
-});
+// РїРѕР»СѓС‡Р°РµРј СЃС‚СЂРѕРєСѓ РїРѕРґРєР»СЋС‡РµРЅРёСЏ РёР· С„Р°Р№Р»Р° РєРѕРЅС„РёРіСѓСЂР°С†РёРё
+string connection = builder.Configuration.GetConnectionString("DefaultConnection");
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//    options.UseInMemoryDatabase("DocsServiceDb"));
+
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
+
+//var services = builder.Services;
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<UserService>();
+
+builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddScoped<IEmailService, EmailService>();
+
+builder.Services.AddScoped<UserService>();
+
+builder.Services.AddHostedService<TrainingReminderService>();
+
 
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "DocsService API V1");
+        options.RoutePrefix = "swagger"; // Р”РѕСЃС‚СѓРї РїРѕ /swagger
+    });
 }
 
-app.UseHttpsRedirection();
+app.UseRouting();
+app.UseCors("AllowAll");
 
+
+app.UseHttpsRedirection();
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
+app.UseCookiePolicy(new CookiePolicyOptions
+{
+    MinimumSameSitePolicy = SameSiteMode.Strict,
+    HttpOnly = HttpOnlyPolicy.Always,
+    Secure = CookieSecurePolicy.Always
+});
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.UseStaticFiles();
+app.MapUsersEndpoints();
 
-app.UseCors("AllowAll");
-app.UseRouting();
-app.UseCors("AllowAll");
-app.UseStaticFiles(new StaticFileOptions
+app.MapGet("get", () =>
 {
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "Views/form/")),
-    RequestPath = ""
-});
+    return Results.Ok("ok");
+}).RequireAuthorization();
+
+
+app.MapGet("/account", async (HttpContext context, UserService userService) =>
+{
+    if (!context.User.Identity.IsAuthenticated)
+    {
+        return Results.Unauthorized();
+    }
+
+    var userIdClaim = context.User.FindFirst("userId");
+    if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
+    {
+        return Results.Unauthorized();
+    }
+
+    var user = await userService.GetUserById(userId);
+
+    var htmlContent = await System.IO.File.ReadAllTextAsync("wwwroot/form/form.html");
+
+    // Р—Р°РјРµРЅСЏРµРј РїР»РµР№СЃС…РѕР»РґРµСЂС‹ СЂРµР°Р»СЊРЅС‹РјРё РґР°РЅРЅС‹РјРё
+    htmlContent = htmlContent
+    .Replace("{{Email}}", user.Email)    
+    .Replace("{{UserName}}", $"{user.LastName} {user.FirstName} {user.MiddleName}")
+        .Replace("{{Position}}", user.Position)
+        .Replace("{{DocumentNumber}}", user.DocumentNumber)
+        .Replace("{{Email}}", user.Email);
+
+    return Results.Content(htmlContent, "text/html");
+}).RequireAuthorization();
 
 app.Run();
