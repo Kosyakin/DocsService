@@ -684,7 +684,7 @@
     cursor: pointer;
     display: flex;
     justify-content: flex-end; /* Выравниваем контент справа */
-    position: relative;
+/*    position: relative;*/
     overflow: hidden;
     /* Начальные размеры */
     width: 40px;
@@ -732,5 +732,41 @@
     .userInfoBtn.active .user-info-card {
         
         opacity: 1;
+    }
+
+.reminder-setting {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 14px;
+}
+
+    .reminder-setting label {
+        margin-bottom: 5px;
+        color: #555;
+    }
+
+.reminder-input {
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 8px;
+    width: 180px;
+}
+
+.save-btn {
+    padding: 6px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+    .save-btn:hover {
+        background-color: #0056b3;
     }
 

@@ -8,5 +8,7 @@
         public string Position { get; set; }
         public string DocumentNumber { get; set; }
         public string Email { get; set; }
+
+        public DateTime? ReminderDateOTseptember { get; set; }
     }
 }

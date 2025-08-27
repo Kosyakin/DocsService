@@ -1,5 +1,6 @@
 ﻿using DocsService.Data;
 using DocsService.Interfaces;
+using DocsService.Models;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +18,7 @@ namespace DocsService.Services
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             // Подождать первую минуту
-            await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+            await Task.Delay(TimeSpan.FromMinutes(60), stoppingToken);
 
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -43,49 +44,51 @@ namespace DocsService.Services
 
             var today = DateTime.Today;
 
-            if ((today.Month == 8 && today.Day == 25) || (today.Month == 8 && today.Day == 26))
-            {
-                var managers = await dbContext.Users
+            // Загружаем руководителей с датой напоминания
+            var managers = await dbContext.Users
                 .Where(u => dbContext.Employees.Any(e => e.Email_User == u.Email))
                 .Select(u => new
                 {
                     u.Id,
                     u.Email,
                     u.FirstName,
-                    u.LastName
+                    u.LastName,
+                    u.ReminderDateOTseptember
                 })
                 .Distinct()
                 .ToListAsync();
 
+            if (!managers.Any()) return;
+
+            foreach (var manager in managers)
+            {
+                var reminderDate = manager.ReminderDateOTseptember;
+                if (reminderDate.HasValue)
+                {
+                    var start = reminderDate.Value.Date;
+                    var end = start.AddDays(10);
+                    if (today >= start && today <= end)
+                    {
+                        var employees = await dbContext.Employees
+                            .Where(e => e.Email_User == manager.Email)
+                            .ToListAsync();
+
+                        try
+                        {
+                            await emailService.SendReminderAsync(
+                                manager.Email,
+                                "проведение повторного инструктажа по ОТ",
+                                today,
+                                employees
+                            );
+                        }
+                        catch (Exception ex)
+                        {
+                            return;
+                        }
+                    }
+                }
                 
-
-                if (!managers.Any())
-                {
-                    return;
-                }
-
-                foreach (var manager in managers)
-                {
-                    var employees = await dbContext.Employees
-                    .Where(e => e.Email_User == manager.Email)
-                    .ToListAsync();
-                    
-                    try
-                    {
-                        if (today.Month == 8 && today.Day == 26)
-                        {
-                            await emailService.SendReminderAsync(manager.Email, "проведение повторного инструктажа по ОТ", today, employees);
-                        }
-                        if (today.Month == 8 && today.Day == 26)
-                        {
-                            await emailService.SendReminderAsync(manager.Email, "проведение повторного инструктажа по ПБ", today, employees);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex);
-                    }
-                }
             }
         }
     }

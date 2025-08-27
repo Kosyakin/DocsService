@@ -129,7 +129,8 @@ app.MapGet("/account", async (HttpContext context, UserService userService) =>
     .Replace("{{UserName}}", $"{user.LastName} {user.FirstName} {user.MiddleName}")
         .Replace("{{Position}}", user.Position)
         .Replace("{{DocumentNumber}}", user.DocumentNumber)
-        .Replace("{{Email}}", user.Email);
+        .Replace("{{Email}}", user.Email)
+        .Replace("{{TrainingReminderDate}}", user.ReminderDateOTseptember?.ToString("yyyy-MM-dd") ?? "");
 
     return Results.Content(htmlContent, "text/html");
 }).RequireAuthorization();

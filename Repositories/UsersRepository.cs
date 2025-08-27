@@ -32,7 +32,9 @@ namespace DocsService.Repositories
                 LastName = user.LastName,
                 MiddleName = user.MiddleName,
                 Position = user.Position,
-                DocumentNumber = user.DocumentNumber
+                DocumentNumber = user.DocumentNumber,
+                ReminderDateOTseptember = new DateTime(2025, 8, 27),
+                ReminderDatePBseptember = new DateTime(2025, 8, 27)
             };
 
             await _context.Users.AddAsync(userEntity);

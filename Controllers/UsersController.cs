@@ -1,4 +1,5 @@
-﻿using DocsService.Data;
+﻿using DocsService.Contracts;
+using DocsService.Data;
 using DocsService.Interfaces;
 using DocsService.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -36,16 +37,41 @@ namespace DocsService.Controllers
         {
             var users = _context.Users.Where(u => u.Email == email);
             var count = await users.CountAsync();
+            
 
             if (count == 0)
             {
                 return NotFound(new { message = "Пользователи с такой почтой не найдены." });
             }
 
+            var employees = _context.Employees.Where(e => e.Email_User == email);
             _context.Users.RemoveRange(users);
+            _context.Employees.RemoveRange(employees);
             await _context.SaveChangesAsync();
 
             return Ok(new { message = $"{count} пользователей успешно удалены." });
         }
+        [HttpPost("saveReminder")]
+        public async Task<IActionResult> SaveReminder([FromBody] saveReminderRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { message = "Некорректные данные" });
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+            if (user == null)
+            {
+                return NotFound(new { message = "Пользователь не найден" });
+            }
+
+            user.ReminderDateOTseptember = DateTime.Parse(request.reminderDate);
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Дата сохранена" });
+        }
+        
     }
 }

@@ -20,6 +20,8 @@ namespace DocsService.Models
         public string DocumentNumber { get; set; }  // Номер документа
 
         // Даты
-        //public DateTime BirthDate { get; set; }
+        public DateTime? ReminderDateOTseptember { get; set; }
+        public DateTime? ReminderDateOTmarch { get; set; }
+        public DateTime? ReminderDatePBseptember { get; set; }
     }
 }

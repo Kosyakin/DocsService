@@ -425,95 +425,7 @@ document.querySelectorAll('.dynamicForm').forEach(form => {
     });
 });
 
-//document.getElementById('dataForm1').addEventListener('submit', async function (e) {
-//    console.log("Событие submit1 вызвано!");
 
-
-
-//    try {
-//        const formData = new FormData(this);
-//        formData.append('formId', this.id);
-
-
-//        for (let [key, value] of formData.entries()) {
-//            console.log(key, value);
-//        }
-
-//        const response = await fetch(this.action, {
-//            method: 'POST',
-//            body: formData
-//        });
-
-//        if (response.ok) {
-//            const blob = await response.blob();
-//            const url = window.URL.createObjectURL(blob);
-//            const a = document.createElement('a');
-//            //a.href = url;
-//            //a.download = 'Инструктажи.docx';
-//            //document.body.appendChild(a);
-//            //a.click();
-//            //setTimeout(() => {
-//            //    document.body.removeChild(a);
-//            //    window.URL.revokeObjectURL(url);
-//            //}, 100);
-//        } else {
-//            const error = await response.text();
-//            document.getElementById('errorMessage').textContent = error;
-//        }
-//    } catch (error) {
-//        console.error('Ошибка:', error);
-//        document.getElementById('errorMessage').textContent =
-//            'Ошибка при отправке формы: ' + error.message;
-//    } finally {
-//        submitBtn1.disabled = false;
-//        submitBtn1.textContent = 'Сформировать файл';
-//    }
-//});
-
-//document.getElementById('dataForm2').addEventListener('submit', async function (e) {
-//    console.log("Событие submit2 вызвано!");
-
-
-
-//    try {
-//        const formData = new FormData(this);
-//        formData.append('formId', this.id);
-
-//        for (let [key, value] of formData.entries()) {
-//            console.log(key, value);
-
-//        }
-
-//        const response = await fetch(this.action, {
-//            method: 'POST',
-//            body: formData
-//        });
-
-//        if (response.ok) {
-//            const blob = await response.blob();
-//            const url = window.URL.createObjectURL(blob);
-//            const a = document.createElement('a');
-//            //a.href = url;
-//            //a.download = 'Инструктажи.docx';
-//            //document.body.appendChild(a);
-//            //a.click();
-//            //setTimeout(() => {
-//            //    document.body.removeChild(a);
-//            //    window.URL.revokeObjectURL(url);
-//            //}, 100);
-//        } else {
-//            const error = await response.text();
-//            document.getElementById('errorMessage').textContent = error;
-//        }
-//    } catch (error) {
-//        console.error('Ошибка:', error);
-//        document.getElementById('errorMessage').textContent =
-//            'Ошибка при отправке формы: ' + error.message;
-//    } finally {
-//        submitBtn2.disabled = false;
-//        submitBtn2.textContent = 'Сформировать файл';
-//    }
-//});
 
 function checkFormValidity(formId) {
 
@@ -711,7 +623,6 @@ document.getElementById('edit').addEventListener('click', function (event) {
 
     document.querySelectorAll('.form-container').forEach(c => c.classList.add('hidden'));
     document.getElementById('form-edit-emp').classList.remove('hidden');
-    //document.getElementById('edit-employees').classList.remove('hidden');
     document.getElementById('form-tabs').classList.add('hidden');
 });
 
@@ -748,7 +659,7 @@ document.getElementById("confirmCancel").addEventListener('click', function () {
 
 document.getElementById("confirmDiscard").addEventListener('click', function () {
     console.log("Нажата кнопка Не сохранять");
-    const tabId = localStorage.getItem('lastActiveTab') || 'ot';
+    const tabId = localStorage.getItem('lastActiveTab');
     const addEmpRow = document.getElementById('addEmp-tr');
     const table = document.getElementById('table');
     while (table.firstChild) {
@@ -772,7 +683,7 @@ document.getElementById("confirmDiscard").addEventListener('click', function () 
 });
 
 document.getElementById("confirmSave").addEventListener('click', async function () {
-    const tabId = localStorage.getItem('lastActiveTab') || 'ot';
+    const tabId = localStorage.getItem('lastActiveTab');
     document.getElementById("confirmDialog").classList.add('hidden');
     document.getElementById('form-tabs').classList.remove('hidden');
     //document.getElementById('edit-employees').classList.add('hidden');
@@ -1054,47 +965,7 @@ async function loadEmployeesTable(email) {
 
         });
 
-        //tr = document.createElement('tr');
-        //tr.id = "addEmp-tr";
-
-        //td = document.createElement('td');
-        //td.innerHTML = `
-        //    <input type="text" placeholder="Фамилия">
-        //`;
-        //tr.appendChild(td);
-
-        //td = document.createElement('td');
-        //td.innerHTML = `
-        //    <input type="text" placeholder="Имя">
-        //`;
-        //tr.appendChild(td);
-
-        //td = document.createElement('td');
-        //td.innerHTML = `
-        //   <input type="text" placeholder="Отчество">
-        //`;
-        //tr.appendChild(td);
-
-        //td = document.createElement('td');
-        //td.innerHTML = `
-        //    <input type="date" placeholder="Дата рождения" min="1900-01-01" max="2100-12-31">
-        //`;
-        //tr.appendChild(td);
-
-        //td = document.createElement('td');
-        //td.innerHTML = `
-        //    <input type="text" placeholder="Должность">
-        //`;
-        //tr.appendChild(td);
-
-        //td = document.createElement('td');
-        //td.innerHTML = `
-        //    <button id="addEmployee" class="table-btn-add-emp"><img class="table-btn-add-emp-img" src="images/Plus.png" />
-        //`;
-        //tr.appendChild(td);
-
-        //let originalTableContent = document.getElementById("table").innerHTML;
-        //localStorage.setItem('originalTableContent', originalTableContent);
+        
     } catch (error) {
         console.error('Ошибка загрузки сотрудников: ', error);
     }
@@ -1123,4 +994,37 @@ document.getElementById('userInfoBtn').addEventListener('click', function () {
     this.classList.toggle('active');
 });
 
+localStorage.setItem("lastActiveTab", 'ot');
 
+document.getElementById("saveReminderBtn").addEventListener("click", async function () {
+    const email = document.getElementById("userInfoBtn").dataset.email;
+    const reminderDate = document.getElementById("trainingReminder").value;
+
+    if (!reminderDate) {
+        alert('Пожалуйста, добавьте дату.');
+        return;
+    }
+
+    try {
+        const response = await fetch('/Users/saveReminder', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                reminderDate: reminderDate
+            })
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            alert('Дата сохранена!');
+        } else {
+            alert('Ошибка: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Ошибка сети:', error);
+        alert('Не удалось подключиться к серверу.');
+    }
+});

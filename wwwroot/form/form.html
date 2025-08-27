@@ -11,19 +11,29 @@
         <div class="header-line-2"></div>
     </header>
     <div class="page-container">
-        <div class="auth-form">
-            <button type="button" id="userInfoBtn" class="userInfoBtn" data-email="{{Email}}">
+        <div class="auth-form userInfoBtn" data-email="{{Email}}" id="userInfoBtn">
+            
                 <img src="../form/images/User.png" class="img-userInfo-btn" />
                 <div class="user-info-card">
                     <p><strong>Имя:</strong> {{UserName}}</p>
                     <p><strong>Должность:</strong> {{Position}}</p>
                     <p><strong>Номер документа:</strong> {{DocumentNumber}}</p>
                     <p><strong>Почта:</strong> {{Email}}</p>
+
                 </div>
 
-            </button>
+                <div class="reminder-setting">
+                    <label for="trainingReminder"><strong>Дата напоминания:</strong></label>
+                    <input type="date"
+                           id="trainingReminder"
+                           class="reminder-input"
+                           value="{{TrainingReminderDate}}"/>
+                </div>
+                <button id="saveReminderBtn" class="save-btn">Сохранить</button>
 
-         
+            
+            
+
 
         </div>
 
