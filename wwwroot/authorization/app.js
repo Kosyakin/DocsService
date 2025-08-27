@@ -72,3 +72,33 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
         
     }
 });
+
+// Переключение между вкладками авторизации/регистрации
+document.addEventListener('DOMContentLoaded', function () {
+    const authTabs = document.querySelectorAll('.auth-tab');
+    const authContainers = document.querySelectorAll('.auth-container');
+
+    authTabs.forEach(tab => {
+        tab.addEventListener('click', function () {
+            const tabName = this.dataset.authTab;
+
+            // Убираем активный класс у всех вкладок
+            authTabs.forEach(t => t.classList.remove('active'));
+            // Добавляем активный класс текущей вкладке
+            this.classList.add('active');
+
+            // Скрываем все контейнеры
+            authContainers.forEach(container => {
+                container.classList.add('hidden');
+                container.classList.remove('active');
+            });
+
+            // Показываем соответствующий контейнер
+            const activeContainer = document.querySelector(`[data-auth-content="${tabName}"]`);
+            if (activeContainer) {
+                activeContainer.classList.remove('hidden');
+                activeContainer.classList.add('active');
+            }
+        });
+    });
+});

@@ -128,3 +128,259 @@
     height: auto;
     z-index: 10;
 }
+
+/* Добавьте эти стили к существующим */
+.auth-with-tabs {
+    width: 500px;
+    margin: 0 auto;
+}
+
+.auth-tabs {
+    display: flex;
+    width: 100%;
+    margin-bottom: 0;
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    width: 580px;
+}
+
+.auth-tab {
+    flex: 1;
+    text-align: center;
+    padding: 12px 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: #BABABA;
+    position: relative;
+    z-index: 1;
+/*    font-weight: bold;*/
+    color: #333;
+}
+
+    .auth-tab::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 25%;
+        height: 50%;
+        width: 2px;
+        background-color: transparent;
+        transition: all 0.3s ease;
+        z-index: 2;
+    }
+
+/*    .auth-tab.active + .auth-tab:not(.active)::after {
+        background-color: rgba(0, 0, 0, 0.3);
+    }*/
+
+    .auth-tab.active {
+        background: #FFFFFF;
+        color: black;
+        font-weight: bold;
+    }
+
+    .auth-tab:hover:not(.active) {
+        background: #B5B5B5;
+        color: white;
+    }
+
+.auth-container {
+    background: white;
+    padding: 40px;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    width: 500px;
+    text-align: center;
+    margin-top: 0;
+}
+
+    .auth-container.hidden {
+        display: none;
+    }
+
+    .auth-container.active {
+        display: block;
+    }
+
+    /* Адаптируем существующие стили */
+    .auth-container h1 {
+        margin-bottom: 30px;
+        color: #333;
+        font-size: 28px;
+    }
+
+.input-group {
+    margin-bottom: 25px;
+}
+
+    .input-group input {
+        width: 100%;
+        padding: 18px 25px;
+        border: 2px;
+        border-radius: 20px;
+        font-size: 18px;
+        box-sizing: border-box;
+        transition: border-color 0.3s;
+        background-color: #E6E6E6;
+    }
+
+        .input-group input:focus {
+            border-color: #4a90e2;
+            outline: none;
+        }
+
+.login-btn {
+    width: 50%;
+    padding: 18px;
+    background-color: #DB2B36;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+    .login-btn:hover {
+        background-color: #656565;
+    }
+
+    .login-btn.disabled {
+        background-color: #E6E6E6;
+        color: #000000;
+    }
+
+.error-message {
+    color: #dc3545;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.img-user {
+    width: 10%;
+    height: auto;
+    margin-bottom: 25px;
+    object-fit: contain;
+}
+
+
+
+
+.auth-container {
+    background: white;
+    padding: 40px;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    width: 500px;
+    text-align: center;
+    margin-top: 0;
+}
+
+    .auth-container.hidden {
+        display: none;
+    }
+
+    .auth-container.active {
+        display: block;
+    }
+
+/* Стили для строк с двумя полями */
+.input-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.input-group.half {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+/* Адаптируем существующие стили */
+.auth-container h1 {
+    margin-bottom: 30px;
+    color: #333;
+    font-size: 28px;
+}
+
+.input-group {
+    margin-bottom: 25px;
+}
+
+    .input-group input {
+        width: 100%;
+        padding: 18px 25px;
+        border: 2px;
+        border-radius: 20px;
+        font-size: 18px;
+        box-sizing: border-box;
+        transition: border-color 0.3s;
+        background-color: #E6E6E6;
+    }
+
+        .input-group input:focus {
+            border-color: #4a90e2;
+            outline: none;
+        }
+
+.login-btn {
+    width: 50%;
+    padding: 18px;
+    background-color: #DB2B36;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+    .login-btn:hover {
+        background-color: #656565;
+    }
+
+    .login-btn.disabled {
+        background-color: #E6E6E6;
+        color: #000000;
+    }
+
+.error-message {
+    color: #dc3545;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.img-user {
+    width: 10%;
+    height: auto;
+    margin-bottom: 25px;
+    object-fit: contain;
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 600px) {
+    .auth-with-tabs {
+        width: 90%;
+    }
+
+    .auth-tabs {
+        width: 100%;
+    }
+
+    .auth-container {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .input-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .input-group.half {
+        margin-bottom: 25px;
+    }
+}

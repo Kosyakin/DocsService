@@ -10,24 +10,79 @@
         <div class="header-line"></div>
         <div class="header-line-2"></div>
     </header>
-    <div class="auth-container">
-        <h1>Авторизация пользователя</h1>
-        <img src="../authorization/images/User.png" class="img-user" />
-        <form id="loginForm">
-            
-            
 
-            <div class="input-group">
-                <input type="text" id="login" name="login" placeholder="Логин" required />
-            </div>
+    <div class="auth-with-tabs">
+        <div class="auth-tabs">
+            <div class="auth-tab active" data-auth-tab="login">Авторизация</div>
+            <div class="auth-tab" data-auth-tab="register">Регистрация</div>
+        </div>
 
-            <div class="input-group">
-                <input type="password" id="password" name="password" placeholder="Пароль" required />
-            </div>
+        <div class="auth-container active" data-auth-content="login">
+            <h1>Авторизация пользователя</h1>
+            <img src="../authorization/images/User.png" class="img-user" />
+            <form id="loginForm">
+                <div class="input-group">
+                    <input type="text" id="login" name="login" placeholder="Логин" required />
+                </div>
 
-            <button type="submit" class="login-btn disabled" id="login-btn" disabled>Войти</button>
-        </form>
-        <div id="errorMessage" class="error-message"></div>
+                <div class="input-group">
+                    <input type="password" id="password" name="password" placeholder="Пароль" required />
+                </div>
+
+                <button type="submit" class="login-btn disabled" id="login-btn" disabled>Войти</button>
+            </form>
+            <div id="errorMessage" class="error-message"></div>
+        </div>
+
+        <div class="auth-container hidden" data-auth-content="register">
+            <h1>Регистрация пользователя</h1>
+            <img src="../authorization/images/User.png" class="img-user" />
+            <form id="registerForm">
+                <!-- Персональная информация -->
+                <div class="input-row">
+                    <div class="input-group half">
+                        <input type="text" id="regLastName" name="lastName" placeholder="Фамилия" required />
+                    </div>
+                    <div class="input-group half">
+                        <input type="text" id="regFirstName" name="firstName" placeholder="Имя" required />
+                    </div>
+                </div>
+
+                <div class="input-row">
+                    <div class="input-group half">
+                        <input type="text" id="regMiddleName" name="middleName" placeholder="Отчество" />
+                    </div>
+                    <div class="input-group half">
+                        <input type="text" id="regPosition" name="position" placeholder="Должность" required />
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" id="regDocumentNumber" name="documentNumber" placeholder="Номер документа" required />
+                </div>
+
+                <!-- Учетные данные -->
+                <div class="input-group">
+                    <input type="text" id="regLogin" name="login" placeholder="Логин" required />
+                </div>
+
+                <div class="input-group">
+                    <input type="email" id="regEmail" name="email" placeholder="Email" required />
+                </div>
+
+                <div class="input-row">
+                    <div class="input-group half">
+                        <input type="password" id="regPassword" name="password" placeholder="Пароль" required />
+                    </div>
+                    <div class="input-group half">
+                        <input type="password" id="regConfirmPassword" name="confirmPassword" placeholder="Подтвердите пароль" required />
+                    </div>
+                </div>
+
+                <button type="submit" class="login-btn" id="register-btn">Зарегистрироваться</button>
+            </form>
+            <div id="regErrorMessage" class="error-message"></div>
+        </div>
     </div>
 
     <footer class="footer">

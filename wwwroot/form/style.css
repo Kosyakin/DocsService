@@ -673,100 +673,151 @@
     position: fixed;
     right: 50px;
     top: 100px;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
 }
 
 .userInfoBtn {
     background-color: #FFFFFF;
     border: none;
-    border-radius: 20px;
+    border-radius: 14px;
     padding: 0;
     margin: 0;
     cursor: pointer;
     display: flex;
-    justify-content: flex-end; /* Выравниваем контент справа */
-/*    position: relative;*/
+    justify-content: flex-end;
     overflow: hidden;
-    /* Начальные размеры */
     width: 40px;
     height: 40px;
-    /* Единое объявление transition для всех свойств */
     transition: width 0.5s ease, height 0.5s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
 }
 
 .img-userInfo-btn {
     width: 40px;
     height: 40px;
     position: absolute;
-    opasity: 1;
-    transition: transform 0.5s ease;  
+    opacity: 1;
+    transition: transform 0.5s ease;
+    z-index: 2;
+    
+}
+
+.user-details-container {
+    width: 260px;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.3s ease 0.2s;
+    pointer-events: none;
+}
+
+.user-info-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 .user-info-card {
-    
-    right: 100%; /* Размещаем карточку слева от кнопки */
-    top: 0;
-    width: 100%; /* Ширина карточки (300px - 40px иконки) */
-    opacity: 0;
-    padding: 10px 20px;
-    white-space: nowrap;
-    background: white;
-    border-radius: 20px 0 0 20px;
-    transition: opacity 0.3s ease 0.2s, /* Задержка для красивого появления */
-    right 0.5s ease; /* Анимация выезда */
-    text-align:right;
-    
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 16px;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    color: #333;
+    line-height: 1.5;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* Открытое состояние */
-.userInfoBtn.active {
-    width: 500px; /* Общая ширина (40px иконка + 260px карточка) */
-    height: 150px;
-    
-}
-
-    .userInfoBtn.active .img-userInfo-btn {
-        transform: translateX(-450px); /* Сдвигаем иконку на ширину карточки */
-        
+    .user-info-card p {
+        margin: 6px 0;
+        padding: 0;
+        font-weight: normal;
     }
 
-    .userInfoBtn.active .user-info-card {
-        
-        opacity: 1;
-    }
-
-.reminder-setting {
-    margin-top: 15px;
+.reminder-section {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    font-size: 14px;
+    gap: 12px;
 }
 
-    .reminder-setting label {
-        margin-bottom: 5px;
-        color: #555;
-    }
+.reminder-card {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.reminder-setting {
+    font-family: Arial;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.reminder-label {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    color: #333;
+    line-height: 1.5;
+    font-weight: normal;
+}
 
 .reminder-input {
-    padding: 6px;
-    border: 1px solid #ccc;
+    padding: 6px 8px;
+    border: 1px solid #ddd;
     border-radius: 6px;
-    font-size: 14px;
-    margin-bottom: 8px;
-    width: 180px;
+    font-size: 13px;
+    width: 100%;
+    box-sizing: border-box;
+    height: 32px;
+    background: white;
 }
 
+    .reminder-input:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+
 .save-btn {
-    padding: 6px 12px;
-    background-color: #007bff;
+    padding: 8px 16px;
+    background-color: #656565;
     color: white;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    align-self: flex-end;
+    transition: background-color 0.2s ease;
+    height: 32px;
 }
 
     .save-btn:hover {
-        background-color: #0056b3;
+        background-color: #DB2B36;
     }
+
+/* Открытое состояние */
+.userInfoBtn.active {
+    width: 300px;
+    height: 320px;
+}
+
+    .userInfoBtn.active .img-userInfo-btn {
+        transform: translateX(-250px); /* Учитываем смещение в 8px */
+    }
+
+    .userInfoBtn.active .user-details-container {
+        opacity: 1;
+        pointer-events: all;
+    }
+
+
 

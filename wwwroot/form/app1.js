@@ -982,16 +982,35 @@ document.addEventListener('DOMContentLoaded', async () => {
     const email = document.getElementById("userInfoBtn").dataset.email;
     loadEmployeesDropDown(email);
 });
-document.addEventListener('DOMContentLoaded', async () =>
-{
+
+document.addEventListener('DOMContentLoaded', async () => {
     const email = document.getElementById("userInfoBtn").dataset.email;
     loadEmployeesTable(email);
 });
 
+// Логика работы формы с информацией об авторизованном пользователе
+const userInfoBtn = document.getElementById('userInfoBtn');
 
-//Логика работы формы с информацией об авторизованном пользователе
-document.getElementById('userInfoBtn').addEventListener('click', function () {
-    this.classList.toggle('active');
+// Обработчик клика по иконке пользователя (открытие/закрытие)
+document.querySelector('.img-userInfo-btn').addEventListener('click', function () {
+    userInfoBtn.classList.toggle('active');
+});
+
+// Предотвращаем закрытие формы при клике на внутренние элементы
+userInfoBtn.addEventListener('click', function (e) {
+    // Если клик не по иконке пользователя и не по самому контейнеру - останавливаем всплытие
+    if (e.target !== userInfoBtn && !e.target.classList.contains('img-userInfo-btn')) {
+        e.stopPropagation();
+    }
+});
+
+// Также отдельно обрабатываем поле ввода даты и кнопку сохранения
+document.getElementById('trainingReminder').addEventListener('click', function (e) {
+    e.stopPropagation();
+});
+
+document.getElementById("saveReminderBtn").addEventListener("click", function (e) {
+    e.stopPropagation();
 });
 
 localStorage.setItem("lastActiveTab", 'ot');
@@ -1028,3 +1047,25 @@ document.getElementById("saveReminderBtn").addEventListener("click", async funct
         alert('Не удалось подключиться к серверу.');
     }
 });
+
+//document.addEventListener('DOMContentLoaded', function () {
+//    const userInfoBtn = document.getElementById('userInfoBtn');
+//    const trainingReminder = document.getElementById('trainingReminder');
+
+//    // Открытие/закрытие формы только по клику на иконку
+//    document.querySelector('.img-userInfo-btn').addEventListener('click', function () {
+//        userInfoBtn.classList.toggle('active');
+//    });
+
+//    // Для всех остальных элементов внутри формы предотвращаем закрытие
+//    userInfoBtn.addEventListener('click', function (e) {
+//        if (e.target !== userInfoBtn && !e.target.classList.contains('img-userInfo-btn')) {
+//            e.stopPropagation();
+//        }
+//    });
+
+//     Обработчик сохранения даты
+//    document.getElementById('saveReminderBtn').addEventListener('click', function () {
+//        alert('Дата сохранена: ' + trainingReminder.value);
+//    });
+//});
