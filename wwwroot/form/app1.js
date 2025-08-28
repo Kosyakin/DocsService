@@ -1018,6 +1018,12 @@ localStorage.setItem("lastActiveTab", 'ot');
 document.getElementById("saveReminderBtn").addEventListener("click", async function () {
     const email = document.getElementById("userInfoBtn").dataset.email;
     const reminderDate = document.getElementById("trainingReminder").value;
+    const reminderDate1 = document.getElementById("trainingReminderOT2").value;
+    const reminderDate2 = document.getElementById("trainingReminderPB").value;
+
+    console.log(reminderDate);
+    console.log(reminderDate1);
+    console.log(reminderDate2);
 
     if (!reminderDate) {
         alert('Пожалуйста, добавьте дату.');
@@ -1032,7 +1038,9 @@ document.getElementById("saveReminderBtn").addEventListener("click", async funct
             },
             body: JSON.stringify({
                 email: email,
-                reminderDate: reminderDate
+                reminderDate: reminderDate,
+                reminderDate1: reminderDate1,
+                reminderDate2: reminderDate2
             })
         });
 

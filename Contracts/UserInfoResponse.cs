@@ -10,5 +10,7 @@
         public string Email { get; set; }
 
         public DateTime? ReminderDateOTseptember { get; set; }
+        public DateTime? ReminderDateOTmarch { get; set; }
+        public DateTime? ReminderDatePBseptember { get; set; }
     }
 }

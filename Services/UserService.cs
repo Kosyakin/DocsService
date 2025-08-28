@@ -76,7 +76,9 @@ namespace DocsService.Services
                 Position = userEntity.Position,
                 DocumentNumber = userEntity.DocumentNumber,
                 Email = userEntity.Email,
-                ReminderDateOTseptember = userEntity.ReminderDateOTseptember
+                ReminderDateOTseptember = userEntity.ReminderDateOTseptember,
+                ReminderDatePBseptember = userEntity.ReminderDatePBseptember,
+                ReminderDateOTmarch = userEntity.ReminderDateOTmarch,
             };
         }
 

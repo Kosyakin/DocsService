@@ -18,7 +18,7 @@ namespace DocsService.Services
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             // Подождать первую минуту
-            await Task.Delay(TimeSpan.FromMinutes(60), stoppingToken);
+            await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
 
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -32,7 +32,7 @@ namespace DocsService.Services
                 }
 
                 // Подождать 24 часа до следующей проверки
-                await Task.Delay(TimeSpan.FromMinutes(60), stoppingToken);
+                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
             }
         }
 
@@ -53,7 +53,9 @@ namespace DocsService.Services
                     u.Email,
                     u.FirstName,
                     u.LastName,
-                    u.ReminderDateOTseptember
+                    u.ReminderDateOTseptember,
+                    u.ReminderDateOTmarch,
+                    u.ReminderDatePBseptember
                 })
                 .Distinct()
                 .ToListAsync();
@@ -63,10 +65,20 @@ namespace DocsService.Services
             foreach (var manager in managers)
             {
                 var reminderDate = manager.ReminderDateOTseptember;
-                if (reminderDate.HasValue)
+                var reminderDate1 = manager.ReminderDateOTmarch;
+                var reminderDate2 = manager.ReminderDateOTmarch;
+                if (reminderDate.HasValue && reminderDate1.HasValue && reminderDate2.HasValue)
                 {
                     var start = reminderDate.Value.Date;
                     var end = start.AddDays(10);
+
+                    var start1 = reminderDate1.Value.Date;
+                    var end1 = start1.AddDays(10);
+
+                    var start2 = reminderDate2.Value.Date;
+                    var end2 = start2.AddDays(10);
+
+
                     if (today >= start && today <= end)
                     {
                         var employees = await dbContext.Employees
@@ -78,6 +90,48 @@ namespace DocsService.Services
                             await emailService.SendReminderAsync(
                                 manager.Email,
                                 "проведение повторного инструктажа по ОТ",
+                                today,
+                                employees
+                            );
+                        }
+                        catch (Exception ex)
+                        {
+                            return;
+                        }
+                    }
+
+                    if (today >= start1 && today <= end1)
+                    {
+                        var employees = await dbContext.Employees
+                            .Where(e => e.Email_User == manager.Email)
+                            .ToListAsync();
+
+                        try
+                        {
+                            await emailService.SendReminderAsync(
+                                manager.Email,
+                                "проведение повторного инструктажа по ОТ",
+                                today,
+                                employees
+                            );
+                        }
+                        catch (Exception ex)
+                        {
+                            return;
+                        }
+                    }
+
+                    if (today >= start2 && today <= end2)
+                    {
+                        var employees = await dbContext.Employees
+                            .Where(e => e.Email_User == manager.Email)
+                            .ToListAsync();
+
+                        try
+                        {
+                            await emailService.SendReminderAsync(
+                                manager.Email,
+                                "проведение повторного инструктажа по ППБ",
                                 today,
                                 employees
                             );

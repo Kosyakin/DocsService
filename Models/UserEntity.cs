@@ -6,7 +6,7 @@ namespace DocsService.Models
     {
         public Guid Id { get; set; }
 
-        public string Username { get; set; }
+        
         public string PasswordHash { get; set; }
         public string Email { get; set; }
 
@@ -23,5 +23,7 @@ namespace DocsService.Models
         public DateTime? ReminderDateOTseptember { get; set; }
         public DateTime? ReminderDateOTmarch { get; set; }
         public DateTime? ReminderDatePBseptember { get; set; }
+
+        //Напоминания
     }
 }

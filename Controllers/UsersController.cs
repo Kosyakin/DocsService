@@ -66,6 +66,8 @@ namespace DocsService.Controllers
             }
 
             user.ReminderDateOTseptember = DateTime.Parse(request.reminderDate);
+            user.ReminderDateOTmarch = DateTime.Parse(request.reminderDate1);
+            user.ReminderDatePBseptember = DateTime.Parse(request.reminderDate2);
 
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
