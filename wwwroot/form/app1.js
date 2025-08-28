@@ -22,9 +22,15 @@ function setCurrentDate1() {
     const dateField = document.getElementById('date1');
     if (!dateField.value) { // Устанавливаем только если поле пустое
         const today = new Date();
-        const formattedDate = today.toISOString().substr(0, 10);
-        dateField.value = formattedDate;
 
+        // Получаем компоненты даты
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+
+        // Форматируем как YYYY-MM-DD
+        const formattedDate = `${year}-${month}-${day}`;
+        dateField.value = formattedDate;
     }
 
 }
@@ -34,9 +40,15 @@ function setCurrentDate2() {
     const dateField = document.getElementById('date2');
     if (!dateField.value) { // Устанавливаем только если поле пустое
         const today = new Date();
-        const formattedDate = today.toISOString().substr(0, 10);
-        dateField.value = formattedDate;
 
+        // Получаем компоненты даты
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+
+        // Форматируем как YYYY-MM-DD
+        const formattedDate = `${year}-${month}-${day}`;
+        dateField.value = formattedDate;
     }
 }
 
@@ -382,6 +394,10 @@ document.querySelectorAll('.dynamicForm').forEach(form => {
                 });
             }
 
+            const email = document.getElementById("userInfoBtn").dataset.email;
+            formData.append('email', email);
+            
+
             //if (!formData.has('numDoc')) {
             //    formData.append('numDoc', "-1");
             //}
@@ -449,14 +465,14 @@ function checkFormValidity(formId) {
             const date1 = document.getElementById('date1').value;
             const instructionType1 = document.getElementById('instructionType1').value;
             const reason1 = document.getElementById('reason1').value;
-            const localAct1 = document.getElementById('localAct1').value;
-            const localActInput1 = document.getElementById("localActInputField1").value;
+            //const localAct1 = document.getElementById('localAct1').value;
+            //const localActInput1 = document.getElementById("localActInputField1").value;
             const dropdown1 = document.getElementById("dropdown1");
             const anyEmployeeSelected1 = dropdown1.querySelectorAll('input[name="employees"]:checked').length;
             console.log(`CountEmp1: ${anyEmployeeSelected1}`);
             
 
-            const isFormValid1 = date1 && instructionType1 && reason1 && (localAct1 || localActInput1) && anyEmployeeSelected1;
+            const isFormValid1 = date1 && instructionType1 && reason1  && anyEmployeeSelected1;
             submitBtn1.disabled = !isFormValid1;
 
             break;
@@ -465,13 +481,13 @@ function checkFormValidity(formId) {
             const date2 = document.getElementById('date2').value;
             const instructionType2 = document.getElementById('instructionType2').value;
             const reason2 = document.getElementById('reason2').value;
-            const localAct2 = document.getElementById('localAct2').value;
-            const localActInput2 = document.getElementById("localActInputField2").value;
+            //const localAct2 = document.getElementById('localAct2').value;
+            //const localActInput2 = document.getElementById("localActInputField2").value;
             const dropdown2 = document.getElementById("dropdown2");
             const anyEmployeeSelected2 = dropdown2.querySelectorAll('input[name="employees"]:checked').length;
             console.log(`CountEmp2: ${anyEmployeeSelected2}`);
 
-            const isFormValid2 = date2 && instructionType2 && reason2 && (localAct2 || localActInput2) && anyEmployeeSelected2;
+            const isFormValid2 = date2 && instructionType2 && reason2 && anyEmployeeSelected2;
             submitBtn2.disabled = !isFormValid2;
 
             break;

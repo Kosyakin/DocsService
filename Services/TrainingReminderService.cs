@@ -55,7 +55,10 @@ namespace DocsService.Services
                     u.LastName,
                     u.ReminderDateOTseptember,
                     u.ReminderDateOTmarch,
-                    u.ReminderDatePBseptember
+                    u.ReminderDatePBseptember,
+                    u.OTmarch,
+                    u.OTseptember, 
+                    u.PBseptember
                 })
                 .Distinct()
                 .ToListAsync();
@@ -79,7 +82,7 @@ namespace DocsService.Services
                     var end2 = start2.AddDays(10);
 
 
-                    if (today >= start && today <= end)
+                    if (today >= start && today <= end && manager.OTseptember == false)
                     {
                         var employees = await dbContext.Employees
                             .Where(e => e.Email_User == manager.Email)
@@ -100,7 +103,7 @@ namespace DocsService.Services
                         }
                     }
 
-                    if (today >= start1 && today <= end1)
+                    if (today >= start1 && today <= end1 && manager.OTmarch == false)
                     {
                         var employees = await dbContext.Employees
                             .Where(e => e.Email_User == manager.Email)
@@ -121,7 +124,7 @@ namespace DocsService.Services
                         }
                     }
 
-                    if (today >= start2 && today <= end2)
+                    if (today >= start2 && today <= end2 && manager.PBseptember == false)
                     {
                         var employees = await dbContext.Employees
                             .Where(e => e.Email_User == manager.Email)

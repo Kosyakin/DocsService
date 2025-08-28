@@ -25,5 +25,8 @@ namespace DocsService.Models
         public DateTime? ReminderDatePBseptember { get; set; }
 
         //Напоминания
+        public bool OTseptember { get; set; } = false;
+        public bool OTmarch { get; set; } = false;
+        public bool PBseptember { get; set; } = false;
     }
 }

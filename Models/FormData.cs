@@ -10,10 +10,12 @@
 
         public string Reason { get; set; }
 
-        public string LocalAct { get; set; }
+        public string LocalAct { get; set; } = "";
 
         public string FormId { get; set; }
 
         //public string NumDoc { get; set; }
+
+        public string Email { get; set; }
     }
 }
