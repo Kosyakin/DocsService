@@ -47,20 +47,20 @@ namespace DocsService.Services
             // Загружаем руководителей с датой напоминания
             var managers = await dbContext.Users
                 .Where(u => dbContext.Employees.Any(e => e.Email_User == u.Email))
-                .Select(u => new
-                {
-                    u.Id,
-                    u.Email,
-                    u.FirstName,
-                    u.LastName,
-                    u.ReminderDateOTseptember,
-                    u.ReminderDateOTmarch,
-                    u.ReminderDatePBseptember,
-                    u.OTmarch,
-                    u.OTseptember, 
-                    u.PBseptember
-                })
-                .Distinct()
+                //.Select(u => new
+                //{
+                //    u.Id,
+                //    u.Email,
+                //    u.FirstName,
+                //    u.LastName,
+                //    u.ReminderDateOTseptember,
+                //    u.ReminderDateOTmarch,
+                //    u.ReminderDatePBseptember,
+                //    u.OTmarch,
+                //    u.OTseptember, 
+                //    u.PBseptember
+                //})
+                //.Distinct()
                 .ToListAsync();
 
             if (!managers.Any()) return;
@@ -69,7 +69,7 @@ namespace DocsService.Services
             {
                 var reminderDate = manager.ReminderDateOTseptember;
                 var reminderDate1 = manager.ReminderDateOTmarch;
-                var reminderDate2 = manager.ReminderDateOTmarch;
+                var reminderDate2 = manager.ReminderDatePBseptember;
                 if (reminderDate.HasValue && reminderDate1.HasValue && reminderDate2.HasValue)
                 {
                     var start = reminderDate.Value.Date;
@@ -96,6 +96,8 @@ namespace DocsService.Services
                                 today,
                                 employees
                             );
+                            
+                            manager.OTseptember = true;
                         }
                         catch (Exception ex)
                         {
@@ -117,6 +119,7 @@ namespace DocsService.Services
                                 today,
                                 employees
                             );
+                            manager.OTmarch = true;
                         }
                         catch (Exception ex)
                         {
@@ -138,12 +141,15 @@ namespace DocsService.Services
                                 today,
                                 employees
                             );
+                            manager.PBseptember = true;
                         }
                         catch (Exception ex)
                         {
                             return;
                         }
                     }
+
+                    dbContext.SaveChanges();
                 }
                 
             }
