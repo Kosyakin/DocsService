@@ -47,20 +47,7 @@ namespace DocsService.Services
             // Загружаем руководителей с датой напоминания
             var managers = await dbContext.Users
                 .Where(u => dbContext.Employees.Any(e => e.Email_User == u.Email))
-                //.Select(u => new
-                //{
-                //    u.Id,
-                //    u.Email,
-                //    u.FirstName,
-                //    u.LastName,
-                //    u.ReminderDateOTseptember,
-                //    u.ReminderDateOTmarch,
-                //    u.ReminderDatePBseptember,
-                //    u.OTmarch,
-                //    u.OTseptember, 
-                //    u.PBseptember
-                //})
-                //.Distinct()
+                
                 .ToListAsync();
 
             if (!managers.Any()) return;
@@ -98,6 +85,7 @@ namespace DocsService.Services
                             );
                             
                             manager.OTseptember = true;
+                            dbContext.SaveChanges();
                         }
                         catch (Exception ex)
                         {
@@ -120,6 +108,7 @@ namespace DocsService.Services
                                 employees
                             );
                             manager.OTmarch = true;
+                            dbContext.SaveChanges();
                         }
                         catch (Exception ex)
                         {
@@ -142,6 +131,7 @@ namespace DocsService.Services
                                 employees
                             );
                             manager.PBseptember = true;
+                            dbContext.SaveChanges();
                         }
                         catch (Exception ex)
                         {
@@ -149,7 +139,7 @@ namespace DocsService.Services
                         }
                     }
 
-                    dbContext.SaveChanges();
+                    
                 }
                 
             }
