@@ -69,7 +69,11 @@ namespace DocsService.Controllers
             user.ReminderDateOTmarch = DateTime.Parse(request.reminderDate1);
             user.ReminderDatePBseptember = DateTime.Parse(request.reminderDate2);
 
-            _context.Users.Update(user);
+            user.OTseptember = false;
+        user.OTmarch = false;
+        user.PBseptember = false;
+
+        _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Дата сохранена" });

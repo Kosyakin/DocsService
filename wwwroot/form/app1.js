@@ -675,7 +675,7 @@ document.getElementById("confirmCancel").addEventListener('click', function () {
     document.getElementById("confirmDialog").classList.add('hidden');
 });
 
-document.getElementById("confirmDiscard").addEventListener('click', function () {
+document.getElementById("confirmDiscard").addEventListener('click', async function () {
     console.log("Нажата кнопка Не сохранять");
     const tabId = localStorage.getItem('lastActiveTab');
     const addEmpRow = document.getElementById('addEmp-tr');
@@ -685,7 +685,7 @@ document.getElementById("confirmDiscard").addEventListener('click', function () 
     }
 
     const email = document.getElementById("userInfoBtn").dataset.email;
-    loadEmployeesTable(email);
+    //loadEmployeesTable(email);
     if (addEmpRow) {
         table.appendChild(addEmpRow);
     }
@@ -696,7 +696,17 @@ document.getElementById("confirmDiscard").addEventListener('click', function () 
     document.getElementById('form-edit-emp').classList.add('hidden');
     document.querySelector(`[data-tab-content="${tabId}"]`).classList.remove('hidden');
     
-    loadEmployeesDropDown(email);
+    //loadEmployeesDropDown(email);
+
+    await Promise.all([
+        loadEmployeesDropDown(email),
+        loadEmployeesTable(email)
+    ]);
+
+    // Теперь проверяем формы после полной загрузки данных
+    checkFormValidity("dataForm");
+    checkFormValidity("dataForm1");
+    checkFormValidity("dataForm2");
 
 });
 
@@ -743,8 +753,15 @@ document.getElementById("confirmSave").addEventListener('click', async function 
         if (response.ok) {
             console.log('Данные успешно сохранены');
             const email = document.getElementById("userInfoBtn").dataset.email;
-            loadEmployeesDropDown(email);
-            loadEmployeesTable(email);
+            await Promise.all([
+                loadEmployeesDropDown(email),
+                loadEmployeesTable(email)
+            ]);
+
+            // Теперь проверяем формы после полной загрузки данных
+            checkFormValidity("dataForm");
+            checkFormValidity("dataForm1");
+            checkFormValidity("dataForm2");
         } else {
             console.error('Ошибка при сохранении: ', await response.text());
         }
