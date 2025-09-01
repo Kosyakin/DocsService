@@ -66,9 +66,9 @@ namespace DocsService.Controllers
                     {
                         var today = DateTime.Now;
                         if (1 <= today.Month && today.Month <= 6)
-                            user.OTseptember = true;
-                        else
                             user.OTmarch = true;
+                        else
+                            user.OTseptember = true;
                     }
                     else if (formData.FormId == "dataForm1")
                     {

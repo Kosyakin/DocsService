@@ -9,6 +9,8 @@ namespace DocsService.Services
     public class TrainingReminderService : BackgroundService
     {
         private readonly IServiceProvider _serviceProvider;
+        private DateTime _lastResetCheck = DateTime.Today;
+
 
         public TrainingReminderService(IServiceProvider serviceProvider)
         {
@@ -24,6 +26,7 @@ namespace DocsService.Services
             {
                 try
                 {
+                    await CheckAndResetYearlyFlagsAsync();
                     await CheckAndSendRemindersAsync();
                 }
                 catch (Exception ex)
@@ -46,9 +49,10 @@ namespace DocsService.Services
 
             // Загружаем руководителей с датой напоминания
             var managers = await dbContext.Users
-                .Where(u => dbContext.Employees.Any(e => e.Email_User == u.Email))
-                
-                .ToListAsync();
+    .Where(u => dbContext.Employees
+        .Select(e => e.Email_User)
+        .Contains(u.Email))
+    .ToListAsync();
 
             if (!managers.Any()) return;
 
@@ -83,8 +87,8 @@ namespace DocsService.Services
                                 today,
                                 employees
                             );
-                            
-                            manager.OTseptember = true;
+
+                            //manager.OTseptember = true;
                             dbContext.SaveChanges();
                         }
                         catch (Exception ex)
@@ -107,7 +111,7 @@ namespace DocsService.Services
                                 today,
                                 employees
                             );
-                            manager.OTmarch = true;
+                            //manager.OTmarch = true;
                             dbContext.SaveChanges();
                         }
                         catch (Exception ex)
@@ -130,7 +134,7 @@ namespace DocsService.Services
                                 today,
                                 employees
                             );
-                            manager.PBseptember = true;
+                            //manager.PBseptember = true;
                             dbContext.SaveChanges();
                         }
                         catch (Exception ex)
@@ -139,9 +143,46 @@ namespace DocsService.Services
                         }
                     }
 
-                    
+
                 }
+
+            }
+        }
+
+        private async Task CheckAndResetYearlyFlagsAsync()
+        {
+            var today = DateTime.Today;
+            
+            // Проверяем, наступил ли новый год (1 января) и мы еще не сбрасывали флаги в этом году
+            if (today.Month == 1 && today.Day == 1 && today.Year != _lastResetCheck.Year)
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+                // Сбрасываем все флаги для всех пользователей
+                var allManagers = await dbContext.Users.ToListAsync();
                 
+                foreach (var manager in allManagers)
+                {
+                    manager.OTseptember = false;
+                    manager.OTmarch = false;
+                    manager.PBseptember = false;
+                    
+                    // обновляем даты напоминаний на новый год
+                    if (manager.ReminderDateOTseptember.HasValue)
+                        manager.ReminderDateOTseptember = new DateTime(today.Year, 9, 1);
+                    
+                    if (manager.ReminderDateOTmarch.HasValue)
+                        manager.ReminderDateOTmarch = new DateTime(today.Year, 3, 1);
+                    
+                    if (manager.ReminderDatePBseptember.HasValue)
+                        manager.ReminderDatePBseptember = new DateTime(today.Year, 9, 1);
+                }
+
+                await dbContext.SaveChangesAsync();
+                _lastResetCheck = today;
+                
+                Console.WriteLine($"Флаги сброшены на новый {today.Year} год");
             }
         }
     }

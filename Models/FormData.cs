@@ -6,9 +6,9 @@
 
         public List<int> Employees { get; set; } = new List<int>();
 
-        public string InstructionType { get; set; }
+        public string InstructionType { get; set; } = "";
 
-        public string Reason { get; set; }
+        public string Reason { get; set; } = "";
 
         public string LocalAct { get; set; } = "";
 

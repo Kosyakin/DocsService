@@ -197,144 +197,144 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
-    instructionTypeInput1.addEventListener('change', function () {
-        const reasonInput1 = document.getElementById('reason1');
-        //const localActInput = document.querySelector('input[name="localAct"]');
-        //const numDoc = document.getElementById("numDoc");
+    //instructionTypeInput1.addEventListener('change', function () {
+    //    const reasonInput1 = document.getElementById('reason1');
+    //    //const localActInput = document.querySelector('input[name="localAct"]');
+    //    //const numDoc = document.getElementById("numDoc");
         
-        //console.log(`here: ${numDoc}`);
+    //    //console.log(`here: ${numDoc}`);
 
 
-        // Элементы для локального акта
-        const localActDropdownGroup1 = document.getElementById('localActDropdownGroup1');
+    //    // Элементы для локального акта
+    //    //const localActDropdownGroup1 = document.getElementById('localActDropdownGroup1');
 
-        const localActInputFieldGroup1 = document.getElementById('localActInputFieldGroup1');
+    //    //const localActInputFieldGroup1 = document.getElementById('localActInputFieldGroup1');
 
-        //const localActHiddenInput = document.getElementById('localAct');
+    //    //const localActHiddenInput = document.getElementById('localAct');
 
-        const localActTextInput1 = document.getElementById('localActInputField1');
+    //    //const localActTextInput1 = document.getElementById('localActInputField1');
 
 
-        const selectedType = this.value;
-        //const isSpecialType = selectedType === 'Внеплановый' || selectedType === 'Целевой';
+    //    const selectedType = this.value;
+    //    //const isSpecialType = selectedType === 'Внеплановый' || selectedType === 'Целевой';
 
-        // --- Обновляем "Причину" ---
-        const reason = reasonMap[selectedType];
-        reasonInput1.value = reason;
+    //    // --- Обновляем "Причину" ---
+    //    const reason = reasonMap[selectedType];
+    //    reasonInput1.value = reason;
 
-        //numDoc.classList.add('required-field');
-        //numDoc.addEventListener('input', function () {
-        //    if (this.value.trim() !== '') {
-        //        this.classList.remove('required-field');
-        //    } else {
-        //        this.classList.add('required-field');
-        //    }
-        //});
+    //    //numDoc.classList.add('required-field');
+    //    //numDoc.addEventListener('input', function () {
+    //    //    if (this.value.trim() !== '') {
+    //    //        this.classList.remove('required-field');
+    //    //    } else {
+    //    //        this.classList.add('required-field');
+    //    //    }
+    //    //});
 
-        if (selectedType == 'Внеплановый' || selectedType == 'Целевой') {
+    //    if (selectedType == 'Внеплановый' || selectedType == 'Целевой') {
 
-            reasonInput1.classList.add('required-field');
-            reasonInput1.placeholder = "Заполните номер приказа Общества";
+    //        reasonInput1.classList.add('required-field');
+    //        reasonInput1.placeholder = "Заполните номер приказа Общества";
 
-            localActDropdownGroup1.style.display = 'none';
-            localActInputFieldGroup1.style.display = 'block';
+    //        //localActDropdownGroup1.style.display = 'none';
+    //        //localActInputFieldGroup1.style.display = 'block';
 
-            localActTextInput1.value = 'СТО 07-12';
+    //        //localActTextInput1.value = 'СТО 07-12';
 
-            localActTextInput1.addEventListener('input', function () {
-                if (this.value !== '') {
-                    this.classList.remove('required-field');
-                } else {
-                    this.classList.add('required-field');
-                }
-            });
+    //        //localActTextInput1.addEventListener('input', function () {
+    //        //    if (this.value !== '') {
+    //        //        this.classList.remove('required-field');
+    //        //    } else {
+    //        //        this.classList.add('required-field');
+    //        //    }
+    //        //});
 
-            reasonInput1.addEventListener('input', function () {
-                if (this.value.trim() !== '') {
-                    this.classList.remove('required-field');
-                } else {
-                    this.classList.add('required-field');
-                }
-            });
+    //        reasonInput1.addEventListener('input', function () {
+    //            if (this.value.trim() !== '') {
+    //                this.classList.remove('required-field');
+    //            } else {
+    //                this.classList.add('required-field');
+    //            }
+    //        });
 
-        } else {
-            // Убираем красные границы
-            reasonInput1.classList.remove('required-field');
-            //localActTextInput.classList.remove('required-field');
+    //    } else {
+    //        // Убираем красные границы
+    //        reasonInput1.classList.remove('required-field');
+    //        //localActTextInput.classList.remove('required-field');
 
-            // Показываем выпадающий список
-            localActDropdownGroup1.style.display = 'block';
-            localActInputFieldGroup1.style.display = 'none';
+    //        // Показываем выпадающий список
+    //        //localActDropdownGroup1.style.display = 'block';
+    //        //localActInputFieldGroup1.style.display = 'none';
 
-            reasonInput1.addEventListener('input', function () {
-                if (this.value.trim() !== '') {
-                    this.classList.remove('required-field');
-                } else {
-                    this.classList.add('required-field');
-                }
-            });
-        }
+    //        reasonInput1.addEventListener('input', function () {
+    //            if (this.value.trim() !== '') {
+    //                this.classList.remove('required-field');
+    //            } else {
+    //                this.classList.add('required-field');
+    //            }
+    //        });
+    //    }
 
-    });
+    //});
 
-    instructionTypeInput2.addEventListener('change', function () {
-        const reasonInput2 = document.getElementById('reason2');
-        const selectedType = this.value;
-        //const isSpecialType = selectedType === 'Внеплановый' || selectedType === 'Целевой';
+    //instructionTypeInput2.addEventListener('change', function () {
+    //    const reasonInput2 = document.getElementById('reason2');
+    //    const selectedType = this.value;
+    //    //const isSpecialType = selectedType === 'Внеплановый' || selectedType === 'Целевой';
 
-        // --- Обновляем "Причину" ---
-        const reason = reasonMap[selectedType];
-        reasonInput2.value = reason;
+    //    // --- Обновляем "Причину" ---
+    //    const reason = reasonMap[selectedType];
+    //    reasonInput2.value = reason;
 
-        //localActHiddenInput.value = ''; // Очищаем скрытое поле
-        //localActTextInput.value = '';   // Очищаем текстовое поле 
-        //document.querySelector('#localActDropdownGroup .custom-select').textContent = 'Наименование локального акта';
+    //    //localActHiddenInput.value = ''; // Очищаем скрытое поле
+    //    //localActTextInput.value = '';   // Очищаем текстовое поле 
+    //    //document.querySelector('#localActDropdownGroup .custom-select').textContent = 'Наименование локального акта';
 
-        if (selectedType == 'Внеплановый' || selectedType == 'Целевой') {
+    //    if (selectedType == 'Внеплановый' || selectedType == 'Целевой') {
 
-            reasonInput2.classList.add('required-field');
-            reasonInput2.placeholder = "Заполните номер приказа Общества";
+    //        reasonInput2.classList.add('required-field');
+    //        reasonInput2.placeholder = "Заполните номер приказа Общества";
 
-            //localActDropdownGroup.style.display = 'none';
-            //localActInputFieldGroup.style.display = 'block';
+    //        //localActDropdownGroup.style.display = 'none';
+    //        //localActInputFieldGroup.style.display = 'block';
 
-            //localActTextInput.value = 'СТО 07-12';
+    //        //localActTextInput.value = 'СТО 07-12';
 
-            //localActTextInput.addEventListener('input', function () {
-            //    if (this.value !== '') {
-            //        this.classList.remove('required-field');
-            //    } else {
-            //        this.classList.add('required-field');
-            //    }
-            //});
+    //        //localActTextInput.addEventListener('input', function () {
+    //        //    if (this.value !== '') {
+    //        //        this.classList.remove('required-field');
+    //        //    } else {
+    //        //        this.classList.add('required-field');
+    //        //    }
+    //        //});
 
-            reasonInput2.addEventListener('input', function () {
-                if (this.value.trim() !== '') {
-                    this.classList.remove('required-field');
-                } else {
-                    this.classList.add('required-field');
-                }
-            });
+    //        reasonInput2.addEventListener('input', function () {
+    //            if (this.value.trim() !== '') {
+    //                this.classList.remove('required-field');
+    //            } else {
+    //                this.classList.add('required-field');
+    //            }
+    //        });
 
-        } else {
-            // Убираем красные границы
-            reasonInput2.classList.remove('required-field');
-            //localActTextInput.classList.remove('required-field');
+    //    } else {
+    //        // Убираем красные границы
+    //        reasonInput2.classList.remove('required-field');
+    //        //localActTextInput.classList.remove('required-field');
 
-            //// Показываем выпадающий список
-            //localActDropdownGroup.style.display = 'block';
-            //localActInputFieldGroup.style.display = 'none';
+    //        //// Показываем выпадающий список
+    //        //localActDropdownGroup.style.display = 'block';
+    //        //localActInputFieldGroup.style.display = 'none';
 
-            reasonInput2.addEventListener('input', function () {
-                if (this.value.trim() !== '') {
-                    this.classList.remove('required-field');
-                } else {
-                    this.classList.add('required-field');
-                }
-            });
-        }
+    //        reasonInput2.addEventListener('input', function () {
+    //            if (this.value.trim() !== '') {
+    //                this.classList.remove('required-field');
+    //            } else {
+    //                this.classList.add('required-field');
+    //            }
+    //        });
+    //    }
 
-    });
+    //});
 
     //const userBtn = document.querySelector('.userInfoBtn');
     //const authForm = document.querySelector('.auth-form');
@@ -445,6 +445,7 @@ document.querySelectorAll('.dynamicForm').forEach(form => {
 
 function checkFormValidity(formId) {
 
+    console.log("Проверка заполненных данных");
     switch (formId) {
         case 'dataForm':
             const date = document.getElementById('date').value;
@@ -464,7 +465,7 @@ function checkFormValidity(formId) {
             console.log(formId);
             const date1 = document.getElementById('date1').value;
             const instructionType1 = document.getElementById('instructionType1').value;
-            const reason1 = document.getElementById('reason1').value;
+            //const reason1 = document.getElementById('reason1').value;
             //const localAct1 = document.getElementById('localAct1').value;
             //const localActInput1 = document.getElementById("localActInputField1").value;
             const dropdown1 = document.getElementById("dropdown1");
@@ -472,22 +473,23 @@ function checkFormValidity(formId) {
             console.log(`CountEmp1: ${anyEmployeeSelected1}`);
             
 
-            const isFormValid1 = date1 && instructionType1 && reason1  && anyEmployeeSelected1;
+            const isFormValid1 = date1 && instructionType1  && anyEmployeeSelected1;
             submitBtn1.disabled = !isFormValid1;
 
             break;
 
         case 'dataForm2':
             const date2 = document.getElementById('date2').value;
-            const instructionType2 = document.getElementById('instructionType2').value;
-            const reason2 = document.getElementById('reason2').value;
+            //const instructionType2 = document.getElementById('instructionType2').value;
+            //const reason2 = document.getElementById('reason2').value;
             //const localAct2 = document.getElementById('localAct2').value;
             //const localActInput2 = document.getElementById("localActInputField2").value;
             const dropdown2 = document.getElementById("dropdown2");
             const anyEmployeeSelected2 = dropdown2.querySelectorAll('input[name="employees"]:checked').length;
             console.log(`CountEmp2: ${anyEmployeeSelected2}`);
 
-            const isFormValid2 = date2 && instructionType2 && reason2 && anyEmployeeSelected2;
+            //const isFormValid2 = date2 && instructionType2 && reason2 && anyEmployeeSelected2;
+            const isFormValid2 = date2 && anyEmployeeSelected2;
             submitBtn2.disabled = !isFormValid2;
 
             break;
@@ -532,51 +534,51 @@ document.addEventListener('DOMContentLoaded', function () {
         const formId = event.target.form.id;
         checkFormValidity(formId);
     });
-    document.getElementById('instructionType2').addEventListener('change', function (event) {
-        const formId = event.target.form.id;
-        checkFormValidity(formId);
-    });
+    //document.getElementById('instructionType2').addEventListener('change', function (event) {
+    //    const formId = event.target.form.id;
+    //    checkFormValidity(formId);
+    //});
 
     // Причина (текстовое поле)
     document.getElementById("reason").addEventListener('input', function (event) {
         const formId = event.target.form.id;
         checkFormValidity(formId);
     });
-    document.getElementById("reason1").addEventListener('input', function (event) {
-        const formId = event.target.form.id;
-        checkFormValidity(formId);
-    });
-    document.getElementById("reason2").addEventListener('input', function (event) {
-        const formId = event.target.form.id;
-        checkFormValidity(formId);
-    });
+    //document.getElementById("reason1").addEventListener('input', function (event) {
+    //    const formId = event.target.form.id;
+    //    checkFormValidity(formId);
+    //});
+    //document.getElementById("reason2").addEventListener('input', function (event) {
+    //    const formId = event.target.form.id;
+    //    checkFormValidity(formId);
+    //});
 
     // Локальный акт (hidden input)
     document.getElementById('localAct').addEventListener('change', function (event) {
         const formId = event.target.form.id;
         checkFormValidity(formId);
     });
-    document.getElementById('localAct1').addEventListener('change', function (event) {
-        const formId = event.target.form.id;
-        checkFormValidity(formId);
-    });
-    document.getElementById('localAct2').addEventListener('change', function (event) {
-        const formId = event.target.form.id;
-        checkFormValidity(formId);
-    });
+    //document.getElementById('localAct1').addEventListener('change', function (event) {
+    //    const formId = event.target.form.id;
+    //    checkFormValidity(formId);
+    //});
+    //document.getElementById('localAct2').addEventListener('change', function (event) {
+    //    const formId = event.target.form.id;
+    //    checkFormValidity(formId);
+    //});
 
     document.getElementById('localActInputFieldGroup').addEventListener('change', function (event) {
         const formId = event.target.form.id;
         checkFormValidity(formId)
     });
-    document.getElementById('localActInputFieldGroup1').addEventListener('change', function (event) {
-        const formId = event.target.form.id;
-        checkFormValidity(formId);
-    });
-    document.getElementById('localActInputFieldGroup2').addEventListener('change', function (event) {
-        const formId = event.target.form.id;
-        checkFormValidity(formId);
-    });
+    //document.getElementById('localActInputFieldGroup1').addEventListener('change', function (event) {
+    //    const formId = event.target.form.id;
+    //    checkFormValidity(formId);
+    //});
+    //document.getElementById('localActInputFieldGroup2').addEventListener('change', function (event) {
+    //    const formId = event.target.form.id;
+    //    checkFormValidity(formId);
+    //});
 
     // Чекбоксы сотрудников
     const dropdown0 = document.getElementById("dropdown0");
@@ -587,13 +589,13 @@ document.addEventListener('DOMContentLoaded', function () {
             checkFormValidity(formId);
         });
     });
-    document.querySelectorAll('input[name="employees1"]').forEach(checkbox => {
+    document.querySelectorAll('input[name="employees"]').forEach(checkbox => {
         checkbox.addEventListener('change', function (event) {
             const formId = event.target.form.id;
             checkFormValidity(formId);
         });
     });
-    document.querySelectorAll('input[name="employees2"]').forEach(checkbox => {
+    document.querySelectorAll('input[name="employees"]').forEach(checkbox => {
         checkbox.addEventListener('change', function (event) {
             const formId = event.target.form.id;
             checkFormValidity(formId);
@@ -606,7 +608,7 @@ document.addEventListener('DOMContentLoaded', function () {
     //});
 
     // --- Проверка при загрузке ---
-    checkFormValidity();
+    //checkFormValidity("dataForm2");
 });
 
 document.querySelectorAll('.tab').forEach(tab => {
@@ -906,7 +908,9 @@ async function loadEmployeesDropDown(email) {
 
                 dropdown.appendChild(label);
             });
+          
         });
+        
         
     } catch (error) {
         console.error('Ошибка загрузки сотрудников: ', error);
@@ -996,12 +1000,21 @@ async function deleteRowFromBD(id) {
 
 document.addEventListener('DOMContentLoaded', async () => {
     const email = document.getElementById("userInfoBtn").dataset.email;
-    loadEmployeesDropDown(email);
+    await Promise.all([
+        loadEmployeesDropDown(email),
+        loadEmployeesTable(email)
+    ]);
+    
+    // Теперь проверяем формы после полной загрузки данных
+    checkFormValidity("dataForm");
+    checkFormValidity("dataForm1");
+    checkFormValidity("dataForm2");
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
     const email = document.getElementById("userInfoBtn").dataset.email;
     loadEmployeesTable(email);
+    checkFormValidity("dataForm2");
 });
 
 // Логика работы формы с информацией об авторизованном пользователе
@@ -1072,24 +1085,3 @@ document.getElementById("saveReminderBtn").addEventListener("click", async funct
     }
 });
 
-//document.addEventListener('DOMContentLoaded', function () {
-//    const userInfoBtn = document.getElementById('userInfoBtn');
-//    const trainingReminder = document.getElementById('trainingReminder');
-
-//    // Открытие/закрытие формы только по клику на иконку
-//    document.querySelector('.img-userInfo-btn').addEventListener('click', function () {
-//        userInfoBtn.classList.toggle('active');
-//    });
-
-//    // Для всех остальных элементов внутри формы предотвращаем закрытие
-//    userInfoBtn.addEventListener('click', function (e) {
-//        if (e.target !== userInfoBtn && !e.target.classList.contains('img-userInfo-btn')) {
-//            e.stopPropagation();
-//        }
-//    });
-
-//     Обработчик сохранения даты
-//    document.getElementById('saveReminderBtn').addEventListener('click', function () {
-//        alert('Дата сохранена: ' + trainingReminder.value);
-//    });
-//});
