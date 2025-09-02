@@ -84,7 +84,7 @@ namespace DocsService.Services
                             await emailService.SendReminderAsync(
                                 manager.Email,
                                 "проведение повторного инструктажа по ОТ",
-                                today,
+                                manager.ReminderDateOTseptember.GetValueOrDefault(),
                                 employees
                             );
 
@@ -108,7 +108,7 @@ namespace DocsService.Services
                             await emailService.SendReminderAsync(
                                 manager.Email,
                                 "проведение повторного инструктажа по ОТ",
-                                today,
+                                manager.ReminderDateOTmarch.GetValueOrDefault(),
                                 employees
                             );
                             //manager.OTmarch = true;
@@ -131,7 +131,7 @@ namespace DocsService.Services
                             await emailService.SendReminderAsync(
                                 manager.Email,
                                 "проведение повторного инструктажа по ППБ",
-                                today,
+                                manager.ReminderDatePBseptember.GetValueOrDefault(),
                                 employees
                             );
                             //manager.PBseptember = true;

@@ -70,8 +70,8 @@ namespace DocsService.Controllers
             user.ReminderDatePBseptember = DateTime.Parse(request.reminderDate2);
 
             user.OTseptember = false;
-        user.OTmarch = false;
-        user.PBseptember = false;
+            user.OTmarch = false;
+            user.PBseptember = false;
 
         _context.Users.Update(user);
             await _context.SaveChangesAsync();

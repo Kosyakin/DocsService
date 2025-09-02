@@ -9,7 +9,7 @@ namespace DocsService.Contracts
         [Required] string Email,
         [Required] string FirstName,
         [Required] string LastName,
-        [Required] string MiddleName,
+        string MiddleName,
         [Required] string Position,
         [Required] string DocumentNumber
         );

@@ -845,7 +845,7 @@ document.getElementById('addEmployee').addEventListener('click', function () {
 
 
 
-    if (!name || !name1 || !name2 || !birthDate || !position || '1900-01-01' > birthDate || dateField < birthDate) {
+    if (!name || !name1  || !birthDate || !position || '1900-01-01' > birthDate || dateField < birthDate) {
         addRow.classList.add('error-row');
         setTimeout(() => {
             addRow.classList.remove('error-row');
@@ -1101,4 +1101,3 @@ document.getElementById("saveReminderBtn").addEventListener("click", async funct
         alert('Не удалось подключиться к серверу.');
     }
 });
-

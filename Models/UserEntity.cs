@@ -13,7 +13,7 @@ namespace DocsService.Models
         //Дополнительная информация о пользователе
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string MiddleName { get; set; }
+        public string MiddleName { get; set; } = string.Empty;
 
         // Служебная информация
         public string Position { get; set; }        // Должность

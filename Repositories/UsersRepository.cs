@@ -30,7 +30,7 @@ namespace DocsService.Repositories
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                MiddleName = user.MiddleName,
+                MiddleName = user.MiddleName ?? string.Empty,
                 Position = user.Position,
                 DocumentNumber = user.DocumentNumber,
                 ReminderDateOTseptember = new DateTime(2025, 8, 27),
