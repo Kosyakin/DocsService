@@ -672,46 +672,80 @@
 
 
 
-/*Стили для формы с авторизированным пользователем*/
+/* Позиционирование профиля в правом верхнем углу */
 .auth-form {
     position: fixed;
-    right: 50px;
-    top: 150px;
-    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+    top: 20px;
+    right: 20px;
+    z-index: 1001;
 }
 
 .userInfoBtn {
-    background-color: #FFFFFF;
+/*    position: relative;*/
+    background: none;
     border: none;
-    border-radius: 14px;
     padding: 0;
     margin: 0;
     cursor: pointer;
+}
+
+/* Стили для компактного вида профиля */
+.user-compact-view {
     display: flex;
-    justify-content: flex-end;
-    overflow: hidden;
-    width: 200px;
-    height: 40px;
-    transition: width 0.5s ease, height 0.5s ease;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    background-color: #FFFFFF;
+    border-radius: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+    .user-compact-view:hover {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transform: translateY(-1px);
+    }
+
+.user-name-compact {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    white-space: nowrap;
 }
 
 .img-userInfo-btn {
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    opacity: 1;
-    transition: transform 0.5s ease;
-    z-index: 2;
-    
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
 }
 
+/* Выпадающее меню профиля */
 .user-details-container {
-    width: 260px;
-    height: 100%;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 350px;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     opacity: 0;
-    transition: opacity 0.3s ease 0.2s;
-    pointer-events: none;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    z-index: 1000;
+    transform: translateY(-10px);
+}
+
+/* Открытое состояние */
+.userInfoBtn.active .user-details-container {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.userInfoBtn.active .img-userInfo-btn {
+/*    transform: rotate(180deg);*/
 }
 
 .user-info-content {
@@ -719,49 +753,85 @@
     flex-direction: column;
     gap: 15px;
     padding: 20px;
-    height: 100%;
-    box-sizing: border-box;
 }
 
 .user-info-card {
-    background: #D9D9D9;
+    background: #E6E6E6;
     border-radius: 10px;
     padding: 16px;
     font-family: Arial, sans-serif;
     font-size: 13px;
     color: #333;
     line-height: 1.5;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    width: 100%;
-    box-sizing: border-box;
+    border: 1px solid #e9ecef;
 }
 
     .user-info-card p {
-        margin: 6px 0;
-        padding: 0;
-        font-weight: normal;
+        margin: 8px 0;
     }
 
-.reminder-section {
+/* Стили для переключателя напоминаний */
+.reminder-setting {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #656565;
+}
+
+    .reminder-setting:last-of-type {
+        border-bottom: none;
+    }
+
+    .reminder-setting p {
+        margin: 0;
+        font-size: 13px;
+/*        font-weight: bold;*/
+        color: #333;
+    }
+
+    /* Стили для чекбокса */
+    .reminder-setting input[type="checkbox"] {
+        width: 40px;
+        height: 20px;
+        appearance: none;
+        background: #ccc;
+        border-radius: 20px;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .reminder-setting input[type="checkbox"]:checked {
+            background: #DB2B36;
+        }
+
+        .reminder-setting input[type="checkbox"]::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .reminder-setting input[type="checkbox"]:checked::before {
+            left: 22px;
+        }
+
+.reminder-section {
+    display: block;
 }
 
 .reminder-card {
-    background: #D9D9D9;
+    background-color: #E6E6E6;
     border-radius: 10px;
     padding: 16px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    transition: opacity 0.3s ease, max-height 0.3s ease, padding 0.3s ease;
-}
-
-.reminder-setting {
-    font-family: Arial;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    border: 1px solid #e9ecef;
+    margin-top: 10px;
 }
 
 .reminder-label {
@@ -772,6 +842,7 @@
     color: #333;
     line-height: 1.5;
     font-weight: normal;
+    margin-bottom: 5px;
 }
 
 .reminder-input {
@@ -800,38 +871,13 @@
     cursor: pointer;
     font-size: 13px;
     font-weight: 500;
-    align-self: flex-end;
     transition: background-color 0.2s ease;
     height: 32px;
-    margin: 15px 0 0;
+    margin-top: 10px;
+    width: 100%;
 }
 
     .save-btn:hover {
         background-color: #DB2B36;
     }
-
-/* Открытое состояние */
-.userInfoBtn.active {
-    min-width: 300px;
-    min-height: 650px;
-    width: auto;
-    height: auto;
-}
-
-    .userInfoBtn.active .img-userInfo-btn {
-        transform: translateX(-250px);
-    }
-
-    .userInfoBtn.active .user-details-container {
-        opacity: 1;
-        pointer-events: all;
-    }
-
-    .profile-btn-text {
-        position: absolute;
-        right: 50px;
-    }
-
-
-    
 

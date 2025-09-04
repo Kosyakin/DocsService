@@ -1103,6 +1103,67 @@ document.getElementById("saveReminderBtn").addEventListener("click", async funct
 });
 
 
+//document.getElementById('reminderToggle').addEventListener('change', function () {
+//    const reminderCard = document.getElementById('reminderCard');
+//    const isEnabled = this.checked;
+
+//    if (this.checked) {
+//        reminderCard.style.display = 'block';
+//    }
+//    else {
+//        reminderCard.style.display = 'none';
+//    }
+
+//    ChangeNotificationSettings(isEnabled);
+//});
+
+//async function ChangeNotificationSettings(isEnabled) {
+//    const email = document.getElementById('userInfoBtn').dataset.email;
+//    try {
+//        const response = await fetch('/Users/changeNotificationSettings', {
+//            method: 'PUT',
+//            headers: {
+//                'Content-Type': 'application/json'
+//            },
+//            body: JSON.stringify({
+//                email: email,
+//                remindersEnabled: isEnabled
+//            })
+//        });
+//        if (!response.ok) {
+//            throw new Error('Ошибка при сохранении настроек');
+//        }
+//    }
+//    catch (error) {
+//        console.error('Ошибка:', error);
+//        document.getElementById('reminderToggle').checked = !isEnabled;
+//    }
+//}
+
+// Обработчик для кнопки профиля
+document.getElementById('userInfoBtn').addEventListener('click', function (e) {
+    // Предотвращаем закрытие при клике внутри выпадающего контента
+    if (!e.target.closest('.user-details-container')) {
+        this.classList.toggle('active');
+    }
+});
+
+// Закрытие при клике вне области
+document.addEventListener('click', function (e) {
+    const userInfoBtn = document.getElementById('userInfoBtn');
+    const isClickInside = e.target.closest('#userInfoBtn');
+
+    if (!isClickInside && userInfoBtn.classList.contains('active')) {
+        userInfoBtn.classList.remove('active');
+    }
+});
+
+// Предотвращаем закрытие при клике внутри выпадающего контента
+document.querySelector('.user-details-container').addEventListener('click', function (e) {
+    e.stopPropagation();
+});
+
+// Обработчик для переключателя напоминаний
 document.getElementById('reminderToggle').addEventListener('change', function () {
     const reminderCard = document.getElementById('reminderCard');
     const isEnabled = this.checked;
