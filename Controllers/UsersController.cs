@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace DocsService.Controllers
 {
     [Route("Users")]
-    public class UsersController: ControllerBase
+    public class UsersController : ControllerBase
     {
         private AppDbContext _context;
         private IUsersRepository _usersRepository;
@@ -37,7 +37,7 @@ namespace DocsService.Controllers
         {
             var users = _context.Users.Where(u => u.Email == email);
             var count = await users.CountAsync();
-            
+
 
             if (count == 0)
             {
@@ -73,11 +73,42 @@ namespace DocsService.Controllers
             user.OTmarch = false;
             user.PBseptember = false;
 
-        _context.Users.Update(user);
+            _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Дата сохранена" });
         }
-        
+
+        [HttpPut("changeNotificationSettings")]
+        public async Task<IActionResult> ChangeNotificationSettings([FromBody] NotificationSettings request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { message = "Некорректные данные" });
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+            if (user == null)
+            {
+                return NotFound(new { message = "Пользователь не найден" });
+            }
+
+            if (request.RemindersEnabled)
+            {
+                user.OTseptember = false;
+                user.OTmarch = false;
+                user.PBseptember = false;
+            } else
+            {
+                user.OTseptember = true;
+                user.OTmarch = true;
+                user.PBseptember = true;
+            }
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Настройки напоминаний изменены" });
+        }
     }
 }

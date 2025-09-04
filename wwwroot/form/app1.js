@@ -1101,3 +1101,41 @@ document.getElementById("saveReminderBtn").addEventListener("click", async funct
         alert('Не удалось подключиться к серверу.');
     }
 });
+
+
+document.getElementById('reminderToggle').addEventListener('change', function () {
+    const reminderCard = document.getElementById('reminderCard');
+    const isEnabled = this.checked;
+
+    if (this.checked) {
+        reminderCard.style.display = 'block';
+    }
+    else {
+        reminderCard.style.display = 'none';
+    }
+
+    ChangeNotificationSettings(isEnabled);
+});
+
+async function ChangeNotificationSettings(isEnabled) {
+    const email = document.getElementById('userInfoBtn').dataset.email;
+    try {
+        const response = await fetch('/Users/changeNotificationSettings', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                remindersEnabled: isEnabled
+            })
+        });
+        if (!response.ok) {
+            throw new Error('Ошибка при сохранении настроек');
+        }
+    }
+    catch (error) {
+        console.error('Ошибка:', error);
+        document.getElementById('reminderToggle').checked = !isEnabled;
+    }
+}

@@ -13,6 +13,9 @@
     <div class="page-container">
         <div class="auth-form userInfoBtn" data-email="{{Email}}" id="userInfoBtn">
             <img src="../form/images/User.png" class="img-userInfo-btn" />
+            <div class="profile-btn-text">
+                <span>Профиль</span>
+            </div>
 
             <div class="user-details-container">
                 <div class="user-info-content">
@@ -23,8 +26,13 @@
                         <p><strong>Почта:</strong> {{Email}}</p>
                     </div>
 
-                    <div class="reminder-section">
-                        <div class="reminder-card">
+                    <div class="reminder-setting">
+                        <p><strong>Я хочу, чтобы приходили напоминания</strong></p>
+                        <input type="checkbox" id="reminderToggle" checked/>
+                    </div>
+                    <div class="reminder-section" style="display:block;" id="reminderCard">
+                        
+                        <div class="reminder-card" >
                             <div class="reminder-setting">
                                 <p class="reminder-label"><strong>Дата напоминания о проведении инструктажа по ОТ:</strong></p>
                                 <input type="date" id="trainingReminder" class="reminder-input" value="{{TrainingReminderDate}}"  />
@@ -38,9 +46,10 @@
                                 <input type="date" id="trainingReminderPB" class="reminder-input" value="{{TrainingReminderDatePB}}"/>
                             </div>
                             <button id="saveReminderBtn" class="save-btn">Сохранить</button>
-                        </div>
+                        </div> 
+                    </div>
+                    
 
-                        
                     </div>
                 </div>
             </div>

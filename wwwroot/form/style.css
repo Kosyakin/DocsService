@@ -690,7 +690,7 @@
     display: flex;
     justify-content: flex-end;
     overflow: hidden;
-    width: 40px;
+    width: 200px;
     height: 40px;
     transition: width 0.5s ease, height 0.5s ease;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
@@ -753,6 +753,7 @@
     border-radius: 10px;
     padding: 16px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: opacity 0.3s ease, max-height 0.3s ease, padding 0.3s ease;
 }
 
 .reminder-setting {
@@ -811,12 +812,14 @@
 
 /* Открытое состояние */
 .userInfoBtn.active {
-    width: 300px;
-    height: 650px;
+    min-width: 300px;
+    min-height: 650px;
+    width: auto;
+    height: auto;
 }
 
     .userInfoBtn.active .img-userInfo-btn {
-        transform: translateX(-250px); /* Учитываем смещение в 8px */
+        transform: translateX(-250px);
     }
 
     .userInfoBtn.active .user-details-container {
@@ -824,6 +827,11 @@
         pointer-events: all;
     }
 
+    .profile-btn-text {
+        position: absolute;
+        right: 50px;
+    }
 
 
+    
 
