@@ -675,7 +675,7 @@
 /* Позиционирование профиля в правом верхнем углу */
 .auth-form {
     position: fixed;
-    top: 20px;
+    top: 150px;
     right: 20px;
     z-index: 1001;
 }
