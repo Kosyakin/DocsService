@@ -35,7 +35,7 @@ namespace DocsService.Services
                 }
 
                 // Подождать 24 часа до следующей проверки
-                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+                await Task.Delay(TimeSpan.FromHours(24), stoppingToken);
             }
         }
 
