@@ -1,6 +1,7 @@
 ﻿using DocsService.Data;
 using DocsService.Interfaces;
 using DocsService.Models;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Packaging;
 
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -47,8 +48,52 @@ namespace DocsService.Controllers
                 }
 
                 byte[] fileBytes = await ProcessFormData(formData);
-                string fileName = "форма 04-СТО 07-12 Лист регистрации инструктажа по охране труда.docx";
-                
+                //string fileName = "форма 04-СТО 07-12 Лист регистрации инструктажа по охране труда.docx";
+                string fileName = "Заполненный шаблон";
+
+                try
+                {
+                    // Находим пользователя по email
+                    var user = await _context.Users
+                        .FirstOrDefaultAsync(u => u.Email == formData.Email);
+
+                    if (user == null)
+                    {
+                        throw new Exception();
+                    }
+
+                    if (formData.FormId == "dataForm")
+                    {
+                        var today = DateTime.Now;
+                        if (1 <= today.Month && today.Month <= 6)
+                            user.OTmarch = true;
+                        else
+                            user.OTseptember = true;
+                    }
+                    else if (formData.FormId == "dataForm1")
+                    {
+                        user.PBseptember = true;
+                    }
+
+
+                        
+                   
+
+                   
+
+                    // Сохраняем изменения
+                    await _context.SaveChangesAsync();
+
+                    
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception();// Логирование ошибки
+
+                    
+                }
+
+
                 return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", fileName);
 
             }

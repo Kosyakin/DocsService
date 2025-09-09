@@ -11,20 +11,50 @@
         <div class="header-line-2"></div>
     </header>
     <div class="page-container">
-        <div class="auth-form">
-            <button type="button" id="userInfoBtn" class="userInfoBtn" data-email="{{Email}}">
+        <div class="auth-form userInfoBtn" data-email="{{Email}}" id="userInfoBtn">
+            
+            <div class="user-compact-view">
                 <img src="../form/images/User.png" class="img-userInfo-btn" />
-                <div class="user-info-card">
-                    <p><strong>Имя:</strong> {{UserName}}</p>
-                    <p><strong>Должность:</strong> {{Position}}</p>
-                    <p><strong>Номер документа:</strong> {{DocumentNumber}}</p>
-                    <p><strong>Почта:</strong> {{Email}}</p>
+                <span class="user-name-compact">{{UserName}}</span>
+            
+            </div>
+
+            <div class="user-details-container">
+                <div class="user-info-content">
+                    <div class="user-info-card">
+                        <p><strong>Имя:</strong> {{UserName}}</p>
+                        <p><strong>Должность:</strong> {{Position}}</p>
+                        <p><strong>Номер документа:</strong> {{DocumentNumber}}</p>
+                        <p><strong>Почта:</strong> {{Email}}</p>
+                    </div>
+
+                    <div class="reminder-setting">
+                        <p><strong>Я хочу, чтобы приходили напоминания</strong></p>
+                        <input type="checkbox" id="reminderToggle" checked/>
+                    </div>
+                    <div class="reminder-section" style="display:block;" id="reminderCard">
+                        
+                        <div class="reminder-card" >
+                            <div class="reminder-setting">
+                                <p class="reminder-label"><strong>Дата напоминания о проведении инструктажа по ОТ:</strong></p>
+                                <input type="date" id="trainingReminder" class="reminder-input" value="{{TrainingReminderDate}}"  />
+                            </div>
+                            <div class="reminder-setting">
+                                <p class="reminder-label"><strong>Дата 2-го напоминания о проведении инструктажа по ОТ:</strong></p>
+                                <input type="date" id="trainingReminderOT2" class="reminder-input" value="{{TrainingReminderDateOT2}}"/>
+                            </div>
+                            <div class="reminder-setting">
+                                <p class="reminder-label"><strong>Дата напоминания о проведении инструктажа по ППБ:</strong></p>
+                                <input type="date" id="trainingReminderPB" class="reminder-input" value="{{TrainingReminderDatePB}}"/>
+                            </div>
+                            <button id="saveReminderBtn" class="save-btn">Сохранить</button>
+                        </div> 
+                    </div>
+                    
+
+                    </div>
                 </div>
-
-            </button>
-
-         
-
+            </div>
         </div>
 
         <div class="form-with-tabs">
@@ -83,6 +113,7 @@
 
                     <div class="input-group">
                         <input placeholder="Причина" name="reason" id="reason">
+                        
                     </div>
 
                     <div class="input-group" id="localActDropdownGroup">
@@ -150,7 +181,7 @@
 
                     <div class="input-group">
                         <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
-                            Вид инструктажа по охране труда
+                            Вид инструктажа по противопожарной безопасности
                         </div>
                         <input type="hidden" name="instructionType" id="instructionType1">
                         <div class="dropdown-content">
@@ -162,11 +193,11 @@
 
                     </div>
 
-                    <div class="input-group">
+                    <!--<div class="input-group">
                         <input placeholder="Причина" name="reason" id="reason1">
-                    </div>
+                    </div>-->
 
-                    <div class="input-group" id="localActDropdownGroup1">
+                    <!--<div class="input-group" id="localActDropdownGroup1">
                         <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
                             Наименование локального акта
                         </div>
@@ -179,14 +210,14 @@
                             <div class="dropdown-item" onclick="selectItem(this, 'СТО ЛУКОЙЛ 1.6.6')">СТО ЛУКОЙЛ 1.6.6</div>
                             <div class="dropdown-item" onclick="selectItem(this, 'СТО ЛУКОЙЛ 1.6.15')">СТО ЛУКОЙЛ 1.6.15</div>
                         </div>
-                    </div>
+                    </div>-->
 
-                    <div class="input-group" id="localActInputFieldGroup1" style="display: none;">
+                    <!--<div class="input-group" id="localActInputFieldGroup1" style="display: none;">
                         <input type="text"
                                name="localAct"
                                id="localActInputField1"
                                placeholder="Введите номер СТО">
-                    </div>
+                    </div>-->
 
                     
 
@@ -229,7 +260,7 @@
 
                     </div>
 
-                    <div class="input-group">
+                    <!--<div class="input-group">
                         <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
                             Вид инструктажа по охране труда
                         </div>
@@ -241,13 +272,13 @@
 
                         </div>
 
-                    </div>
+                    </div>-->
 
-                    <div class="input-group">
+                    <!--<div class="input-group">
                         <input placeholder="Причина" name="reason" id="reason2">
-                    </div>
+                    </div>-->
 
-                    <div class="input-group" id="localActDropdownGroup">
+                    <!--<div class="input-group" id="localActDropdownGroup">
                         <div class="custom-select" onclick="toggleDropdown(this.parentElement)">
                             Наименование локального акта
                         </div>
@@ -260,14 +291,14 @@
                             <div class="dropdown-item" onclick="selectItem(this, 'СТО ЛУКОЙЛ 1.6.6')">СТО ЛУКОЙЛ 1.6.6</div>
                             <div class="dropdown-item" onclick="selectItem(this, 'СТО ЛУКОЙЛ 1.6.15')">СТО ЛУКОЙЛ 1.6.15</div>
                         </div>
-                    </div>
+                    </div>-->
 
-                    <div class="input-group" id="localActInputFieldGroup2" style="display: none;">
+                    <!--<div class="input-group" id="localActInputFieldGroup2" style="display: none;">
                         <input type="text"
                                name="localAct"
                                id="localActInputField2"
                                placeholder="Введите номер СТО">
-                    </div>
+                    </div>-->
 
                     <button type="submit" id="submitBtn2" class="submit-btn" disabled>Сформировать файл</button>
                 </form>

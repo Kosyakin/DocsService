@@ -11,10 +11,10 @@
 
 .auth-container {
     background: white;
-    padding: 40px; 
-    border-radius: 20px; 
-    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2); 
-    width: 500px; 
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    width: 500px;
     text-align: center;
 }
 
@@ -26,23 +26,61 @@
 
 .input-group {
     margin-bottom: 25px;
+    position: relative;
 }
 
     .input-group input {
         width: 100%;
         padding: 18px 25px;
-        border: 2px;
+        border: 2px solid transparent;
         border-radius: 20px;
         font-size: 18px;
         box-sizing: border-box;
-        transition: border-color 0.3s;
+        transition: all 0.3s ease;
         background-color: #E6E6E6;
     }
 
+        /* Стиль для обводки при фокусе */
         .input-group input:focus {
-            border-color: #4a90e2;
+            border-color: #656565;
             outline: none;
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(74, 74, 74, 0.2);
         }
+
+    /* Стили для плавающего плейсхолдера */
+    .input-group label {
+        position: absolute;
+        left: 25px;
+        top: 18px;
+        font-size: 18px;
+        color: #666;
+        pointer-events: none;
+        transition: all 0.3s ease;
+        
+    }
+
+    .input-group input:focus + label,
+    .input-group input:not(:placeholder-shown) + label {
+        top: -20px;
+        left: 15px;
+        font-size: 12px;
+        background: white;
+        padding: 0 8px;
+        color: #656565;
+        font-weight: bold;
+    }
+
+    /* Для браузеров, которые не поддерживают :placeholder-shown */
+    .input-group input:focus + label {
+        top: -20px;
+        left: 15px;
+        font-size: 12px;
+        background: none;
+        padding: 0 8px;
+        color: #656565;
+        font-weight: bold;
+    }
 
 .login-btn {
     width: 50%;
@@ -63,15 +101,10 @@
         color: #FFFFFF;
     }
 
-
-
     .login-btn.disabled {
         background-color: #E6E6E6;
         color: #000000;
-        
     }
-
-
 
 .error-message {
     color: #dc3545;
@@ -91,7 +124,7 @@
     left: 0;
     right: 0;
     height: 5px;
-
+    z-index: 0;
 }
 
 .header-line {
@@ -122,9 +155,125 @@
 
 .footer-logo {
     position: fixed;
-    left: 40px; 
+    left: 40px;
     bottom: 51px;
     width: 60px;
     height: auto;
     z-index: 10;
+}
+
+/* Добавьте эти стили к существующим */
+.auth-with-tabs {
+    width: 500px;
+    margin: 0 auto;
+    z-index: 1;
+}
+
+.auth-tabs {
+    display: flex;
+    width: 100%;
+    margin-bottom: 0;
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    width: 580px;
+}
+
+.auth-tab {
+    flex: 1;
+    text-align: center;
+    padding: 12px 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: #BABABA;
+    position: relative;
+    z-index: 1;
+    color: #333;
+}
+
+    .auth-tab::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 25%;
+        height: 50%;
+        width: 2px;
+        background-color: transparent;
+        transition: all 0.3s ease;
+        z-index: 2;
+    }
+
+    .auth-tab.active {
+        background: #FFFFFF;
+        color: black;
+        font-weight: bold;
+    }
+
+    .auth-tab:hover:not(.active) {
+        background: #B5B5B5;
+        color: white;
+    }
+
+.auth-container {
+    background: white;
+    padding: 40px;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    width: 500px;
+    text-align: center;
+    margin-top: 0;
+}
+
+    .auth-container.hidden {
+        display: none;
+    }
+
+    .auth-container.active {
+        display: block;
+    }
+
+/* Стили для строк с двумя полями */
+.input-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.input-group.half {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 600px) {
+    .auth-with-tabs {
+        width: 90%;
+    }
+
+    .auth-tabs {
+        width: 100%;
+    }
+
+    .auth-container {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .input-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .input-group.half {
+        margin-bottom: 25px;
+    }
+
+    .input-group label {
+        font-size: 16px;
+    }
+
+    .input-group input:focus + label,
+    .input-group input:not(:placeholder-shown) + label {
+        font-size: 10px;
+    }
 }

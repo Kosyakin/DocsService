@@ -22,9 +22,15 @@ function setCurrentDate1() {
     const dateField = document.getElementById('date1');
     if (!dateField.value) { // Устанавливаем только если поле пустое
         const today = new Date();
-        const formattedDate = today.toISOString().substr(0, 10);
-        dateField.value = formattedDate;
 
+        // Получаем компоненты даты
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+
+        // Форматируем как YYYY-MM-DD
+        const formattedDate = `${year}-${month}-${day}`;
+        dateField.value = formattedDate;
     }
 
 }
@@ -34,9 +40,15 @@ function setCurrentDate2() {
     const dateField = document.getElementById('date2');
     if (!dateField.value) { // Устанавливаем только если поле пустое
         const today = new Date();
-        const formattedDate = today.toISOString().substr(0, 10);
-        dateField.value = formattedDate;
 
+        // Получаем компоненты даты
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+
+        // Форматируем как YYYY-MM-DD
+        const formattedDate = `${year}-${month}-${day}`;
+        dateField.value = formattedDate;
     }
 }
 
@@ -185,144 +197,144 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
-    instructionTypeInput1.addEventListener('change', function () {
-        const reasonInput1 = document.getElementById('reason1');
-        //const localActInput = document.querySelector('input[name="localAct"]');
-        //const numDoc = document.getElementById("numDoc");
+    //instructionTypeInput1.addEventListener('change', function () {
+    //    const reasonInput1 = document.getElementById('reason1');
+    //    //const localActInput = document.querySelector('input[name="localAct"]');
+    //    //const numDoc = document.getElementById("numDoc");
         
-        //console.log(`here: ${numDoc}`);
+    //    //console.log(`here: ${numDoc}`);
 
 
-        // Элементы для локального акта
-        const localActDropdownGroup1 = document.getElementById('localActDropdownGroup1');
+    //    // Элементы для локального акта
+    //    //const localActDropdownGroup1 = document.getElementById('localActDropdownGroup1');
 
-        const localActInputFieldGroup1 = document.getElementById('localActInputFieldGroup1');
+    //    //const localActInputFieldGroup1 = document.getElementById('localActInputFieldGroup1');
 
-        //const localActHiddenInput = document.getElementById('localAct');
+    //    //const localActHiddenInput = document.getElementById('localAct');
 
-        const localActTextInput1 = document.getElementById('localActInputField1');
+    //    //const localActTextInput1 = document.getElementById('localActInputField1');
 
 
-        const selectedType = this.value;
-        //const isSpecialType = selectedType === 'Внеплановый' || selectedType === 'Целевой';
+    //    const selectedType = this.value;
+    //    //const isSpecialType = selectedType === 'Внеплановый' || selectedType === 'Целевой';
 
-        // --- Обновляем "Причину" ---
-        const reason = reasonMap[selectedType];
-        reasonInput1.value = reason;
+    //    // --- Обновляем "Причину" ---
+    //    const reason = reasonMap[selectedType];
+    //    reasonInput1.value = reason;
 
-        //numDoc.classList.add('required-field');
-        //numDoc.addEventListener('input', function () {
-        //    if (this.value.trim() !== '') {
-        //        this.classList.remove('required-field');
-        //    } else {
-        //        this.classList.add('required-field');
-        //    }
-        //});
+    //    //numDoc.classList.add('required-field');
+    //    //numDoc.addEventListener('input', function () {
+    //    //    if (this.value.trim() !== '') {
+    //    //        this.classList.remove('required-field');
+    //    //    } else {
+    //    //        this.classList.add('required-field');
+    //    //    }
+    //    //});
 
-        if (selectedType == 'Внеплановый' || selectedType == 'Целевой') {
+    //    if (selectedType == 'Внеплановый' || selectedType == 'Целевой') {
 
-            reasonInput1.classList.add('required-field');
-            reasonInput1.placeholder = "Заполните номер приказа Общества";
+    //        reasonInput1.classList.add('required-field');
+    //        reasonInput1.placeholder = "Заполните номер приказа Общества";
 
-            localActDropdownGroup1.style.display = 'none';
-            localActInputFieldGroup1.style.display = 'block';
+    //        //localActDropdownGroup1.style.display = 'none';
+    //        //localActInputFieldGroup1.style.display = 'block';
 
-            localActTextInput1.value = 'СТО 07-12';
+    //        //localActTextInput1.value = 'СТО 07-12';
 
-            localActTextInput1.addEventListener('input', function () {
-                if (this.value !== '') {
-                    this.classList.remove('required-field');
-                } else {
-                    this.classList.add('required-field');
-                }
-            });
+    //        //localActTextInput1.addEventListener('input', function () {
+    //        //    if (this.value !== '') {
+    //        //        this.classList.remove('required-field');
+    //        //    } else {
+    //        //        this.classList.add('required-field');
+    //        //    }
+    //        //});
 
-            reasonInput1.addEventListener('input', function () {
-                if (this.value.trim() !== '') {
-                    this.classList.remove('required-field');
-                } else {
-                    this.classList.add('required-field');
-                }
-            });
+    //        reasonInput1.addEventListener('input', function () {
+    //            if (this.value.trim() !== '') {
+    //                this.classList.remove('required-field');
+    //            } else {
+    //                this.classList.add('required-field');
+    //            }
+    //        });
 
-        } else {
-            // Убираем красные границы
-            reasonInput1.classList.remove('required-field');
-            //localActTextInput.classList.remove('required-field');
+    //    } else {
+    //        // Убираем красные границы
+    //        reasonInput1.classList.remove('required-field');
+    //        //localActTextInput.classList.remove('required-field');
 
-            // Показываем выпадающий список
-            localActDropdownGroup1.style.display = 'block';
-            localActInputFieldGroup1.style.display = 'none';
+    //        // Показываем выпадающий список
+    //        //localActDropdownGroup1.style.display = 'block';
+    //        //localActInputFieldGroup1.style.display = 'none';
 
-            reasonInput1.addEventListener('input', function () {
-                if (this.value.trim() !== '') {
-                    this.classList.remove('required-field');
-                } else {
-                    this.classList.add('required-field');
-                }
-            });
-        }
+    //        reasonInput1.addEventListener('input', function () {
+    //            if (this.value.trim() !== '') {
+    //                this.classList.remove('required-field');
+    //            } else {
+    //                this.classList.add('required-field');
+    //            }
+    //        });
+    //    }
 
-    });
+    //});
 
-    instructionTypeInput2.addEventListener('change', function () {
-        const reasonInput2 = document.getElementById('reason2');
-        const selectedType = this.value;
-        //const isSpecialType = selectedType === 'Внеплановый' || selectedType === 'Целевой';
+    //instructionTypeInput2.addEventListener('change', function () {
+    //    const reasonInput2 = document.getElementById('reason2');
+    //    const selectedType = this.value;
+    //    //const isSpecialType = selectedType === 'Внеплановый' || selectedType === 'Целевой';
 
-        // --- Обновляем "Причину" ---
-        const reason = reasonMap[selectedType];
-        reasonInput2.value = reason;
+    //    // --- Обновляем "Причину" ---
+    //    const reason = reasonMap[selectedType];
+    //    reasonInput2.value = reason;
 
-        //localActHiddenInput.value = ''; // Очищаем скрытое поле
-        //localActTextInput.value = '';   // Очищаем текстовое поле 
-        //document.querySelector('#localActDropdownGroup .custom-select').textContent = 'Наименование локального акта';
+    //    //localActHiddenInput.value = ''; // Очищаем скрытое поле
+    //    //localActTextInput.value = '';   // Очищаем текстовое поле 
+    //    //document.querySelector('#localActDropdownGroup .custom-select').textContent = 'Наименование локального акта';
 
-        if (selectedType == 'Внеплановый' || selectedType == 'Целевой') {
+    //    if (selectedType == 'Внеплановый' || selectedType == 'Целевой') {
 
-            reasonInput2.classList.add('required-field');
-            reasonInput2.placeholder = "Заполните номер приказа Общества";
+    //        reasonInput2.classList.add('required-field');
+    //        reasonInput2.placeholder = "Заполните номер приказа Общества";
 
-            //localActDropdownGroup.style.display = 'none';
-            //localActInputFieldGroup.style.display = 'block';
+    //        //localActDropdownGroup.style.display = 'none';
+    //        //localActInputFieldGroup.style.display = 'block';
 
-            //localActTextInput.value = 'СТО 07-12';
+    //        //localActTextInput.value = 'СТО 07-12';
 
-            //localActTextInput.addEventListener('input', function () {
-            //    if (this.value !== '') {
-            //        this.classList.remove('required-field');
-            //    } else {
-            //        this.classList.add('required-field');
-            //    }
-            //});
+    //        //localActTextInput.addEventListener('input', function () {
+    //        //    if (this.value !== '') {
+    //        //        this.classList.remove('required-field');
+    //        //    } else {
+    //        //        this.classList.add('required-field');
+    //        //    }
+    //        //});
 
-            reasonInput2.addEventListener('input', function () {
-                if (this.value.trim() !== '') {
-                    this.classList.remove('required-field');
-                } else {
-                    this.classList.add('required-field');
-                }
-            });
+    //        reasonInput2.addEventListener('input', function () {
+    //            if (this.value.trim() !== '') {
+    //                this.classList.remove('required-field');
+    //            } else {
+    //                this.classList.add('required-field');
+    //            }
+    //        });
 
-        } else {
-            // Убираем красные границы
-            reasonInput2.classList.remove('required-field');
-            //localActTextInput.classList.remove('required-field');
+    //    } else {
+    //        // Убираем красные границы
+    //        reasonInput2.classList.remove('required-field');
+    //        //localActTextInput.classList.remove('required-field');
 
-            //// Показываем выпадающий список
-            //localActDropdownGroup.style.display = 'block';
-            //localActInputFieldGroup.style.display = 'none';
+    //        //// Показываем выпадающий список
+    //        //localActDropdownGroup.style.display = 'block';
+    //        //localActInputFieldGroup.style.display = 'none';
 
-            reasonInput2.addEventListener('input', function () {
-                if (this.value.trim() !== '') {
-                    this.classList.remove('required-field');
-                } else {
-                    this.classList.add('required-field');
-                }
-            });
-        }
+    //        reasonInput2.addEventListener('input', function () {
+    //            if (this.value.trim() !== '') {
+    //                this.classList.remove('required-field');
+    //            } else {
+    //                this.classList.add('required-field');
+    //            }
+    //        });
+    //    }
 
-    });
+    //});
 
     //const userBtn = document.querySelector('.userInfoBtn');
     //const authForm = document.querySelector('.auth-form');
@@ -382,6 +394,10 @@ document.querySelectorAll('.dynamicForm').forEach(form => {
                 });
             }
 
+            const email = document.getElementById("userInfoBtn").dataset.email;
+            formData.append('email', email);
+            
+
             //if (!formData.has('numDoc')) {
             //    formData.append('numDoc', "-1");
             //}
@@ -425,98 +441,11 @@ document.querySelectorAll('.dynamicForm').forEach(form => {
     });
 });
 
-//document.getElementById('dataForm1').addEventListener('submit', async function (e) {
-//    console.log("Событие submit1 вызвано!");
 
-
-
-//    try {
-//        const formData = new FormData(this);
-//        formData.append('formId', this.id);
-
-
-//        for (let [key, value] of formData.entries()) {
-//            console.log(key, value);
-//        }
-
-//        const response = await fetch(this.action, {
-//            method: 'POST',
-//            body: formData
-//        });
-
-//        if (response.ok) {
-//            const blob = await response.blob();
-//            const url = window.URL.createObjectURL(blob);
-//            const a = document.createElement('a');
-//            //a.href = url;
-//            //a.download = 'Инструктажи.docx';
-//            //document.body.appendChild(a);
-//            //a.click();
-//            //setTimeout(() => {
-//            //    document.body.removeChild(a);
-//            //    window.URL.revokeObjectURL(url);
-//            //}, 100);
-//        } else {
-//            const error = await response.text();
-//            document.getElementById('errorMessage').textContent = error;
-//        }
-//    } catch (error) {
-//        console.error('Ошибка:', error);
-//        document.getElementById('errorMessage').textContent =
-//            'Ошибка при отправке формы: ' + error.message;
-//    } finally {
-//        submitBtn1.disabled = false;
-//        submitBtn1.textContent = 'Сформировать файл';
-//    }
-//});
-
-//document.getElementById('dataForm2').addEventListener('submit', async function (e) {
-//    console.log("Событие submit2 вызвано!");
-
-
-
-//    try {
-//        const formData = new FormData(this);
-//        formData.append('formId', this.id);
-
-//        for (let [key, value] of formData.entries()) {
-//            console.log(key, value);
-
-//        }
-
-//        const response = await fetch(this.action, {
-//            method: 'POST',
-//            body: formData
-//        });
-
-//        if (response.ok) {
-//            const blob = await response.blob();
-//            const url = window.URL.createObjectURL(blob);
-//            const a = document.createElement('a');
-//            //a.href = url;
-//            //a.download = 'Инструктажи.docx';
-//            //document.body.appendChild(a);
-//            //a.click();
-//            //setTimeout(() => {
-//            //    document.body.removeChild(a);
-//            //    window.URL.revokeObjectURL(url);
-//            //}, 100);
-//        } else {
-//            const error = await response.text();
-//            document.getElementById('errorMessage').textContent = error;
-//        }
-//    } catch (error) {
-//        console.error('Ошибка:', error);
-//        document.getElementById('errorMessage').textContent =
-//            'Ошибка при отправке формы: ' + error.message;
-//    } finally {
-//        submitBtn2.disabled = false;
-//        submitBtn2.textContent = 'Сформировать файл';
-//    }
-//});
 
 function checkFormValidity(formId) {
 
+    console.log("Проверка заполненных данных");
     switch (formId) {
         case 'dataForm':
             const date = document.getElementById('date').value;
@@ -536,30 +465,31 @@ function checkFormValidity(formId) {
             console.log(formId);
             const date1 = document.getElementById('date1').value;
             const instructionType1 = document.getElementById('instructionType1').value;
-            const reason1 = document.getElementById('reason1').value;
-            const localAct1 = document.getElementById('localAct1').value;
-            const localActInput1 = document.getElementById("localActInputField1").value;
+            //const reason1 = document.getElementById('reason1').value;
+            //const localAct1 = document.getElementById('localAct1').value;
+            //const localActInput1 = document.getElementById("localActInputField1").value;
             const dropdown1 = document.getElementById("dropdown1");
             const anyEmployeeSelected1 = dropdown1.querySelectorAll('input[name="employees"]:checked').length;
             console.log(`CountEmp1: ${anyEmployeeSelected1}`);
             
 
-            const isFormValid1 = date1 && instructionType1 && reason1 && (localAct1 || localActInput1) && anyEmployeeSelected1;
+            const isFormValid1 = date1 && instructionType1  && anyEmployeeSelected1;
             submitBtn1.disabled = !isFormValid1;
 
             break;
 
         case 'dataForm2':
             const date2 = document.getElementById('date2').value;
-            const instructionType2 = document.getElementById('instructionType2').value;
-            const reason2 = document.getElementById('reason2').value;
-            const localAct2 = document.getElementById('localAct2').value;
-            const localActInput2 = document.getElementById("localActInputField2").value;
+            //const instructionType2 = document.getElementById('instructionType2').value;
+            //const reason2 = document.getElementById('reason2').value;
+            //const localAct2 = document.getElementById('localAct2').value;
+            //const localActInput2 = document.getElementById("localActInputField2").value;
             const dropdown2 = document.getElementById("dropdown2");
             const anyEmployeeSelected2 = dropdown2.querySelectorAll('input[name="employees"]:checked').length;
             console.log(`CountEmp2: ${anyEmployeeSelected2}`);
 
-            const isFormValid2 = date2 && instructionType2 && reason2 && (localAct2 || localActInput2) && anyEmployeeSelected2;
+            //const isFormValid2 = date2 && instructionType2 && reason2 && anyEmployeeSelected2;
+            const isFormValid2 = date2 && anyEmployeeSelected2;
             submitBtn2.disabled = !isFormValid2;
 
             break;
@@ -604,51 +534,51 @@ document.addEventListener('DOMContentLoaded', function () {
         const formId = event.target.form.id;
         checkFormValidity(formId);
     });
-    document.getElementById('instructionType2').addEventListener('change', function (event) {
-        const formId = event.target.form.id;
-        checkFormValidity(formId);
-    });
+    //document.getElementById('instructionType2').addEventListener('change', function (event) {
+    //    const formId = event.target.form.id;
+    //    checkFormValidity(formId);
+    //});
 
     // Причина (текстовое поле)
     document.getElementById("reason").addEventListener('input', function (event) {
         const formId = event.target.form.id;
         checkFormValidity(formId);
     });
-    document.getElementById("reason1").addEventListener('input', function (event) {
-        const formId = event.target.form.id;
-        checkFormValidity(formId);
-    });
-    document.getElementById("reason2").addEventListener('input', function (event) {
-        const formId = event.target.form.id;
-        checkFormValidity(formId);
-    });
+    //document.getElementById("reason1").addEventListener('input', function (event) {
+    //    const formId = event.target.form.id;
+    //    checkFormValidity(formId);
+    //});
+    //document.getElementById("reason2").addEventListener('input', function (event) {
+    //    const formId = event.target.form.id;
+    //    checkFormValidity(formId);
+    //});
 
     // Локальный акт (hidden input)
     document.getElementById('localAct').addEventListener('change', function (event) {
         const formId = event.target.form.id;
         checkFormValidity(formId);
     });
-    document.getElementById('localAct1').addEventListener('change', function (event) {
-        const formId = event.target.form.id;
-        checkFormValidity(formId);
-    });
-    document.getElementById('localAct2').addEventListener('change', function (event) {
-        const formId = event.target.form.id;
-        checkFormValidity(formId);
-    });
+    //document.getElementById('localAct1').addEventListener('change', function (event) {
+    //    const formId = event.target.form.id;
+    //    checkFormValidity(formId);
+    //});
+    //document.getElementById('localAct2').addEventListener('change', function (event) {
+    //    const formId = event.target.form.id;
+    //    checkFormValidity(formId);
+    //});
 
     document.getElementById('localActInputFieldGroup').addEventListener('change', function (event) {
         const formId = event.target.form.id;
         checkFormValidity(formId)
     });
-    document.getElementById('localActInputFieldGroup1').addEventListener('change', function (event) {
-        const formId = event.target.form.id;
-        checkFormValidity(formId);
-    });
-    document.getElementById('localActInputFieldGroup2').addEventListener('change', function (event) {
-        const formId = event.target.form.id;
-        checkFormValidity(formId);
-    });
+    //document.getElementById('localActInputFieldGroup1').addEventListener('change', function (event) {
+    //    const formId = event.target.form.id;
+    //    checkFormValidity(formId);
+    //});
+    //document.getElementById('localActInputFieldGroup2').addEventListener('change', function (event) {
+    //    const formId = event.target.form.id;
+    //    checkFormValidity(formId);
+    //});
 
     // Чекбоксы сотрудников
     const dropdown0 = document.getElementById("dropdown0");
@@ -659,13 +589,13 @@ document.addEventListener('DOMContentLoaded', function () {
             checkFormValidity(formId);
         });
     });
-    document.querySelectorAll('input[name="employees1"]').forEach(checkbox => {
+    document.querySelectorAll('input[name="employees"]').forEach(checkbox => {
         checkbox.addEventListener('change', function (event) {
             const formId = event.target.form.id;
             checkFormValidity(formId);
         });
     });
-    document.querySelectorAll('input[name="employees2"]').forEach(checkbox => {
+    document.querySelectorAll('input[name="employees"]').forEach(checkbox => {
         checkbox.addEventListener('change', function (event) {
             const formId = event.target.form.id;
             checkFormValidity(formId);
@@ -678,7 +608,7 @@ document.addEventListener('DOMContentLoaded', function () {
     //});
 
     // --- Проверка при загрузке ---
-    checkFormValidity();
+    //checkFormValidity("dataForm2");
 });
 
 document.querySelectorAll('.tab').forEach(tab => {
@@ -711,7 +641,6 @@ document.getElementById('edit').addEventListener('click', function (event) {
 
     document.querySelectorAll('.form-container').forEach(c => c.classList.add('hidden'));
     document.getElementById('form-edit-emp').classList.remove('hidden');
-    //document.getElementById('edit-employees').classList.remove('hidden');
     document.getElementById('form-tabs').classList.add('hidden');
 });
 
@@ -746,9 +675,9 @@ document.getElementById("confirmCancel").addEventListener('click', function () {
     document.getElementById("confirmDialog").classList.add('hidden');
 });
 
-document.getElementById("confirmDiscard").addEventListener('click', function () {
+document.getElementById("confirmDiscard").addEventListener('click', async function () {
     console.log("Нажата кнопка Не сохранять");
-    const tabId = localStorage.getItem('lastActiveTab') || 'ot';
+    const tabId = localStorage.getItem('lastActiveTab');
     const addEmpRow = document.getElementById('addEmp-tr');
     const table = document.getElementById('table');
     while (table.firstChild) {
@@ -756,7 +685,7 @@ document.getElementById("confirmDiscard").addEventListener('click', function () 
     }
 
     const email = document.getElementById("userInfoBtn").dataset.email;
-    loadEmployeesTable(email);
+    //loadEmployeesTable(email);
     if (addEmpRow) {
         table.appendChild(addEmpRow);
     }
@@ -767,12 +696,22 @@ document.getElementById("confirmDiscard").addEventListener('click', function () 
     document.getElementById('form-edit-emp').classList.add('hidden');
     document.querySelector(`[data-tab-content="${tabId}"]`).classList.remove('hidden');
     
-    loadEmployeesDropDown(email);
+    //loadEmployeesDropDown(email);
+
+    await Promise.all([
+        loadEmployeesDropDown(email),
+        loadEmployeesTable(email)
+    ]);
+
+    // Теперь проверяем формы после полной загрузки данных
+    checkFormValidity("dataForm");
+    checkFormValidity("dataForm1");
+    checkFormValidity("dataForm2");
 
 });
 
 document.getElementById("confirmSave").addEventListener('click', async function () {
-    const tabId = localStorage.getItem('lastActiveTab') || 'ot';
+    const tabId = localStorage.getItem('lastActiveTab');
     document.getElementById("confirmDialog").classList.add('hidden');
     document.getElementById('form-tabs').classList.remove('hidden');
     //document.getElementById('edit-employees').classList.add('hidden');
@@ -814,8 +753,15 @@ document.getElementById("confirmSave").addEventListener('click', async function 
         if (response.ok) {
             console.log('Данные успешно сохранены');
             const email = document.getElementById("userInfoBtn").dataset.email;
-            loadEmployeesDropDown(email);
-            loadEmployeesTable(email);
+            await Promise.all([
+                loadEmployeesDropDown(email),
+                loadEmployeesTable(email)
+            ]);
+
+            // Теперь проверяем формы после полной загрузки данных
+            checkFormValidity("dataForm");
+            checkFormValidity("dataForm1");
+            checkFormValidity("dataForm2");
         } else {
             console.error('Ошибка при сохранении: ', await response.text());
         }
@@ -899,7 +845,7 @@ document.getElementById('addEmployee').addEventListener('click', function () {
 
 
 
-    if (!name || !name1 || !name2 || !birthDate || !position || '1900-01-01' > birthDate || dateField < birthDate) {
+    if (!name || !name1  || !birthDate || !position || '1900-01-01' > birthDate || dateField < birthDate) {
         addRow.classList.add('error-row');
         setTimeout(() => {
             addRow.classList.remove('error-row');
@@ -979,7 +925,9 @@ async function loadEmployeesDropDown(email) {
 
                 dropdown.appendChild(label);
             });
+          
         });
+        
         
     } catch (error) {
         console.error('Ошибка загрузки сотрудников: ', error);
@@ -1054,47 +1002,7 @@ async function loadEmployeesTable(email) {
 
         });
 
-        //tr = document.createElement('tr');
-        //tr.id = "addEmp-tr";
-
-        //td = document.createElement('td');
-        //td.innerHTML = `
-        //    <input type="text" placeholder="Фамилия">
-        //`;
-        //tr.appendChild(td);
-
-        //td = document.createElement('td');
-        //td.innerHTML = `
-        //    <input type="text" placeholder="Имя">
-        //`;
-        //tr.appendChild(td);
-
-        //td = document.createElement('td');
-        //td.innerHTML = `
-        //   <input type="text" placeholder="Отчество">
-        //`;
-        //tr.appendChild(td);
-
-        //td = document.createElement('td');
-        //td.innerHTML = `
-        //    <input type="date" placeholder="Дата рождения" min="1900-01-01" max="2100-12-31">
-        //`;
-        //tr.appendChild(td);
-
-        //td = document.createElement('td');
-        //td.innerHTML = `
-        //    <input type="text" placeholder="Должность">
-        //`;
-        //tr.appendChild(td);
-
-        //td = document.createElement('td');
-        //td.innerHTML = `
-        //    <button id="addEmployee" class="table-btn-add-emp"><img class="table-btn-add-emp-img" src="images/Plus.png" />
-        //`;
-        //tr.appendChild(td);
-
-        //let originalTableContent = document.getElementById("table").innerHTML;
-        //localStorage.setItem('originalTableContent', originalTableContent);
+        
     } catch (error) {
         console.error('Ошибка загрузки сотрудников: ', error);
     }
@@ -1109,18 +1017,186 @@ async function deleteRowFromBD(id) {
 
 document.addEventListener('DOMContentLoaded', async () => {
     const email = document.getElementById("userInfoBtn").dataset.email;
-    loadEmployeesDropDown(email);
+    await Promise.all([
+        loadEmployeesDropDown(email),
+        loadEmployeesTable(email)
+    ]);
+    
+    // Теперь проверяем формы после полной загрузки данных
+    checkFormValidity("dataForm");
+    checkFormValidity("dataForm1");
+    checkFormValidity("dataForm2");
 });
-document.addEventListener('DOMContentLoaded', async () =>
-{
+
+document.addEventListener('DOMContentLoaded', async () => {
     const email = document.getElementById("userInfoBtn").dataset.email;
     loadEmployeesTable(email);
+    checkFormValidity("dataForm2");
+});
+
+// Логика работы формы с информацией об авторизованном пользователе
+const userInfoBtn = document.getElementById('userInfoBtn');
+
+// Обработчик клика по иконке пользователя (открытие/закрытие)
+document.querySelector('.img-userInfo-btn').addEventListener('click', function () {
+    userInfoBtn.classList.toggle('active');
+});
+
+// Предотвращаем закрытие формы при клике на внутренние элементы
+userInfoBtn.addEventListener('click', function (e) {
+    // Если клик не по иконке пользователя и не по самому контейнеру - останавливаем всплытие
+    if (e.target !== userInfoBtn && !e.target.classList.contains('img-userInfo-btn')) {
+        e.stopPropagation();
+    }
+});
+
+// Также отдельно обрабатываем поле ввода даты и кнопку сохранения
+document.getElementById('trainingReminder').addEventListener('click', function (e) {
+    e.stopPropagation();
+});
+
+document.getElementById("saveReminderBtn").addEventListener("click", function (e) {
+    e.stopPropagation();
+});
+
+localStorage.setItem("lastActiveTab", 'ot');
+
+document.getElementById("saveReminderBtn").addEventListener("click", async function () {
+    const email = document.getElementById("userInfoBtn").dataset.email;
+    const reminderDate = document.getElementById("trainingReminder").value;
+    const reminderDate1 = document.getElementById("trainingReminderOT2").value;
+    const reminderDate2 = document.getElementById("trainingReminderPB").value;
+
+    console.log(reminderDate);
+    console.log(reminderDate1);
+    console.log(reminderDate2);
+
+    if (!reminderDate) {
+        alert('Пожалуйста, добавьте дату.');
+        return;
+    }
+
+    try {
+        const response = await fetch('/Users/saveReminder', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                reminderDate: reminderDate,
+                reminderDate1: reminderDate1,
+                reminderDate2: reminderDate2
+            })
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            alert('Дата сохранена!');
+        } else {
+            alert('Ошибка: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Ошибка сети:', error);
+        alert('Не удалось подключиться к серверу.');
+    }
 });
 
 
-//Логика работы формы с информацией об авторизованном пользователе
-document.getElementById('userInfoBtn').addEventListener('click', function () {
-    this.classList.toggle('active');
+//document.getElementById('reminderToggle').addEventListener('change', function () {
+//    const reminderCard = document.getElementById('reminderCard');
+//    const isEnabled = this.checked;
+
+//    if (this.checked) {
+//        reminderCard.style.display = 'block';
+//    }
+//    else {
+//        reminderCard.style.display = 'none';
+//    }
+
+//    ChangeNotificationSettings(isEnabled);
+//});
+
+//async function ChangeNotificationSettings(isEnabled) {
+//    const email = document.getElementById('userInfoBtn').dataset.email;
+//    try {
+//        const response = await fetch('/Users/changeNotificationSettings', {
+//            method: 'PUT',
+//            headers: {
+//                'Content-Type': 'application/json'
+//            },
+//            body: JSON.stringify({
+//                email: email,
+//                remindersEnabled: isEnabled
+//            })
+//        });
+//        if (!response.ok) {
+//            throw new Error('Ошибка при сохранении настроек');
+//        }
+//    }
+//    catch (error) {
+//        console.error('Ошибка:', error);
+//        document.getElementById('reminderToggle').checked = !isEnabled;
+//    }
+//}
+
+// Обработчик для кнопки профиля
+document.getElementById('userInfoBtn').addEventListener('click', function (e) {
+    // Предотвращаем закрытие при клике внутри выпадающего контента
+    if (!e.target.closest('.user-details-container')) {
+        this.classList.toggle('active');
+    }
 });
 
+// Закрытие при клике вне области
+document.addEventListener('click', function (e) {
+    const userInfoBtn = document.getElementById('userInfoBtn');
+    const isClickInside = e.target.closest('#userInfoBtn');
 
+    if (!isClickInside && userInfoBtn.classList.contains('active')) {
+        userInfoBtn.classList.remove('active');
+    }
+});
+
+// Предотвращаем закрытие при клике внутри выпадающего контента
+document.querySelector('.user-details-container').addEventListener('click', function (e) {
+    e.stopPropagation();
+});
+
+// Обработчик для переключателя напоминаний
+document.getElementById('reminderToggle').addEventListener('change', function () {
+    const reminderCard = document.getElementById('reminderCard');
+    const isEnabled = this.checked;
+
+    if (this.checked) {
+        reminderCard.style.display = 'block';
+    }
+    else {
+        reminderCard.style.display = 'none';
+    }
+
+    ChangeNotificationSettings(isEnabled);
+});
+
+async function ChangeNotificationSettings(isEnabled) {
+    const email = document.getElementById('userInfoBtn').dataset.email;
+    try {
+        const response = await fetch('/Users/changeNotificationSettings', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                remindersEnabled: isEnabled
+            })
+        });
+        if (!response.ok) {
+            throw new Error('Ошибка при сохранении настроек');
+        }
+    }
+    catch (error) {
+        console.error('Ошибка:', error);
+        document.getElementById('reminderToggle').checked = !isEnabled;
+    }
+}

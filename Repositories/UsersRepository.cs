@@ -25,14 +25,17 @@ namespace DocsService.Repositories
             var userEntity = new UserEntity()
             {
                 Id = user.Id,
-                Username = user.UserName,
+                //Username = user.UserName,
                 PasswordHash = user.PasswordHash,
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                MiddleName = user.MiddleName,
+                MiddleName = user.MiddleName ?? string.Empty,
                 Position = user.Position,
-                DocumentNumber = user.DocumentNumber
+                DocumentNumber = user.DocumentNumber,
+                ReminderDateOTseptember = new DateTime(2025, 8, 27),
+                ReminderDatePBseptember = new DateTime(2025, 8, 27),
+                ReminderDateOTmarch = new DateTime(2026, 3, 1)
             };
 
             await _context.Users.AddAsync(userEntity);
@@ -57,7 +60,7 @@ namespace DocsService.Repositories
             return new User
             (
                 userEntity.Id,
-                userEntity.Username,
+                //userEntity.Username,
                 userEntity.PasswordHash,
                 userEntity.Email,
                 userEntity.FirstName,

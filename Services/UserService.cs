@@ -38,10 +38,9 @@ namespace DocsService.Services
                 position, documentNumber);
             await _usersRepository.Add(user);
 
-            await _emailService.SendEmailAsync(email, "Добро пожаловать в DocsService",
-            $@"<h3>Добрый день, {firstName}!</h3>
-               <p>Вы успешно зарегистрировались в системе DocsService.</p>
-               <p>Ваш логин: {email}</p>");
+            var message = string.Join("\r\n", $"Добрый день, {firstName}!", "Вы успешно зарегистрировались в системе DocsService.", $"Ваш логин: {email}");
+
+            await _emailService.SendEmailAsync(email, "Добро пожаловать в DocsService", message);
         }
 
         public async Task<string> Login(string email, string password)
@@ -76,17 +75,13 @@ namespace DocsService.Services
                 MiddleName = userEntity.MiddleName,
                 Position = userEntity.Position,
                 DocumentNumber = userEntity.DocumentNumber,
-                Email = userEntity.Email
+                Email = userEntity.Email,
+                ReminderDateOTseptember = userEntity.ReminderDateOTseptember,
+                ReminderDatePBseptember = userEntity.ReminderDatePBseptember,
+                ReminderDateOTmarch = userEntity.ReminderDateOTmarch,
             };
         }
 
-        //public async Task SendPasswordReminderAsync(string email)
-        //{
-        //    var user = await _usersRepository.GetByEmail(email);
-        //    if (user != null)
-        //    {
-        //        await _emailService.SendReminderAsync(email, "напоминание пароля", DateTime.Now);
-        //    }
-        //}
+       
     }
 }
