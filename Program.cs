@@ -8,6 +8,7 @@ using DocsService.Services;
 using DocumentFormat.OpenXml.InkML;
 using DocumentFormat.OpenXml.Office2013.Word;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -46,10 +47,14 @@ builder.Services.AddCors(options =>
 
 // получаем строку подключения из файла конфигурации
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
-//builder.Services.AddDbContext<AppDbContext>(options =>
-//    options.UseInMemoryDatabase("DocsServiceDb"));
+// Переключаемся на SQLite в качестве провайдера БД
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(connection));
 
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
+// Настраиваем постоянное хранилище ключей защиты данных внутри контейнера
+var keysPath = Path.Combine(AppContext.BaseDirectory, "keys");
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(keysPath))
+    .SetApplicationName("DocsService");
 
 //var services = builder.Services;
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
@@ -136,5 +141,12 @@ app.MapGet("/account", async (HttpContext context, UserService userService) =>
 
     return Results.Content(htmlContent, "text/html");
 }).RequireAuthorization();
+
+// Обеспечиваем создание/инициализацию БД и схемы при старте приложения
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.EnsureCreated();
+}
 
 app.Run();
